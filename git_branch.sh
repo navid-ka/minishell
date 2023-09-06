@@ -28,12 +28,12 @@ gum style \
 	--border-foreground "$GIT_COLOR" \
 	"$(git_color_text ' Git') Branch Manager"
 
-echo "Choose $(git_color_text 'branches') to operate on:"
+echo "Choose $(git_color_text 'branches') to operate on or create a new one:"
 branches=$(get_branches)
 
 echo ""
 echo "Choose a $(git_color_text "command"):"
-command=$(gum choose --cursor.foreground="$GIT_COLOR" rebase delete update)
+command=$(gum choose --cursor.foreground="$GIT_COLOR" create rebase delete update)
 echo ""
 
 echo $branches | tr " " "\n" | while read -r branch; do
@@ -45,11 +45,19 @@ echo $branches | tr " " "\n" | while read -r branch; do
 		git rebase "origin/$base_branch"
 		;;
 	delete)
-		git branch -D "$branch"
+		git branch | cut -c 3- | gum choose --no-limit |
+			while read -r branch; do
+				git branch -D "$branch"
+			done
 		;;
 	update)
 		git checkout "$branch"
 		git pull --ff-only
+		;;
+	create)
+		SCOPE=$(gum input --placeholder "name of the branch")
+		echo $SCOPE
+		git branch "$SCOPE"
 		;;
 	esac
 done
