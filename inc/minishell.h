@@ -13,8 +13,8 @@
 # include <sys/types.h>
 # include <dirent.h>
 # include <signal.h>
-# include "../libs/readline/readline.h"
-# include "../libs/readline/history.h"
+# include <readline/readline.h>
+# include <readline/history.h>
 # include "../libs/libft/include/libft.h"
 # include <sys/stat.h>
 
