@@ -12,7 +12,7 @@ INC_DIR				:=	inc/
 
 LIBS				 	:= $(RDLINE)libreadline.a $(RDLINE)libhistory.a \
 									$(LIBFT)bin/libft.a
-LIBS_LINK			:= -L$(RDLINE) -L$(LIBFT) -lreadline -lhistory
+LIBS_LINK			:= -L$(RDLINE) -L$(LIBFT) -lreadline -lhistory -ltermcap
 								 
 
 HEADERS				:= $(INC_DIR) $(LIBFT)include/ $(RDLINE)
