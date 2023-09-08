@@ -32,7 +32,7 @@ datadir = ${datarootdir}
 
 top_srcdir = ..
 #BUILD_DIR = .
-BUILD_DIR = /Users/eralonso/Documents/github/Minishell/lib/readline
+BUILD_DIR = /home/bifrost/Documentos/minishell/libs/readline
 installdir = $(datadir)/readline
 
 INSTALL = /usr/bin/install -c
@@ -63,7 +63,7 @@ ASAN_XLDFLAGS = -fsanitize=address
 READLINE_LIB = ../libreadline.a
 HISTORY_LIB = ../libhistory.a
 
-TERMCAP_LIB = -ltermcap
+TERMCAP_LIB = -ltinfo
 
 .c.o:
 	${RM} $@
