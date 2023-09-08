@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
+/*   By: fcosta-f <fcosta-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/19 17:23:45 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/08/03 17:41:13 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/09/08 22:57:18 by fcosta-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,13 +67,13 @@ int		ft_lstsize(t_list *lst);
 void	ft_lstdelone(t_list *lst, void (*del)(void *));
 void	ft_lstclear(t_list **lst, void (*del)(void *));
 void	ft_lstiter(t_list *lst, void (*f)(void *));
-int		ft_printc(char c);
-int		ft_prints(char *s);
-int		ft_printp(unsigned long ptr);
-int		ft_printid(int nb);
-int		ft_printu(unsigned int nb);
-int		ft_printhex(unsigned int n, char *base);
-int		ft_printf(char const *s, ...);
+int		ft_print_decimal(int fd, int n);
+int		ft_print_uinteger(int fd, unsigned int n);
+int		ft_print_string(int fd, char *str);
+int		ft_printf(int fd, const char *s, ...);
+int		ft_print_ptr(int fd, void *ptr);
+int		ft_print_hex(int fd, unsigned long int n, char format, int c_printed);
+int		ft_print_char_fd(int c, int fd);
 char	*get_next_line(int fd);
 
 #endif

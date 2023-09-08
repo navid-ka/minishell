@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
+/*   By: fcosta-f <fcosta-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/21 21:37:16 by bifrost           #+#    #+#             */
-/*   Updated: 2023/07/07 13:04:51 by nkeyani-         ###   ########.fr       */
+/*   Created: 2023/05/15 14:20:18 by jareste-          #+#    #+#             */
+/*   Updated: 2023/09/08 22:47:49 by fcosta-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/libft.h"
 
-int	ft_printc(char c)
+int	ft_print_char_fd(int c, int fd)
 {
-	if (write(1, &c, sizeof(char)) == -1)
+	if (write(fd, &c, 1) != 1)
 		return (-1);
 	return (1);
 }

@@ -1,64 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printu.c                                        :+:      :+:    :+:   */
+/*   ft_print_uinteger.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
+/*   By: fcosta-f <fcosta-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/22 19:48:21 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/06/08 16:47:17 by nkeyani-         ###   ########.fr       */
+/*   Created: 2023/05/10 17:45:52 by jareste-          #+#    #+#             */
+/*   Updated: 2023/09/08 22:49:46 by fcosta-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/libft.h"
 
-static int	ft_icount(unsigned int n)
+int	ft_print_uinteger(int fd, unsigned int n)
 {
-	int	i;
+	char	c;
+	size_t	temp;
+	int		c_printed;
 
-	i = 0;
-	if (n == 0)
-		return (1);
-	while (n != 0)
+	c = 0;
+	c_printed = 0;
+	temp = n;
+	while (++c_printed && (temp > 9))
+		temp = temp / 10;
+	if (n > 9)
 	{
-		i++;
-		n /= 10;
+		temp = n / 10;
+		n = n % 10;
+		if (ft_print_decimal(fd, temp) == -1)
+			return (-1);
 	}
-	return (i);
-}
-
-static char	*ft_uitoa(unsigned int n)
-{
-	char				*arr;
-	int					count;
-	unsigned int		d;
-	long int			nb;
-
-	nb = n;
-	count = ft_icount(nb);
-	arr = ft_calloc(count + 1, sizeof(char));
-	if (!arr)
-		return (NULL);
-	while (count--)
-	{
-		d = nb / 10;
-		arr[count] = 48 + nb % 10;
-		nb = d;
-	}
-	return (arr);
-}
-
-int	ft_printu(unsigned int nb)
-{
-	char	*str;
-	int		len;
-
-	str = ft_uitoa(nb);
-	if (str == NULL)
+	if (n < 9)
+		temp = n;
+	c = n + '0';
+	if (ft_print_char_fd(c, fd) == -1)
 		return (-1);
-	len = ft_prints(str);
-	free(str);
-	if (len == -1)
-		return (-1);
-	return (len);
+	return (c_printed);
 }

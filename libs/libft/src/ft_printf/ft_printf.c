@@ -3,83 +3,98 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
+/*   By: fcosta-f <fcosta-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/18 16:42:54 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/06/08 16:47:04 by nkeyani-         ###   ########.fr       */
+/*   Created: 2023/05/09 00:52:13 by jareste-          #+#    #+#             */
+/*   Updated: 2023/09/08 22:47:01 by fcosta-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/libft.h"
 
-static int	ft_check_format(const char *format, va_list args, int *ret)
+int	ft_check_format(int fd, char format, va_list args)
 {
-	int	check;
+	int	c_printed;
 
-	check = 0;
-	if (*format == 'c')
-		check += ft_printc((char)va_arg(args, int));
-	else if (*format == 's')
-		check += ft_prints(va_arg(args, char *));
-	else if (*format == 'p')
-		check += ft_printp(va_arg(args, unsigned long));
-	else if (*format == 'd' || *format == 'i')
-		check += ft_printid(va_arg(args, int));
-	else if (*format == 'u')
-		check += ft_printu(va_arg(args, unsigned int));
-	else if (*format == 'x' || *format == 'X')
+	c_printed = 0;
+	if (format == 'c')
+		c_printed = ft_print_char_fd(va_arg(args, int), fd);
+	else if (format == 's')
+		c_printed = ft_print_string(fd, va_arg(args, char *));
+	else if (format == 'p')
+		c_printed = ft_print_ptr(fd, va_arg(args, void *));
+	else if (format == 'd' || format == 'i')
+		c_printed = ft_print_decimal(fd, va_arg(args, int));
+	else if (format == 'u')
+		c_printed = ft_print_uinteger(fd, va_arg(args, unsigned int));
+	else if (format == 'x' || format == 'X')
+		c_printed = ft_print_hex(fd, va_arg(args, unsigned int), format, 0);
+	else if (format == '%')
 	{
-		if (*format == 'x')
-			check += ft_printhex(va_arg(args, unsigned int), \
-			"0123456789abcdef");
-		if (*format == 'X')
-			check += ft_printhex(va_arg(args, unsigned int), \
-			"0123456789ABCDEF");
+		c_printed = ft_print_char_fd('%', fd);
 	}
-	*ret = check;
-	return (check);
+	else
+		return (-1);
+	return (c_printed);
 }
 
-static int	ft_parse_format(const char *format, va_list args, int *ret, int i)
+int	bucle(int fd, const char *s, va_list args, int c_printed)
 {
-	while (*format != '\0')
+	int	i;
+	int	aux;
+
+	i = 0;
+	while (s[i])
 	{
-		if (*format == '%')
+		aux = 0;
+		if (s[i] == '%')
 		{
-			format++;
-			if (ft_strchr("cspdiuxX", *format)
-				&& ft_check_format(format, args, ret) != -1)
-				i += *ret;
-			else if (*format == '%' && ft_printc('%') != -1)
-				i++;
-			else
+			aux = ft_check_format(fd, s[i + 1], args);
+			if (aux == -1)
 				return (-1);
+			c_printed += aux;
+			i++;
 		}
 		else
 		{
-			if (ft_printc(*format) != -1)
-				i++;
-			else
+			if (ft_print_char_fd(s[i], fd) == -1)
 				return (-1);
+			c_printed++;
 		}
-		format++;
+		i++;
 	}
-	*ret = i;
-	return (i);
+	return (c_printed);
 }
 
-int	ft_printf(const char *format, ...)
+int	ft_printf(int fd, const char *s, ...)
 {
-	va_list			args;
-	int				ret;
+	va_list	args;
+	int		c_printed;
 
-	ret = 0;
-	va_start(args, format);
-	if (ft_parse_format(format, args, &ret, 0) == -1)
-	{
-		va_end(args);
-		return (-1);
-	}
+	c_printed = 0;
+	va_start(args, s);
+	c_printed = bucle(fd, s, args, c_printed);
 	va_end(args);
-	return (ret);
+	return (c_printed);
 }
+/*
+#include <stdio.h>
+int	main(void)
+{
+//	char a = 'a';
+//	char *b = "muchas gracias";
+//	unsigned int c = 4294967295;
+	int dfs;
+//	void *s = "holaquetal";
+//	unsigned int x = 636321;
+
+//	ft_print_decimal(a);
+//	printf("\n\n\n\n\n");
+	dfs = ft_printf("%d", 0);
+	ft_printf("      %i", dfs);
+	printf("\n\n\n");
+	dfs = printf("%d", 0);
+	printf("      %i", dfs);
+	return (0);
+
+}*/

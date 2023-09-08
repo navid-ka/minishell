@@ -18,5 +18,23 @@
 # include "../libs/libft/include/libft.h"
 # include <sys/stat.h>
 
-#endif // !MINISHELL_H
+typedef struct s_pipe
+{
+	char	**routes;
+	pid_t	proc;
+    int		tube[2];
+	char	**cmd_args;
+	char	*cmd;
+	int		j; //para jugar con posición tratada en cada momento
+	int		here_doc; //booleano por si entra un >> limiter
+	char	*limiter; //por >>
+}	t_pipe;
 
+typedef struct s_cmd
+{
+    int     infile;
+    int		outfile;
+    int		permission; //solo para jugar con access
+}   t_cmd;
+
+#endif // !MINISHELL_H

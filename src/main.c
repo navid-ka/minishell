@@ -1,9 +1,15 @@
 #include "../inc/minishell.h"
 
-int main(int argc, char **argv, char **env)
+int	main(int argc, char **argv, char **env)
 {
-  (void)argc;
-  (void)argv;
-  (void)env;
-  return (0);
+	(void)argc;
+	(void)argv;
+	(void)env;
+	char *line;
+
+	while (1)
+	{
+		line = readline("MINICONCHA( ͡° ͜ʖ ͡°) > ");
+	}
+	return (0);
 }
