@@ -40,5 +40,6 @@ typedef struct s_cmd
 void	bt_env(char **env);
 int	syntax_checker(char *line);
 void	syntax_error();
+int	pwd(void);
 
 #endif // !MINISHELL_H

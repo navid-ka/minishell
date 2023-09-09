@@ -7,15 +7,16 @@ int	main(int argc, char **argv, char **env)
 	(void)env;
 	char *line;
 
-	using_history();
 	while (1)
 	{
 		line = "\n";
-		line = readline(line);
+		line = readline("MINICONCHA( ͡° ͜ʖ ͡°) > ");
 		if (!syntax_checker(line))
 			syntax_error();
 		if (ft_strlen(line) > 0)
             add_history(line);
+		if (!ft_strcmp(line, "pwd"))
+			pwd();
 	}
 	free(line);
 	return (0);
