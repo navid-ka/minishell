@@ -37,4 +37,8 @@ typedef struct s_cmd
     int		permission; //solo para jugar con access
 }   t_cmd;
 
+void	bt_env(char **env);
+int	syntax_checker(char *line);
+void	syntax_error();
+
 #endif // !MINISHELL_H

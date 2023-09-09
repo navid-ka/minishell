@@ -7,9 +7,16 @@ int	main(int argc, char **argv, char **env)
 	(void)env;
 	char *line;
 
+	using_history();
 	while (1)
 	{
-		line = readline("MINICONCHA( ͡° ͜ʖ ͡°) > ");
+		line = "\n";
+		line = readline(line);
+		if (!syntax_checker(line))
+			syntax_error();
+		if (ft_strlen(line) > 0)
+            add_history(line);
 	}
+	free(line);
 	return (0);
 }
