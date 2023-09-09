@@ -18,6 +18,7 @@ LIBS_LINK			:= -L$(RDLINE) -L$(LIBFT) -lreadline -lhistory -ltermcap
 HEADERS				:= $(INC_DIR) $(LIBFT)include/ $(RDLINE)
 
 SRCS 					:= src/main.c src/builtins/env.c src/lexer/lexer_syntax_errors.c
+
 OBJS = $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRCS))
 
 CFLAGS 				:= -Wall -Wextra -Werror
