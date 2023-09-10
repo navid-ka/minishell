@@ -44,6 +44,7 @@ typedef struct s_env
 }	t_env;
 
 void	bt_env(char **env);
+
 int		syntax_checker(char *line);
 void	syntax_error(void);
 int		pwd(void);
@@ -56,5 +57,6 @@ int		bt_get_dirs(char **env, t_env *env_routes);
 //ENTERO COMILLAS PARA QUE SI ESTÁN ACTIVAS SE PASE DE LOS ESPACIOS
 //SI HAY COMILLA ENTRE COMILLAS SE IGNORA Y SI HAY COMILLAS ENTRE COMILLA SE IGNORA
 
+char *charjoin(char *s1, char c);
 
 #endif // !MINISHELL_H
