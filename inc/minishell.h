@@ -58,5 +58,6 @@ int		bt_get_dirs(char **env, t_env *env_routes);
 //SI HAY COMILLA ENTRE COMILLAS SE IGNORA Y SI HAY COMILLAS ENTRE COMILLA SE IGNORA
 
 char *charjoin(char *s1, char c);
+char	*clean_spaces(char *line);
 
 #endif // !MINISHELL_H

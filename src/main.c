@@ -18,7 +18,8 @@ int	main(int argc, char **argv, char **env)
 		if (!ft_strcmp(line, "pwd"))
 			pwd();
 		bt_get_dirs(env, &hola);
-		//bt_cd(line, hola);
+		line = clean_spaces(line);
+		printf("%s\n", line);
 	}
 	free(line);
 	return (0);
