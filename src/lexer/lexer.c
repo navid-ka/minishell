@@ -1,44 +1,63 @@
 #include "../../inc/minishell.h"
 
-void	clean_spaces(char **line)
+char	*clean_spaces(char *line)
 {
 	bool	dcuote;
 	bool	scuote;
-	char	str;
+	bool	space;
+	char	*str;
 
 	dcuote = false;
 	scuote = false;
-	while (**line)
+	space = false;
+	str = NULL;
+	while (*line)
 	{
+		//printf("%d\n", dcuote);
 		if (!dcuote && !scuote)
 		{
-			if (**line != ' ')
-				ft_strjoinchr(str, **line);
-			if (**line == '"')
-				!dcuote;
-			else if (**line == '\'')
-				!scuote;
-			++(*line);
+			if (*line == ' ' && !space)
+			{
+				space = true;
+				str = charjoin(str, *line);
+			}
+			if (*line != ' ')
+			{
+				space = false;
+				str = charjoin(str, *line);
+			}
+			if (*line == '\"')
+				dcuote = true;
+			else if (*line == '\'')
+				scuote = true;
+			++line;
 		}
 		else {
 			if (dcuote)
 			{
-				while (**line != '\"')
-					{
-						ft_strjoinchr(str, **line);
-						*line++;
-					}
-				!dcuote;
+				while (*line && *line != '\"')
+				{
+					str = charjoin(str, *line);
+					line++;
+				}
+				str = charjoin(str, *line);
+				dcuote = false;
+				line++;
 			}
 			else
 			{
-				while (**line != '\'')
+				while (*line && *line != '\'')
 				{
-					ft_strjoinchr(str, **line);
-					*line++;
+					str = charjoin(str, *line);
+					line++;
 				}
-				!scuote;
+				str = charjoin(str, *line);
+				scuote = false;
+				line++;
 			}
 		}
 	}
+	return (str);
 }
+
+//si hay comillas se lia y error de comillas sin cerrar falla si hay comilla suelta dentro de comillas

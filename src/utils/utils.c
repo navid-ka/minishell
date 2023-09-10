@@ -21,6 +21,8 @@ char  *charjoin(char *s1, char c)
   }
   result[i++] = c;
   result[i] = '\0';
-  free(s1); 
+  if (s1)
+    free(s1);
+  s1 = NULL; 
   return (result);
 }

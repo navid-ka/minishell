@@ -28,7 +28,10 @@ char	*lexer_end_subshell(char *line)
 Además, los caracteres siguientes y caracteres dobles también forman palabras simples cuando se utilizan como separadores de mandatos o terminadores:
 &       |      ;        
 &&      ||    <<        > >
-<       >     (          )*/
+<       >     (          )
+*/
+
+//si hago "   '   " debería ser correcto
 
 int	syntax_checker(char *line)
 {
