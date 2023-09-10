@@ -6,7 +6,7 @@ int	main(int argc, char **argv, char **env)
 	(void)argv;
 	(void)env;
 	char *line;
-
+	t_env hola;
 	while (1)
 	{
 		line = "\n";
@@ -17,6 +17,8 @@ int	main(int argc, char **argv, char **env)
             add_history(line);
 		if (!ft_strcmp(line, "pwd"))
 			pwd();
+		bt_get_dirs(env, &hola);
+		//bt_cd(line, hola);
 	}
 	free(line);
 	return (0);
