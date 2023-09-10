@@ -41,5 +41,6 @@ void	bt_env(char **env);
 int	syntax_checker(char *line);
 void	syntax_error();
 int	pwd(void);
+char *charjoin(char *s1, char c);
 
 #endif // !MINISHELL_H
