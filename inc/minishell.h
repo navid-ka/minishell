@@ -37,9 +37,17 @@ typedef struct s_cmd
     int		permission; //solo para jugar con access
 }   t_cmd;
 
+typedef struct s_env
+{
+	char	*home;
+	char	*oldpwd;
+}	t_env;
+
 void	bt_env(char **env);
-int	syntax_checker(char *line);
-void	syntax_error();
-int	pwd(void);
+int		syntax_checker(char *line);
+void	syntax_error(void);
+int		pwd(void);
+int		bt_get_dirs(char **env, t_env *env_routes);
+//int		bt_cd(char *input, t_env env_routes);
 
 #endif // !MINISHELL_H
