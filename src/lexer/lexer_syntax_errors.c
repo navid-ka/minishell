@@ -35,13 +35,11 @@ Además, los caracteres siguientes y caracteres dobles también forman palabras 
 
 int	syntax_checker(char *line) //falta adaptarlo para que revise todos los subshells
 {
-	int		i;
 	char	*end_subshell;
 	bool		dcuotes;
 	bool		scuotes;
 	int		parenthesis;
 
-	i = 0;
 	parenthesis = 0;
 	dcuotes = false;
 	scuotes = false;
