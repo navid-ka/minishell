@@ -80,7 +80,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c include/libft.h Makefile
 	@printf "\rCompiling (╮°-°)╮┳━┳ : $<"
 	@mkdir -p $(@D)
 	@mkdir -p $(patsubst $(OBJDIR)/%,$(DEPDIR)/%,$(@D))
-	$(CC) $(CFLAGS) -MMD -MP -c $< -o $@ && mv $(@:%.o=%.d) $(patsubst $(OBJDIR)/%,$(DEPDIR)/%,$(@:%.o=%.d))
+	@$(CC) $(CFLAGS) -MMD -MP -c $< -o $@ && mv $(@:%.o=%.d) $(patsubst $(OBJDIR)/%,$(DEPDIR)/%,$(@:%.o=%.d))
 
 ${NAME}: ${OBJECTS} 
 	@mkdir -p $(@D)
