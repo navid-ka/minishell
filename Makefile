@@ -10,16 +10,18 @@ SRC_DIR				:=	src/
 OBJ_DIR				:=	objs/
 INC_DIR				:=	inc/
 
-LIBS				 	:= $(RDLINE)libreadline.a $(RDLINE)libhistory.a \
-									$(LIBFT)bin/libft.a
 ifeq ($(UNAME), Linux)
-	LIBS_LINK			:= -L$(RDLINE) -L$(LIBFT) -lreadline -lhistory -lncurses
+	LIBS				 	:= $(LIBFT)bin/libft.a
+	LIBS_LINK			:= -L$(LIBFT) -lreadline -lhistory
+	HEADERS				:= $(INC_DIR) $(LIBFT)include/ 
+	INCLUDE				:= -I $(INC_DIR) -I $(LIBFT)include/
 else
+	LIBS				 	:= $(RDLINE)libreadline.a $(RDLINE)libhistory.a \
+									$(LIBFT)bin/libft.a
 	LIBS_LINK			:= -L$(RDLINE) -L$(LIBFT) -lreadline -lhistory -ltermcap
+	HEADERS				:= $(INC_DIR) $(LIBFT)include/ $(RDLINE)
+	INCLUDE				:= -I $(INC_DIR) -I $(LIBFT)include/ -I $(RDLINE)
 endif
-
-HEADERS				:= $(INC_DIR) $(LIBFT)include/ $(RDLINE)
-
 
 SRCS 					:= src/main.c src/builtins/env.c src/lexer/lexer_syntax_errors.c src/builtins/pwd.c  src/builtins/cd.c \
 								 src/utils/utils.c src/lexer/lexer.c
@@ -30,10 +32,16 @@ CFLAGS 				:= -Wall -Wextra -Werror
 DFLAGS				:= -MMD -MF
 INCLUDE				:= -I $(INC_DIR) -I $(LIBFT)include/ -I $(RDLINE)
 
+ifeq ($(UNAME), Linux)
+all:
+		$(MAKE) -C $(LIBFT)
+		$(MAKE) $(NAME)
+else
 all:
 		$(MAKE) -C $(LIBFT)
 		$(MAKE) -C $(RDLINE)
 		$(MAKE) $(NAME)
+endif
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(LIBS)
 	@printf "\rCompiling (╮°-°)╮┳━┳ : $<"
