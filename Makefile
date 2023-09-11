@@ -12,7 +12,7 @@ INC_DIR				:=	inc/
 
 ifeq ($(UNAME), Linux)
 	LIBS				 	:= $(LIBFT)bin/libft.a
-	LIBS_LINK			:= -L$(LIBFT) -lreadline -lhistory
+	LIBS_LINK			:= -L$(LIBFT) -lreadline -lhistory -ltermcap
 	HEADERS				:= $(INC_DIR) $(LIBFT)include/ 
 	INCLUDE				:= -I $(INC_DIR) -I $(LIBFT)include/
 else
