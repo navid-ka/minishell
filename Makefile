@@ -33,23 +33,23 @@ DFLAGS				:= -MMD -MF
 
 ifeq ($(UNAME), Linux)
 all:
-		$(MAKE) -C $(LIBFT)
-		$(MAKE) $(NAME)
+		@$(MAKE) -C $(LIBFT)
+		@$(MAKE) $(NAME)
 else
 all:
-		$(MAKE) -C $(LIBFT)
-		$(MAKE) -C $(RDLINE)
-		$(MAKE) $(NAME)
+		@$(MAKE) -C $(LIBFT)
+		@$(MAKE) -C $(RDLINE)
+		@$(MAKE) $(NAME)
 endif
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(LIBS)
 	@printf "\rCompiling (╮°-°)╮┳━┳ : $<"
-	mkdir -p $(@D)
-	gcc $(CFLAGS) -c $< -o $@ $(INCLUDE)
+	@mkdir -p $(@D)
+	@gcc $(CFLAGS) -c $< -o $@ $(INCLUDE)
 
 $(NAME): $(OBJS) $(HEADERS) Makefile $(LIBS)
-	mkdir -p $(@D)
-	gcc $(CFLAGS) $(OBJS) $(LIBS) $(LIBS_LINK) -o $(NAME)
+	@mkdir -p $(@D)
+	@gcc $(CFLAGS) $(OBJS) $(LIBS) $(LIBS_LINK) -o $(NAME)
 
 clean:
 	@$(MAKE) -C $(LIBFT) clean
