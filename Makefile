@@ -30,7 +30,6 @@ OBJS = $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRCS))
 
 CFLAGS 				:= -Wall -Wextra -Werror
 DFLAGS				:= -MMD -MF
-INCLUDE				:= -I $(INC_DIR) -I $(LIBFT)include/ -I $(RDLINE)
 
 ifeq ($(UNAME), Linux)
 all:
