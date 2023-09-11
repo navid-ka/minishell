@@ -33,18 +33,18 @@ Además, los caracteres siguientes y caracteres dobles también forman palabras 
 
 //si hago "   '   " debería ser correcto
 
-int	syntax_checker(char *line)
+int	syntax_checker(char *line) //falta adaptarlo para que revise todos los subshells
 {
 	int		i;
 	char	*end_subshell;
-	int		dcuotes;
-	int		scuotes;
+	bool		dcuotes;
+	bool		scuotes;
 	int		parenthesis;
 
 	i = 0;
 	parenthesis = 0;
-	dcuotes = 0;
-	scuotes = 0;
+	dcuotes = false;
+	scuotes = false;
 	end_subshell = lexer_end_subshell(line);
 	while (line != end_subshell)
 	{
@@ -52,17 +52,17 @@ int	syntax_checker(char *line)
 			parenthesis++;
 		else if (*line == ')')
 			parenthesis--;
-		else if (*line == '"')
-			dcuotes++;
-		else if (*line == '\'')
-			scuotes++;
+		else if (*line == '"' && !scuotes)
+			dcuotes = !dcuotes;
+		else if (*line == '\'' && !dcuotes)
+			scuotes = !scuotes;
 		if (parenthesis < 0)
 			return (0);
 		if (*line == '\\' || *line == ';')
 			return (0);
 		++line;
 	}
-	if (parenthesis != 0 || dcuotes % 2 != 0 || scuotes % 2 != 0)
+	if (parenthesis != 0 || dcuotes | scuotes)
 		return (0);
 	return (1);
 }
