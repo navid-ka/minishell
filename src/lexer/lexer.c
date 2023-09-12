@@ -1,63 +1,69 @@
 #include "../../inc/minishell.h"
 
-char	*clean_spaces(char *line)
+void	clean_init(t_clean *cleaner) //pasarlo otro archivo de inits
 {
-	bool	dcuote;
-	bool	scuote;
-	bool	space;
-	char	*str;
-
-	dcuote = false;
-	scuote = false;
-	space = false;
-	str = NULL;
-	while (*line)
-	{
-		//printf("%d\n", dcuote);
-		if (!dcuote && !scuote)
-		{
-			if (*line == ' ' && !space)
-			{
-				space = true;
-				str = charjoin(str, *line);
-			}
-			if (*line != ' ')
-			{
-				space = false;
-				str = charjoin(str, *line);
-			}
-			if (*line == '\"')
-				dcuote = true;
-			else if (*line == '\'')
-				scuote = true;
-			++line;
-		}
-		else {
-			if (dcuote)
-			{
-				while (*line && *line != '\"')
-				{
-					str = charjoin(str, *line);
-					line++;
-				}
-				str = charjoin(str, *line);
-				dcuote = false;
-				line++;
-			}
-			else
-			{
-				while (*line && *line != '\'')
-				{
-					str = charjoin(str, *line);
-					line++;
-				}
-				str = charjoin(str, *line);
-				scuote = false;
-				line++;
-			}
-		}
-	}
-	return (str);
+	cleaner->dcuote = false;
+	cleaner->scuote = false;
+	cleaner->space = false;
+	cleaner->str = NULL;
 }
 
-//si hay comillas se lia y error de comillas sin cerrar falla si hay comilla suelta dentro de comillas
+void	clean_quotes(char **line, t_clean *cleaner)
+{
+	if (cleaner->dcuote)
+	{
+		while (**line && **line != '\"')
+		{
+			cleaner->str = charjoin(cleaner->str, **line);
+			(*line)++;
+		}
+		cleaner->str = charjoin(cleaner->str, **line);
+		cleaner->dcuote = false;
+		(*line)++;
+	}
+	else
+	{
+		while (**line && **line != '\'')
+		{
+			cleaner->str = charjoin(cleaner->str, **line);
+			(*line)++;
+		}
+		cleaner->str = charjoin(cleaner->str, **line);
+		cleaner->scuote = false;
+		(*line)++;
+	}
+}
+
+void	clean_spaces(char **line, t_clean *cleaner)
+{
+	if (**line == ' ' && !(cleaner->space))
+	{
+		cleaner->space = true;
+		cleaner->str = charjoin(cleaner->str, **line);
+	}
+	if (**line != ' ')
+	{
+		cleaner->space = false;
+		cleaner->str = charjoin(cleaner->str, **line);
+	}
+	if (**line == '\"')
+		cleaner->dcuote = true;
+	else if (**line == '\'')
+		cleaner->scuote = true;
+	++(*line);
+}
+
+char	*clean_input(char *line)
+{
+	t_clean	cleaner;
+
+	clean_init(&cleaner);
+	while (*line)
+	{
+		if (!(cleaner.dcuote) && !(cleaner.scuote))
+			clean_spaces(&line, &cleaner);
+		else
+			clean_quotes(&line, &cleaner);
+	}
+	return (cleaner.str);
+}
