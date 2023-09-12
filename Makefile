@@ -8,11 +8,17 @@ LIBFT					:=	$(LIB_DIR)libft/
 SRC_DIR				:=	src/
 OBJ_DIR				:=	objs/
 INC_DIR				:=	inc/
-
-LIBS				 	:= $(LIBFT)bin/libft.a
-LIBS_LINK			:= -L$(LIBFT) -L${HOME}/.brew/opt/readline/lib -lreadline -lhistory -ltermcap
-HEADERS				:= $(INC_DIR) $(LIBFT)include/ 
-INCLUDE				:= -I $(INC_DIR) -I $(LIBFT)include/ -I${HOME}/.brew/opt/readline/include
+ifeq($(UNAME), Darwin)
+	LIBS				 	:= $(LIBFT)bin/libft.a
+	LIBS_LINK			:= -L$(LIBFT) -L${HOME}/.brew/opt/readline/lib -lreadline -lhistory -ltermcap
+	HEADERS				:= $(INC_DIR) $(LIBFT)include/ 
+	INCLUDE				:= -I $(INC_DIR) -I $(LIBFT)include/ -I${HOME}/.brew/opt/readline/include
+else
+	LIBS				 	:= $(LIBFT)bin/libft.a
+	LIBS_LINK			:= -L$(LIBFT) -lreadline -lhistory -ltermcap
+	HEADERS				:= $(INC_DIR) $(LIBFT)include/ 
+	INCLUDE				:= -I $(INC_DIR) -I $(LIBFT)include/
+endif
 
 SRCS 					:= src/main.c src/builtins/env.c src/lexer/lexer_syntax_errors.c src/builtins/pwd.c  src/builtins/cd.c \
 								 src/utils/utils.c src/lexer/lexer.c
@@ -20,7 +26,6 @@ SRCS 					:= src/main.c src/builtins/env.c src/lexer/lexer_syntax_errors.c src/b
 OBJS = $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRCS))
 
 CFLAGS 				:= -Wall -Wextra -Werror
-DFLAGS				:= -MMD -MF
 
 all:
 		@$(MAKE) -C $(LIBFT)
