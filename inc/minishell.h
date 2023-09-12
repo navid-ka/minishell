@@ -37,18 +37,26 @@ typedef struct s_cmd
     int		permission; //solo para jugar con access
 }   t_cmd;
 
-typedef struct s_env
+typedef struct s_clean
+{
+	bool	dcuote;
+	bool	scuote;
+	bool	space;
+	char	*str;
+}	t_clean;
+
+typedef struct s_path
 {
 	char	*home;
 	char	*oldpwd;
-}	t_env;
+}	t_path;
 
 void	bt_env(char **env);
 
 int		syntax_checker(char *line);
 void	syntax_error(void);
 int		pwd(void);
-int		bt_get_dirs(char **env, t_env *env_routes);
+//int		bt_get_dirs(char **env, t_env *env_routes);
 //int		bt_cd(char *input, t_env env_routes);
 
 //ESTRUCTURA TOKEN CON ARGV, ARGC Y TIPO QUE PUEDE SER COMANDO O SEPARADOR
@@ -58,6 +66,6 @@ int		bt_get_dirs(char **env, t_env *env_routes);
 //SI HAY COMILLA ENTRE COMILLAS SE IGNORA Y SI HAY COMILLAS ENTRE COMILLA SE IGNORA
 
 char *charjoin(char *s1, char c);
-char	*clean_spaces(char *line);
+char	*clean_input(char *line);
 
 #endif // !MINISHELL_H
