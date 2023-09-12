@@ -1,11 +1,16 @@
 #include "../../inc/minishell.h"
 
-int sg_init(int sig)
+void  sigint_handler(int sig)
 {
-	struct sigaction	sa;
+	printf("\n");
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+	(void) sig;
+}
 
-	sa.sa_handler = handler;
-	sa.sa_flags = SA_RESTART;
-	sigaction(SIGINT, &sa, NULL);
-	sigaction(SIGQUIT, &sa, NULL);
+void	signals(void)
+{
+	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, SIG_IGN);
 }

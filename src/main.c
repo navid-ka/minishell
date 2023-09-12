@@ -6,9 +6,10 @@ int	main(int argc, char **argv, char **env)
 	(void)argv;
 	(void)env;
 	char *line;
-	while (1)
+
+  signals();
+  while (1)
 	{
-		line = "\n";
 		line = readline("MINICONCHA( ͡° ͜ʖ ͡°) > ");
 		if (!syntax_checker(line))
 			syntax_error();
@@ -19,6 +20,7 @@ int	main(int argc, char **argv, char **env)
 		//bt_get_dirs(env, &hola);
 		line = clean_input(line);
 		printf("%s\n", line);
+    signal(SIGINT, sigint_handler);
 	}
 	free(line);
 	return (0);

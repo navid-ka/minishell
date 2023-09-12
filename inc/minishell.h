@@ -51,6 +51,11 @@ typedef struct s_path
 	char	*oldpwd;
 }	t_path;
 
+// signals.c
+void	signals(void);
+void  sigint_handler(int sig);
+
+// builtins env
 void	bt_env(char **env);
 
 int		syntax_checker(char *line);
