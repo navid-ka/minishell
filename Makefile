@@ -8,7 +8,7 @@ LIBFT					:=	$(LIB_DIR)libft/
 SRC_DIR				:=	src/
 OBJ_DIR				:=	objs/
 INC_DIR				:=	inc/
-ifeq($(UNAME), Darwin)
+ifeq ($(UNAME), Darwin)
 	LIBS				 	:= $(LIBFT)bin/libft.a
 	LIBS_LINK			:= -L$(LIBFT) -L${HOME}/.brew/opt/readline/lib -lreadline -lhistory -ltermcap
 	HEADERS				:= $(INC_DIR) $(LIBFT)include/ 

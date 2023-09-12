@@ -1,6 +1,6 @@
 #include "../../inc/minishell.h"
 
-int	bt_get_dirs(char **env, t_env *env_routes)
+/*int	bt_get_dirs(char **env, t_env *env_routes)
 {
 	int	i;
 
@@ -19,7 +19,7 @@ int	bt_get_dirs(char **env, t_env *env_routes)
 		return (0);
 	else
 		return (-1);
-}
+}*/
 
 // int	bt_cd(char *input, t_env env_routes) //o hacer const char *
 // {
