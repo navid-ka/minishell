@@ -21,7 +21,7 @@ else
 endif
 
 SRCS 					:= src/main.c src/builtins/env.c src/lexer/lexer_syntax_errors.c src/builtins/pwd.c  src/builtins/cd.c \
-								 src/utils/utils.c src/lexer/lexer.c
+								 src/utils/utils.c src/lexer/lexer.c src/signals/signals.c
 
 OBJS = $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRCS))
 
