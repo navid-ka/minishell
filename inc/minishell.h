@@ -18,6 +18,15 @@
 # include "../libs/libft/include/libft.h"
 # include <sys/stat.h>
 
+# define EMPTY 0
+# define CMD 1
+# define ARG 2
+# define APPEND 3
+# define TRUNC 4
+# define PIPE 5
+# define INPUT 6
+# define END 7
+
 typedef struct s_pipe
 {
 	char	**routes;
@@ -51,6 +60,15 @@ typedef struct s_path
 	char	*oldpwd;
 }	t_path;
 
+typedef struct s_token
+{
+	char			*str;
+	int				argc;
+	int				type;
+	struct s_token	*prev;
+	struct s_token	*next;
+}	t_token;
+
 // signals.c
 void	signals(void);
 void  sigint_handler(int sig);
@@ -61,6 +79,7 @@ void	bt_env(char **env);
 int		syntax_checker(char *line);
 void	syntax_error(void);
 int		pwd(void);
+void bt_echo(t_token *tok);
 //int		bt_get_dirs(char **env, t_env *env_routes);
 //int		bt_cd(char *input, t_env env_routes);
 
@@ -72,5 +91,9 @@ int		pwd(void);
 
 char *charjoin(char *s1, char c);
 char	*clean_input(char *line);
+int		next_alloc(char *line, int i);
+t_token	*next_token(char *line, int *i);
+t_token	*get_tokens(char *line);
+
 
 #endif // !MINISHELL_H

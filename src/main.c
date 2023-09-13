@@ -1,5 +1,6 @@
 #include "../inc/minishell.h"
 
+
 void  pr(char *s)
 {
   while (*s)
@@ -8,7 +9,6 @@ void  pr(char *s)
 
 void prompter(void)
 {
-  #define MAGENTA 
   pr("\x1b[35m\n");
   pr("   _     _     _     _     _     _     _     _     _     _  \n");
   pr("  / \\   / \\   / \\   / \\   / \\   / \\   / \\   / \\   / \\   / \\ \n");
@@ -35,6 +35,20 @@ char *shell_prompt(void)
   return (prompt);
 }
 
+void free_tokens(t_token *tok)
+{
+	t_token *tmp;
+
+	tmp = NULL;
+	while(tok)
+	{
+		free(tok->str);
+		tok = tok->next;
+		free(tmp);
+	}
+
+}
+
 int	main(int argc, char **argv, char **env)
 {
 	(void)argc;
@@ -43,9 +57,11 @@ int	main(int argc, char **argv, char **env)
 	char *line;
   char *prompt;
 
+
   prompt = shell_prompt();
   signals();
   prompter();
+
   while (1)
 	{
 		line = readline(prompt);
@@ -57,9 +73,21 @@ int	main(int argc, char **argv, char **env)
 			bt_pwd();*/
 		//bt_get_dirs(env, &hola);
 		line = clean_input(line);
-		printf("%s\n", line);
-    signal(SIGINT, sigint_handler);
+		t_token *tok = get_tokens(line);
+		if (!ft_strcmp(tok->str, "echo"))
+			bt_echo(tok->next);
+		// while(tok)
+		// {
+		// 	printf("str: %s\n type:%d\n\n", tok->str, tok->type);
+		// 	tok = tok->next;
+		// }
+		free_tokens(tok);
+    	//signal(SIGINT, sigint_handler);
 	}
 	free(line);
 	return (0);
 }
+
+//hacer echo y exit
+//arreglar errores para errores en los subshells
+//tokenizar

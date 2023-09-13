@@ -1,6 +1,9 @@
 #include "../../inc/minishell.h"
 
-void bt_exit(void)
+void	bt_exit(char **cmd_args)
 {
-  exit(0);
+	int	exit_code;
+
+	exit(1);
+
 }
