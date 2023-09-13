@@ -72,11 +72,10 @@ char	**split_cmd(char *cmd, int quotes)
 int main(void)
 {
   char *cmd = "'hola' 'que tal'";
-  char **output = split_cmd(cmd, '\'');
+  char **output = split_cmd(cmd, 2);
  
-  ft_printf(1, "%d\n", count_char(cmd, ' '));
   for (int i = 0; i < 2; i++) {
-    ft_printf(1, "%s,\n", output);
+    ft_printf(1, "%s,\n", output[i]);
   }
 
 
