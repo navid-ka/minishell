@@ -43,24 +43,27 @@ int	syntax_checker(char *line) //falta adaptarlo para que revise todos los subsh
 	parenthesis = 0;
 	dcuotes = false;
 	scuotes = false;
-	end_subshell = lexer_end_subshell(line);
-	while (line != end_subshell)
-	{
-		if (*line == '(')
-			parenthesis++;
-		else if (*line == ')')
-			parenthesis--;
-		else if (*line == '"' && !scuotes)
-			dcuotes = !dcuotes;
-		else if (*line == '\'' && !dcuotes)
-			scuotes = !scuotes;
-		if (parenthesis < 0)
+	//while (*line)
+	//{
+		end_subshell = lexer_end_subshell(line);
+		while (line != end_subshell)
+		{
+			if (*line == '(')
+				parenthesis++;
+			else if (*line == ')')
+				parenthesis--;
+			else if (*line == '"' && !scuotes)
+				dcuotes = !dcuotes;
+			else if (*line == '\'' && !dcuotes)
+				scuotes = !scuotes;
+			if (parenthesis < 0)
+				return (0);
+			if (*line == '\\' || *line == ';')
+				return (0);
+			++line;
+		}
+		if (parenthesis != 0 || dcuotes | scuotes)
 			return (0);
-		if (*line == '\\' || *line == ';')
-			return (0);
-		++line;
-	}
-	if (parenthesis != 0 || dcuotes | scuotes)
-		return (0);
+	//}
 	return (1);
 }
