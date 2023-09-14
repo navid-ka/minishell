@@ -75,6 +75,7 @@ void  sigint_handler(int sig);
 
 // builtins env
 void	bt_env(char **env);
+void  bt_exit(char *argv);
 
 int		syntax_checker(char *line);
 void	syntax_error(void);

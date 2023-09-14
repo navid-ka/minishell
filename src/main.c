@@ -65,23 +65,27 @@ int	main(int argc, char **argv, char **env)
   char *prompt;
 
   prompt = shell_prompt();
-  signals();
   prompter();
   line = NULL;
   while (1)
 	{
+    signals();
 		line = readline(prompt);
-		if (!syntax_checker(line))
-			syntax_error();
-		if (ft_strlen(line) > 0)
+    bt_exit(line);
+    if (*line)
+    {
+		  if (!syntax_checker(line))
+			  syntax_error();
+		  if (ft_strlen(line) > 0)
             add_history(line);
-		line = clean_input(line);
-		t_token *tok = get_tokens(line);
-		if (!ft_strcmp(tok->str, "echo"))
-			bt_echo(tok->next);
-		free_tokens(tok);
-    //signal(SIGINT, sigint_handler);
-    free(line);
+		  line = clean_input(line);
+		  t_token *tok = get_tokens(line);
+		  if (!ft_strcmp(tok->str, "echo"))
+			  bt_echo(tok->next);
+		  free_tokens(tok);
+      signal(SIGINT, sigint_handler);
+      free(line);
+    }
 	}
 	return (0);
 }
