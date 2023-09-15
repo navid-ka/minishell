@@ -77,6 +77,12 @@ void  sigint_handler(int sig);
 void	bt_env(char **env);
 void  bt_exit(char *argv);
 
+// prompter.c
+void prompter(void);
+char *shell_prompt(void);
+
+
+
 int		syntax_checker(char *line);
 void	syntax_error(void);
 int		pwd(void);
