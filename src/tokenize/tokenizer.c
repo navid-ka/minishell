@@ -69,7 +69,7 @@ char	**split_cmd(char *cmd, int quotes)
 	return (split);
 }
 
-int main(void)
+/*int main(void)
 {
   char *cmd = "'hola' 'que tal'";
   char **output = split_cmd(cmd, 2);
@@ -79,4 +79,4 @@ int main(void)
   }
 
 
-}
+}*/

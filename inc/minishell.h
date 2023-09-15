@@ -41,7 +41,8 @@ typedef struct s_pipe
 
 typedef struct s_cmd
 {
-    int     infile;
+    char  **argv;
+    int   infile;
     int		outfile;
     int		permission; //solo para jugar con access
 }   t_cmd;
@@ -74,8 +75,17 @@ void	signals(void);
 void  sigint_handler(int sig);
 
 // builtins env
+bool bt_is_builtin(char **argv);
+void  bt_check_builtin(char **argv, char **env);
 void	bt_env(char **env);
 void  bt_exit(char *argv);
+
+// prompter.c
+void prompter(void);
+char *shell_prompt(void);
+
+// tokenizer.c
+char	**split_cmd(char *cmd, int quotes);
 
 int		syntax_checker(char *line);
 void	syntax_error(void);

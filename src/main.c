@@ -1,47 +1,44 @@
 #include "../inc/minishell.h"
 
-
-void  pr(char *s)
+int	count_quotes(char *cmd)
 {
-  while (*s)
-    write(1,s++,1);
+	int	i;
+	int	count;
+	int	dquotes;
+	int	quotes;
+
+	i = ~0;
+	count = 0;
+	dquotes = 0;
+	quotes = 0;
+	while (cmd[++i])
+	{
+		if (cmd[i] == '"' && !quotes)
+			dquotes = (dquotes + 1) % 2;
+		else if (cmd[i] == '\'' && !dquotes)
+			quotes = (quotes + 1) % 2;
+		if ((!quotes && !dquotes) && !(cmd[i] == ' ')
+			&& ((cmd[i + 1] == ' ') || !cmd[i + 1]))
+			count++;
+	}
+	return (count);
 }
 
-void prompter(void)
+void create_cmd(char *argv, t_cmd *cmd)
 {
-  pr("\x1b[35m\n");
-  pr("   _     _     _     _     _     _     _     _     _     _  \n");
-  pr("  / \\   / \\   / \\   / \\   / \\   / \\   / \\   / \\   / \\   / \\ \n");
-  pr(" ( m ) ( i ) ( n ) ( i ) ( c ) ( o ) ( n ) ( c ) ( h ) ( a )\n");
-  pr("  \\_/   \\_/   \\_/   \\_/   \\_/   \\_/   \\_/   \\_/   \\_/   \\_/ \n");
-  pr("\n\n\x1b[0m");
+  int quotes_count;
+  
+  quotes_count = 0;
+  quotes_count = count_quotes(argv);
+  cmd->argv = split_cmd(argv, quotes_count);
+  if (!bt_is_builtin(cmd->argv))
+    ft_printf(1, "Env execs?/n");
+  else
+    bt_check_builtin(cmd->argv, NULL);
+    //TODO: aqui debemos hacer algo si no es builtin puede que ejecutarlo desde env?
+  // o quizas me he adelantado y hay que hacer mas cosas
 }
 
-char *shell_prompt(void) {
-    char *pwd;
-    char *prompt;
-    char *ansi;
-    char *prompt_left;
-    char *prompt_right;
-    int i;
-
-    pwd = NULL;
-    ansi = "\033[0;36m\033[1m";
-    pwd = getcwd(pwd, 0);
-    i = ft_strlen(pwd) - 1;
-    while (i >= 0 && pwd[i] != '/')
-        i--;
-    if (i >= 0)
-        prompt_left = &pwd[i + 1];
-    else 
-        prompt_left = pwd;
-    prompt_right = ft_strjoin(ansi, prompt_left);
-    prompt_left = "\033[0m 🔞👅 \x1b[35mConcha( ͡° ͜ʖ ͡°)\n▸ \033[0m";
-    prompt = ft_strjoin(prompt_right, prompt_left);
-    free(prompt_right);
-    free(pwd);
-    return (prompt);
-}
 
 void free_tokens(t_token *tok)
 {
@@ -63,6 +60,7 @@ int	main(int argc, char **argv, char **env)
 	(void)env;
 	char *line;
   char *prompt;
+  t_cmd cmd;
 
   prompt = shell_prompt();
   prompter();
@@ -74,6 +72,7 @@ int	main(int argc, char **argv, char **env)
     bt_exit(line);
     if (*line)
     {
+      create_cmd(line, &cmd);
 		  if (!syntax_checker(line))
 			  syntax_error();
 		  if (ft_strlen(line) > 0)
