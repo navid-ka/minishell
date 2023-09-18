@@ -64,6 +64,7 @@ int	main(int argc, char **argv, char **env)
 
   prompt = shell_prompt();
   prompter();
+  rl_catch_signals = 0;
   line = NULL;
   while (1)
 	{
