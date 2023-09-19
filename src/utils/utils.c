@@ -26,3 +26,15 @@ char  *charjoin(char *s1, char c)
   s1 = NULL; 
   return (result);
 }
+
+char	*ft_strndup(const char *src, size_t len)
+{
+	char	*str;
+
+	str = malloc(sizeof(char) * (len + 1));
+	if (!str)
+		return (NULL);
+	ft_strlcpy(str, src, len);
+	return (str);
+}
+
