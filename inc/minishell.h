@@ -100,7 +100,11 @@ void bt_echo(t_token *tok);
 //ENTERO COMILLAS PARA QUE SI ESTÁN ACTIVAS SE PASE DE LOS ESPACIOS
 //SI HAY COMILLA ENTRE COMILLAS SE IGNORA Y SI HAY COMILLAS ENTRE COMILLA SE IGNORA
 
+// Utils.c
 char *charjoin(char *s1, char c);
+char	*ft_strndup(const char *src, size_t len);
+
+
 char	*clean_input(char *line);
 int		next_alloc(char *line, int i);
 t_token	*next_token(char *line, int *i);
