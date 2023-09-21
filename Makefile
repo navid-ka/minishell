@@ -20,10 +20,13 @@ else
 	INCLUDE				:= -I $(INC_DIR) -I $(LIBFT)include/
 endif
 
-SRCS 					:= src/main.c src/builtins/env.c src/lexer/lexer_syntax_errors.c src/builtins/pwd.c  src/builtins/cd.c \
-								 src/utils/utils.c src/lexer/lexer.c src/signals/signals.c src/parser/parser.c \
-							src/builtins/echo.c src/builtins/exit.c src/utils/prompter.c src/builtins/bt_init.c \
-							src/tokenize/tokenizer.c
+SRCS 					:= src/main.c src/builtins/env.c \
+src/lexer/lexer_syntax_errors.c src/builtins/pwd.c  src/builtins/cd.c \
+src/utils/utils.c src/signals/signals.c \
+src/builtins/echo.c src/builtins/exit.c src/utils/prompter.c \
+src/lexer/real_lexer.c src/lexer/lexer_utils.c src/lexer/lexer_list.c \
+src/lexer/cleaner.c
+
 OBJS = $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRCS))
 
 CFLAGS 				:= -Wall -Wextra -Werror

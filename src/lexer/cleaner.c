@@ -12,7 +12,7 @@ void	clean_quotes(char **line, t_clean *cleaner)
 {
 	if (cleaner->dcuote)
 	{
-		while (**line && **line != '\"')
+		while (**line && **line != DCUOTE)
 		{
 			cleaner->str = charjoin(cleaner->str, **line);
 			(*line)++;
@@ -23,7 +23,7 @@ void	clean_quotes(char **line, t_clean *cleaner)
 	}
 	else
 	{
-		while (**line && **line != '\'')
+		while (**line && **line != SCUOTE)
 		{
 			cleaner->str = charjoin(cleaner->str, **line);
 			(*line)++;
@@ -36,19 +36,21 @@ void	clean_quotes(char **line, t_clean *cleaner)
 
 void	clean_spaces(char **line, t_clean *cleaner)
 {
-	if (**line == ' ' && !(cleaner->space))
+	//mirar c == ' ' || c == '\n' || c == '\t' || c == '\v' 
+	//|| c == '\f' || c == '\r')
+	if (ft_is_escape(**line) && !(cleaner->space))
 	{
 		cleaner->space = true;
 		cleaner->str = charjoin(cleaner->str, **line);
 	}
-	if (**line != ' ')
+	if (!ft_is_escape(**line))
 	{
 		cleaner->space = false;
 		cleaner->str = charjoin(cleaner->str, **line);
 	}
-	if (**line == '\"')
+	if (**line == DCUOTE)
 		cleaner->dcuote = true;
-	else if (**line == '\'')
+	else if (**line == SCUOTE)
 		cleaner->scuote = true;
 	++(*line);
 }

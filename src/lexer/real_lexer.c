@@ -1,109 +1,79 @@
 #include "minishell.h"
 
-void	arg_type(char *str, int i, t_token *token)
+void	arg_type(char *str, int *i, t_token *token)
 {
 	token->type = 0;
-	if (str[i] == '|')
+	if (str[*i] == '|')
 		token->type = PIPE;
-	else if (str[i] == '<' && str[i + 1] == '<')
+	else if (str[*i] == '<' && str[*i + 1] == '<')
+	{
 		token->type = APPEND;
-	else if (str[i] == '<')
+		(*i)++;
+	}
+	else if (str[*i] == '<')
 		token->type = TRUNC;
-	else if (str[i] == '>' && str[i + 1] == '>')
+	else if (str[*i] == '>' && str[*i + 1] == '>')
+	{
 		token->type = HERE_DOC;
-	else if (str[i] == '>')
+		(*i)++;
+	}
+	else if (str[*i] == '>')
 		token->type = INPUT;
+	(*i)++;
 }
 
-
-int		next_alloc(char *line, int i)
-{
-	int		count;
+int cmd_type(char *str, int *i, t_token *new) {
+	int		quoted;
+	char	*cmd;
 	int		j;
-	char	c;
 
-	count = 0;
+	quoted = 0;
 	j = 0;
-	c = ' ';
-	if (line[i + j] == '|' || line[i + j] == '>' || line[i + j] == '<')
-		return (0); //para que no asigne memoria
-	while (line[i + j] && (line[i + j] != ' ' || c != ' ')) //si hay linea, no encuentra espacio o la comilla es delimitador sigue
+	while (str[*i + j])
 	{
-		if (c == ' ' && (line[i + j] == S_QUOTE || line[i + j] == D_QUOTE)) //primera comilla
-			c = line[i + j++];
-		else if (c != ' ' && line[i + j] == c) //segunda comilla
-		{
-			count += 2;
-			c = ' ';
-			j++;
+		if (quoted == 1 && ft_isquote(str[*i + j]) == 1)
+			quoted = 0;
+		else if (quoted == 0 && ft_isquote(str[*i + j]) == 1)
+			quoted = 1;
+		if (quoted == 0 && (ft_is_escape(str[*i + j])
+				|| ft_is_shellsymbol(str[*i + j])))
+			break ;
+		j++;
+	}
+	cmd = ft_substr(str, *i, j);
+	if (!cmd)
+		return (-1);
+	new->str = cmd;
+	*i += j;
+	return (0);
+}
+
+int	inicialize_tok(t_token **new, char *str, int *i) {
+	if (str[*i] == '|' || str[*i] == '<' || str[*i] == '>')
+		arg_type(str, i, *new);
+	else
+		if (cmd_type(str, i, *new) == -1) return (-1);
+	return (0);
+}
+
+int	main_lexer(char *str, t_token **tok) {
+	t_token *new;
+	int i = 0;
+	while (str[i]) {
+		if (str[i] != ' ') {
+			new = lexer_lstnew();
+			if (!new) return (-1);
+			if (inicialize_tok(&new, str, &i) == -1) 
+				return (-1);
+			// dprintf(1, "%s, %d\n", new->str, new->type);
+			lexer_lstadd_back(tok, new);
 		}
-		else
-			j++; //ves avanzando
-		if (line[i + j - 1] == '\\')
-			count--;
+		else i++;
 	}
-	//printf("\n\n%d\n\n", count);
-	return (j + count);
+	return (0);
 }
 
-t_token	*next_token(char *line, int *i)
-{
-	t_token	*token;
-	int		j;
-	char	c;
-
-	j = 0;
-	c = ' ';
-	while (line[*i] && (line[*i] != ' ' || c != ' '))
-	{
-		token = malloc(sizeof(t_token));
-		// printf("%d\n\n", next_alloc(line, *i));
-		token->str = ft_substr(line, *i, next_alloc(line, *i)); //si len es 0 return NULL
-		arg_type(line, *i, token);
-		//printf("%c\n", line[*i]);
-		printf("%s\n\n", token->str);
-		*i += next_alloc(line, *i) + 1;
-		printf("%d\n\n", *i);
-	}
-	token->str[j] = '\0';
-	return (token);
-}
-
-t_token	*get_tokens(char *line)
-{
-	t_token	*prev;
-	t_token	*next;
-	t_token *first;
-	int		i;
-
-	prev = NULL;
-	next = NULL;
-	first = NULL;
-	i = 0;
-	while (line[i])
-	{
-		next = next_token(line, &i);
-		if (!first)
-			first = next;
-		next->prev = prev;
-		if (prev)
-			prev->next = next;
-		prev = next;
-		line += i - 1;
-	}
-	if (next)
-		next->next = NULL;
-	return (first);
-}
-
-t_token *prev_command(t_token *token)
-{
-	while (token->prev && token->prev->type < APPEND)
-		token = token->prev;
-	return (token);
-}
-
-//hacer split de argumentos para el execve
+//hacer split de argumentos para el execve --> parser
 
 //si es <infile no funciona porque no lo separa
 //infile outfile los detecta como comandos
