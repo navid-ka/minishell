@@ -24,20 +24,20 @@ int	count_quotes(char *cmd)
 	return (count);
 }
 
-void create_cmd(char *argv, t_cmd *cmd)
-{
-  int quotes_count;
+// void create_cmd(char *argv, t_cmd *cmd)
+// {
+//   int quotes_count;
   
-  quotes_count = 0;
-  quotes_count = count_quotes(argv);
-  cmd->argv = split_cmd(argv, quotes_count);
-  if (!bt_is_builtin(cmd->argv))
-    ft_printf(1, "Env execs?/n");
-  else
-    bt_check_builtin(cmd->argv, NULL);
-    //TODO: aqui debemos hacer algo si no es builtin puede que ejecutarlo desde env?
-  // o quizas me he adelantado y hay que hacer mas cosas
-}
+//   quotes_count = 0;
+//   quotes_count = count_quotes(argv);
+//   cmd->argv = split_cmd(argv, quotes_count);
+//   if (!bt_is_builtin(cmd->argv))
+//     ft_printf(1, "Env execs?/n");
+//   else
+//     bt_check_builtin(cmd->argv, NULL);
+//     //TODO: aqui debemos hacer algo si no es builtin puede que ejecutarlo desde env?
+//   // o quizas me he adelantado y hay que hacer mas cosas
+// }
 
 
 void free_tokens(t_token *tok)
@@ -59,7 +59,7 @@ int	main(int argc, char **argv, char **env)
 	(void)argv;
 	char *line;
   char *prompt;
-  t_cmd cmd;
+  //t_cmd cmd;
 
   get_env(env);
   prompt = shell_prompt();
@@ -73,16 +73,18 @@ int	main(int argc, char **argv, char **env)
     bt_exit(line);
     if (*line)
     {
-      create_cmd(line, &cmd);
-		  if (!syntax_checker(line))
-			  syntax_error();
-		  if (ft_strlen(line) > 0)
-            add_history(line);
-		  line = clean_input(line);
-		  t_token *tok = get_tokens(line);
-		  if (!ft_strcmp(tok->str, "echo"))
-			  bt_echo(tok->next);
-		  free_tokens(tok);
+		t_token *tok = NULL;
+		//create_cmd(line, &cmd);
+		if (!syntax_checker(line))
+			syntax_error();
+		if (ft_strlen(line) > 0)
+		add_history(line);
+		line = clean_input(line);
+		main_lexer(line, &tok);
+		print_tokens(tok, line);
+		if (!ft_strcmp(tok->str, "echo"))
+			bt_echo(tok->next);
+		free_tokens(tok);
       signal(SIGINT, sigint_handler);
       free(line);
     }

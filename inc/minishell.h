@@ -8,7 +8,7 @@
 # include <unistd.h>
 # include <curses.h>
 # include <term.h>
-# include <tcl.h>
+# include <tcl/tcl.h>
 # include <sys/wait.h>
 # include <sys/types.h>
 # include <dirent.h>
@@ -25,7 +25,10 @@
 # define TRUNC 4
 # define PIPE 5
 # define INPUT 6
-# define END 7
+# define HERE_DOC 7
+# define END 8
+# define SCUOTE 39
+# define DCUOTE 34
 
 typedef struct s_pipe
 {
@@ -117,12 +120,19 @@ void bt_echo(t_token *tok);
 // Utils.c
 char *charjoin(char *s1, char c);
 char	*ft_strndup(const char *src, size_t len);
+int	ft_isquote(int c);
+int	ft_is_escape(int c);
+int	ft_is_shellsymbol(int c);
+void	print_tokens(t_token *tok, char *str);
+
+//utils list
+t_token	*lexer_lstnew(void);
+void	lexer_lstadd_back(t_token **lst, t_token *new);
 
 
 char	*clean_input(char *line);
 int		next_alloc(char *line, int i);
 t_token	*next_token(char *line, int *i);
-t_token	*get_tokens(char *line);
-
+int	main_lexer(char *str, t_token **tok);
 
 #endif // !MINISHELL_H
