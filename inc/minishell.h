@@ -72,8 +72,10 @@ typedef struct s_token
 
 typedef struct s_env
 {
+  char          **ms_env;
 	char          *key;
   char          *value;
+  int           capacity;
 	struct s_env  *prev;
 	struct s_env  *next;
 }	t_env;
