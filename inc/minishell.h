@@ -70,6 +70,15 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
+typedef struct s_env
+{
+	char          *key;
+  char          *value;
+	struct s_env  *prev;
+	struct s_env  *next;
+}	t_env;
+
+
 // signals.c
 void	signals(void);
 void  sigint_handler(int sig);
@@ -86,6 +95,9 @@ char *shell_prompt(void);
 
 // tokenizer.c
 char	**split_cmd(char *cmd, int quotes);
+
+// parse_env.c
+void  get_env(char **env);
 
 int		syntax_checker(char *line);
 void	syntax_error(void);
