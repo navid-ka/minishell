@@ -32,17 +32,6 @@ int	count_word_len(char *cmd)
 	return (i);
 }
 
-char	*ft_strndup(const char *src, size_t len)
-{
-	char	*str;
-
-	str = malloc(sizeof(char) * (len + 1));
-	if (!str)
-		return (NULL);
-	ft_strlcpy(str, src, len);
-	return (str);
-}
-
 char	**split_cmd(char *cmd, int quotes)
 {
 	char	**split;

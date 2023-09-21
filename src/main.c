@@ -57,11 +57,11 @@ int	main(int argc, char **argv, char **env)
 {
 	(void)argc;
 	(void)argv;
-	(void)env;
 	char *line;
   char *prompt;
   t_cmd cmd;
 
+  get_env(env);
   prompt = shell_prompt();
   prompter();
   rl_catch_signals = 0;
