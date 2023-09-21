@@ -8,7 +8,7 @@
 # include <unistd.h>
 # include <curses.h>
 # include <term.h>
-# include <tcl/tcl.h>
+# include <tcl.h>
 # include <sys/wait.h>
 # include <sys/types.h>
 # include <dirent.h>

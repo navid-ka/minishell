@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../../inc/minishell.h"
 
 void	arg_type(char *str, int *i, t_token *token)
 {
