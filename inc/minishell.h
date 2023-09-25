@@ -25,7 +25,7 @@
 
 # define EMPTY 0
 # define CMD 1
-# define ARG 2
+//# define ARG 2
 # define APPEND 3
 # define TRUNC 4
 # define PIPE 5
@@ -35,24 +35,19 @@
 # define SCUOTE 39
 # define DCUOTE 34
 
-typedef struct s_pipe
+typedef struct s_redir
 {
-	char	**routes;
-	pid_t	proc;
-    int		tube[2];
-	char	**cmd_args;
-	char	*cmd;
-	int		j; //para jugar con posición tratada en cada momento
-	int		here_doc; //booleano por si entra un >> limiter
-	char	*limiter; //por >>
-}	t_pipe;
+	//if -1 redir from/to file
+    int   	input;
+    int		output;
+	char	*file;
+    int		permission;
+}   t_redir;
 
 typedef struct s_cmd
 {
-    char  **argv;
-    int   infile;
-    int		outfile;
-    int		permission; //solo para jugar con access
+    char  	**argv;
+	int argc;
 }   t_cmd;
 
 typedef struct s_clean
@@ -72,7 +67,8 @@ typedef struct s_path
 typedef struct s_token
 {
 	char			*str;
-	int				argc;
+	t_cmd			cmd;
+	t_redir			redir;
 	int				type;
 	struct s_token	*prev;
 	struct s_token	*next;
