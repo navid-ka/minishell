@@ -8,7 +8,6 @@
 # include <unistd.h>
 # include <curses.h>
 # include <term.h>
-# include <tcl.h>
 # include <sys/wait.h>
 # include <sys/types.h>
 # include <dirent.h>
@@ -17,6 +16,12 @@
 # include <readline/history.h>
 # include "../libs/libft/include/libft.h"
 # include <sys/stat.h>
+
+#ifdef __linux__
+# include "tcl/tcl.h"
+#elif defined(__APPLE__) || defined(__MACH__)
+# include <tcl.h>
+#endif
 
 # define EMPTY 0
 # define CMD 1
