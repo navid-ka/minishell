@@ -1,5 +1,7 @@
 #include "../../inc/minishell.h"
 
+//si falla llamar a función de liberar xd
+
 void	arg_type(char *str, int *i, t_token *token)
 {
 	token->type = 0;
