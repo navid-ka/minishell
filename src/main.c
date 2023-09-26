@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/26 11:54:38 by nkeyani-          #+#    #+#             */
+/*   Updated: 2023/09/26 11:56:12 by nkeyani-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/minishell.h"
 
 int	count_quotes(char *cmd)
@@ -27,7 +39,7 @@ int	count_quotes(char *cmd)
 // void create_cmd(char *argv, t_cmd *cmd)
 // {
 //   int quotes_count;
-  
+
 //   quotes_count = 0;
 //   quotes_count = count_quotes(argv);
 //   cmd->argv = split_cmd(argv, quotes_count);
@@ -53,41 +65,42 @@ void free_tokens(t_token *tok)
 	}
 }
 
+
 int	main(int argc, char **argv, char **env)
 {
+	char	*line;
+	char	*prompt;
+
 	(void)argc;
 	(void)argv;
-	char *line;
-  char *prompt;
-  //t_cmd cmd;
-
-  get_env(env);
-  prompt = shell_prompt();
-  prompter();
-  rl_catch_signals = 0;
-  line = NULL;
-  while (1)
+	get_env(env);
+	prompt = NULL;
+	prompt = shell_prompt(prompt);
+	prompter();
+	rl_catch_signals = 0;
+	line = NULL;
+	while (1)
 	{
-    signals();
+		signals();
 		line = readline(prompt);
-    bt_exit(line);
-    if (*line)
-    {
-		t_token *tok = NULL;
-		//create_cmd(line, &cmd);
-		if (!syntax_checker(line))
-			syntax_error();
-		if (ft_strlen(line) > 0)
-		add_history(line);
-		line = clean_input(line);
-		main_lexer(line, &tok);
-		print_tokens(tok, line);
-		if (!ft_strcmp(tok->str, "echo"))
-			bt_echo(tok->next);
-		free_tokens(tok);
-      signal(SIGINT, sigint_handler);
-      free(line);
-    }
+		bt_exit(line);
+		if (*line)
+		{
+			t_token *tok = NULL;
+			//create_cmd(line, &cmd);
+			if (!syntax_checker(line))
+				syntax_error();
+			if (ft_strlen(line) > 0)
+			add_history(line);
+			line = clean_input(line);
+			main_lexer(line, &tok);
+			print_tokens(tok, line);
+			if (!ft_strcmp(tok->str, "echo"))
+				bt_echo(tok->next);
+			free_tokens(tok);
+		signal(SIGINT, sigint_handler);
+		free(line);
+		}
 	}
 	return (0);
 }
