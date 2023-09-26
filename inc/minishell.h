@@ -76,10 +76,10 @@ typedef struct s_token
 
 typedef struct s_env
 {
-  char          **ms_env;
+	char          **ms_env;
 	char          *key;
-  char          *value;
-  int           capacity;
+	char          *value;
+	int           capacity;
 	struct s_env  *prev;
 	struct s_env  *next;
 }	t_env;
@@ -97,10 +97,10 @@ void  bt_exit(char *argv);
 
 // prompter.c
 void prompter(void);
-char *shell_prompt(void);
+char *shell_prompt(char *prompt);
 
 // tokenizer.c
-char	**split_cmd(char *cmd, int quotes);
+
 
 // parse_env.c
 void  get_env(char **env);
@@ -119,12 +119,13 @@ void bt_echo(t_token *tok);
 //SI HAY COMILLA ENTRE COMILLAS SE IGNORA Y SI HAY COMILLAS ENTRE COMILLA SE IGNORA
 
 // Utils.c
-char *charjoin(char *s1, char c);
+char	*charjoin(char *s1, char c);
 char	*ft_strndup(const char *src, size_t len);
-int	ft_isquote(int c);
-int	ft_is_escape(int c);
-int	ft_is_shellsymbol(int c);
+int		ft_isquote(int c);
+int		ft_is_escape(int c);
+int		ft_is_shellsymbol(int c);
 void	print_tokens(t_token *tok, char *str);
+char	**split_cmd(char *cmd, int quotes);
 
 //utils list
 t_token	*lexer_lstnew(void);
@@ -134,6 +135,6 @@ void	lexer_lstadd_back(t_token **lst, t_token *new);
 char	*clean_input(char *line);
 int		next_alloc(char *line, int i);
 t_token	*next_token(char *line, int *i);
-int	main_lexer(char *str, t_token **tok);
+int		main_lexer(char *str, t_token **tok);
 
 #endif // !MINISHELL_H
