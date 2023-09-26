@@ -6,7 +6,7 @@
 /*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 11:50:02 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/09/26 11:52:21 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/09/26 12:00:10 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,5 +18,5 @@ void	bt_env(char **env)
 
 	i = ~0;
 	while (env[++i] != NULL)
-		ft_printf("%s\n", env[i]);
+		ft_printf(1, "%s\n", env[i]);
 }
