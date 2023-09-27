@@ -30,9 +30,10 @@
 
 int	main(int argc, char **argv, char **env)
 {
+	t_msh	sh;
 	(void)argc;
 	(void)argv;
-	minishell(env);
+	minishell(&sh, env);
 	return (0);
 }
 

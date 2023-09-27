@@ -32,22 +32,38 @@
 # define INPUT 6
 # define HERE_DOC 7
 # define END 8
+# define REDIR 9
+# define WORD 10
 # define SCUOTE 39
 # define DCUOTE 34
 
 typedef struct s_redir
 {
 	//if -1 redir from/to file
+	t_arg			*arg;
+	int				fd;
+	int				type;
+	struct s_redir	*next;
     int   	input;
     int		output;
 	char	*file;
     int		permission;
 }   t_redir;
 
+typedef struct s_arg
+{
+	char			*arg;
+	struct s_arg	*next;
+}	t_arg;
+
+
 typedef struct s_cmd
 {
-    char  	**argv;
-	int argc;
+	char	**args;
+	t_arg	*arg;
+	t_arg	*arg_x;
+	t_redir	*red;
+	t_redir	*red_x;
 }   t_cmd;
 
 typedef struct s_clean
@@ -58,18 +74,10 @@ typedef struct s_clean
 	char	*str;
 }	t_clean;
 
-typedef struct s_path
-{
-	char	*home;
-	char	*oldpwd;
-}	t_path;
 
 typedef struct s_token
 {
 	char			*str;
-	t_cmd			cmd;
-	t_redir			redir;
-	char			*tok;
 	int				type;
 	struct s_token	*prev;
 	struct s_token	*next;
@@ -86,6 +94,18 @@ typedef struct s_env
 }	t_env;
 
 
+typedef struct s_mch
+{
+	t_cmd	*cmd;
+	t_redir	*redir;
+	t_token	*tok;
+	char	**env;
+	char	**arg;
+	char	*old_pwd;
+	char	*pwd;
+	int		pipes;
+}	t_mch;
+
 // system/minishell.c
 void	minishell(char **env);
 
@@ -100,8 +120,6 @@ bool	bt_is_builtin(char **argv);
 void	bt_check_builtin(char **argv, char **env);
 void	bt_env(char **env);
 void	bt_exit(char *argv);
-
-// system/prompter.c
 
 
 // parse_env.c
@@ -133,6 +151,17 @@ int		count_quotes(char *cmd);
 //utils list
 t_token	*lexer_lstnew(void);
 void	lexer_lstadd_back(t_token **lst, t_token *new);
+t_arg	*argnew(void *content);
+t_arg	*arglast(t_arg *lst);
+void	argback(t_arg **lst, t_arg *new);
+int		argsize(t_arg *lst);
+void	argfront(t_arg **lst, t_arg *new);
+void	argclear(t_arg **lst);
+t_redir	*redirnew(int type);
+void	redirback(t_redir **lst, t_redir *new);
+t_redir	*redirlast(t_redir *lst);
+void	redclear(t_redir **lst);
+
 
 
 char	*clean_input(char *line);
