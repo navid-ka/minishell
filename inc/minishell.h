@@ -69,6 +69,7 @@ typedef struct s_token
 	char			*str;
 	t_cmd			cmd;
 	t_redir			redir;
+	char			*tok;
 	int				type;
 	struct s_token	*prev;
 	struct s_token	*next;
