@@ -85,30 +85,31 @@ typedef struct s_env
 }	t_env;
 
 
-// signals.c
+// system/minishell.c
+void	minishell(char **env);
+
+// system
 void	signals(void);
-void  sigint_handler(int sig);
+void 	sigint_handler(int sig);
+void	prompter(void);
+char	*shell_prompt(int i);
 
 // builtins env
-bool bt_is_builtin(char **argv);
-void  bt_check_builtin(char **argv, char **env);
+bool	bt_is_builtin(char **argv);
+void	bt_check_builtin(char **argv, char **env);
 void	bt_env(char **env);
-void  bt_exit(char *argv);
+void	bt_exit(char *argv);
 
-// prompter.c
-void prompter(void);
-char *shell_prompt(char *prompt);
-
-// tokenizer.c
+// system/prompter.c
 
 
 // parse_env.c
-void  get_env(char **env);
+void	get_env(char **env);
 
 int		syntax_checker(char *line);
 void	syntax_error(void);
 int		pwd(void);
-void bt_echo(t_token *tok);
+void	bt_echo(t_token *tok);
 //int		bt_get_dirs(char **env, t_env *env_routes);
 //int		bt_cd(char *input, t_env env_routes);
 
@@ -126,6 +127,7 @@ int		ft_is_escape(int c);
 int		ft_is_shellsymbol(int c);
 void	print_tokens(t_token *tok, char *str);
 char	**split_cmd(char *cmd, int quotes);
+int		count_quotes(char *cmd);
 
 //utils list
 t_token	*lexer_lstnew(void);

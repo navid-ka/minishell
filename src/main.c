@@ -6,35 +6,12 @@
 /*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 11:54:38 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/09/26 11:56:12 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/09/27 10:59:50 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-int	count_quotes(char *cmd)
-{
-	int	i;
-	int	count;
-	int	dquotes;
-	int	quotes;
-
-	i = ~0;
-	count = 0;
-	dquotes = 0;
-	quotes = 0;
-	while (cmd[++i])
-	{
-		if (cmd[i] == '"' && !quotes)
-			dquotes = (dquotes + 1) % 2;
-		else if (cmd[i] == '\'' && !dquotes)
-			quotes = (quotes + 1) % 2;
-		if ((!quotes && !dquotes) && !(cmd[i] == ' ')
-			&& ((cmd[i + 1] == ' ') || !cmd[i + 1]))
-			count++;
-	}
-	return (count);
-}
 
 // void create_cmd(char *argv, t_cmd *cmd)
 // {
@@ -51,57 +28,11 @@ int	count_quotes(char *cmd)
 //   // o quizas me he adelantado y hay que hacer mas cosas
 // }
 
-
-void free_tokens(t_token *tok)
-{
-	t_token *tmp;
-
-	tmp = NULL;
-	while(tok)
-	{
-		free(tok->str);
-		tok = tok->next;
-		free(tmp);
-	}
-}
-
-
 int	main(int argc, char **argv, char **env)
 {
-	char	*line;
-	char	*prompt;
-
 	(void)argc;
 	(void)argv;
-	get_env(env);
-	prompt = NULL;
-	prompt = shell_prompt(prompt);
-	prompter();
-	rl_catch_signals = 0;
-	line = NULL;
-	while (1)
-	{
-		signals();
-		line = readline(prompt);
-		bt_exit(line);
-		if (*line)
-		{
-			t_token *tok = NULL;
-			//create_cmd(line, &cmd);
-			if (!syntax_checker(line))
-				syntax_error();
-			if (ft_strlen(line) > 0)
-			add_history(line);
-			line = clean_input(line);
-			main_lexer(line, &tok);
-			print_tokens(tok, line);
-			if (!ft_strcmp(tok->str, "echo"))
-				bt_echo(tok->next);
-			free_tokens(tok);
-		signal(SIGINT, sigint_handler);
-		free(line);
-		}
-	}
+	minishell(env);
 	return (0);
 }
 

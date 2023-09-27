@@ -28,8 +28,9 @@ SRCS 					:= src/main.c  \
 						src/builtins/echo.c \
 						src/builtins/exit.c \
 						src/utils/utils.c \
-						src/signals/signals.c \
-						src/utils/prompter.c \
+						src/system/signals.c \
+						src/system/prompter.c \
+						src/system/minishell.c \
 						src/lexer/real_lexer.c \
 						src/lexer/lexer_utils.c \
 						src/lexer/lexer_list.c \
