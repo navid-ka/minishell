@@ -6,7 +6,7 @@
 /*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 11:35:01 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/09/26 11:42:50 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/09/27 10:46:33 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@ void	prompter(void)
 	pr("\n\n\x1b[0m");
 }
 
-char	*shell_prompt(char *prompt)
+char	*shell_prompt(int i)
 {
+	char	*prompt;
 	char	*pwd;
 	char	*ansi;
 	char	*prompt_left;
 	char	*prompt_right;
-	int		i;
 
 	pwd = NULL;
 	ansi = "\033[0;36m\033[1m";
