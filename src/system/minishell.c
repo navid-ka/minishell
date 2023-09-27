@@ -25,14 +25,27 @@ void	free_tokens(t_token *tok)
 	}
 }
 
-static void	sh_init(char **env)
+static void	sh_init(t_mch *sh, char **env)
 {
 	get_env(env);
 	prompter();
 	signals();
 }
 
-void	minishell(char **env)
+static int if_line(t_mch *sh, char *line)
+{
+	symbol_sorter(sh->tok);
+	parser(sh);
+	if (!syntax_checker(line))
+		syntax_error();
+	add_history(line);
+	line = clean_input(line);
+	main_lexer(line, &tok);
+}
+
+}
+
+void	minishell(t_mch *sh, char **env)
 {
 	char	*line;
 	t_token	*tok;
@@ -46,13 +59,7 @@ void	minishell(char **env)
 		bt_exit(line);
 		if (*line)
 		{
-			if (!syntax_checker(line))
-				syntax_error();
-			add_history(line);
-			line = clean_input(line);
-			main_lexer(line, &tok);
-			//print_tokens(tok, line);
-			//free_tokens(tok);
+			if_line(sh);
 			signal(SIGINT, sigint_handler);
 			free(line);
 		}

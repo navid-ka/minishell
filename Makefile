@@ -37,7 +37,10 @@ SRCS 					:= src/main.c  \
 						src/lexer/cleaner.c \
 						src/builtins/bt_init.c \
 						src/utils/cmd_split.c \
-						src/parser/parse_env.c 
+						src/parser/parse_env.c \
+						src/parser/new_parser.c \
+						src/parser/parse_list.c \
+						src/parser/redir_list.c
 
 OBJS = $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRCS))
 
