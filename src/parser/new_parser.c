@@ -6,7 +6,7 @@
 /*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 16:09:24 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/09/28 15:22:51 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/09/28 17:05:23 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@ void	symbol_sorter(t_token *tok)
 {
 	while (tok)
 	{
-		ft_printf(1, "aqui falla?\n");
-		ft_printf(1, "aqui falla?PIPES %d\n", tok->type);
 		if (ft_strcmp(tok->str, "|") == 0)
 			tok->type = PIPE;
 		else if (ft_strcmp(tok->str, ">") == 0
