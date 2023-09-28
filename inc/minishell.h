@@ -37,6 +37,12 @@
 # define SCUOTE 39
 # define DCUOTE 34
 
+typedef struct s_arg
+{
+	char			*arg;
+	struct s_arg	*next;
+}	t_arg;
+
 typedef struct s_redir
 {
 	//if -1 redir from/to file
@@ -49,12 +55,6 @@ typedef struct s_redir
 	char	*file;
     int		permission;
 }   t_redir;
-
-typedef struct s_arg
-{
-	char			*arg;
-	struct s_arg	*next;
-}	t_arg;
 
 
 typedef struct s_cmd
@@ -96,7 +96,7 @@ typedef struct s_env
 
 typedef struct s_mch
 {
-	t_cmd	*cmd;
+	t_cmd	**cmd;
 	t_redir	*redir;
 	t_token	*tok;
 	char	**env;
@@ -107,7 +107,7 @@ typedef struct s_mch
 }	t_mch;
 
 // system/minishell.c
-void	minishell(char **env);
+void	minishell(t_mch *sh, char **env);
 
 // system
 void	signals(void);
@@ -122,8 +122,10 @@ void	bt_env(char **env);
 void	bt_exit(char *argv);
 
 
-// parse_env.c
+// parser
 void	get_env(char **env);
+void	symbol_sorter(t_token *tok);
+void	parser(t_mch *sh, t_token *tok);
 
 int		syntax_checker(char *line);
 void	syntax_error(void);
@@ -161,8 +163,6 @@ t_redir	*redirnew(int type);
 void	redirback(t_redir **lst, t_redir *new);
 t_redir	*redirlast(t_redir *lst);
 void	redclear(t_redir **lst);
-
-
 
 char	*clean_input(char *line);
 int		next_alloc(char *line, int i);
