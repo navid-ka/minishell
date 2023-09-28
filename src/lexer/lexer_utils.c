@@ -21,27 +21,42 @@ int	ft_is_shellsymbol(int c)
 	return (0);
 }
 
+void 	print_tok_list(t_token *tok)
+{
+	t_token	*ptr;
+
+	ptr = tok;
+	while(ptr)
+	{
+		printf("tok es %s\n", ptr->str);
+		ptr = ptr->next;
+	}
+}
+
 void	print_tokens(t_token *tok, char *str)
 {
 	printf("input: %s\n", str);
-	while (tok)
+	t_token	*ptr;
+
+	ptr = tok;
+	while (ptr)
 	{
-		if (tok->type != 0)
+		if (ptr->type != 0)
 		{
-			if (tok->type == PIPE)
+			if (ptr->type == PIPE)
 				printf("PIPE\n");
-			else if (tok->type == APPEND)
+			else if (ptr->type == APPEND)
 				printf("TRUNC\n");
-			else if (tok->type == TRUNC)
+			else if (ptr->type == TRUNC)
 				printf("APPEND\n");
-			else if (tok->type == INPUT)
+			else if (ptr->type == INPUT)
 				printf("INPUT\n");
-			else if (tok->type == HERE_DOC)
+			else if (ptr->type == HERE_DOC)
 				printf("HERE_DOC\n");
 		}
 		else
-			printf("%s\n", tok->str);
-		tok = tok->next;
+			printf("%s\n", ptr->str);
+		ptr = ptr->next;
 	}
 	printf("\n");
 }
