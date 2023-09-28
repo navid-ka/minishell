@@ -6,7 +6,7 @@
 /*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 11:54:38 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/09/27 10:59:50 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/09/28 10:11:21 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 
 int	main(int argc, char **argv, char **env)
 {
-	t_msh	sh;
+	t_mch	sh;
 	(void)argc;
 	(void)argv;
 	minishell(&sh, env);

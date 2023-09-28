@@ -6,7 +6,7 @@
 /*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:39:00 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/09/27 11:03:35 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/09/28 11:05:32 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,25 +25,18 @@ void	free_tokens(t_token *tok)
 	}
 }
 
-static void	sh_init(t_mch *sh, char **env)
+static void	sh_init(char **env)
 {
 	get_env(env);
 	prompter();
 	signals();
 }
 
-static int if_line(t_mch *sh, char *line)
+/*static int (t_mch *sh, char *line)
 {
-	symbol_sorter(sh->tok);
-	parser(sh);
-	if (!syntax_checker(line))
-		syntax_error();
-	add_history(line);
-	line = clean_input(line);
-	main_lexer(line, &tok);
-}
 
-}
+	return (0);
+}*/
 
 void	minishell(t_mch *sh, char **env)
 {
@@ -59,7 +52,14 @@ void	minishell(t_mch *sh, char **env)
 		bt_exit(line);
 		if (*line)
 		{
-			if_line(sh);
+			if (!syntax_checker(line))
+				syntax_error();
+			add_history(line);
+			line = clean_input(line);
+			main_lexer(line, &tok);
+			symbol_sorter(tok);
+			ft_printf(1,"peta aqui? o despues symbols\n");
+			parser(sh, tok);
 			signal(SIGINT, sigint_handler);
 			free(line);
 		}

@@ -6,7 +6,7 @@
 /*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 16:09:24 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/09/27 17:42:22 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/09/28 11:06:23 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	symbol_sorter(t_token *tok)
 	}
 }
 
-static int	pipes(t_cmd *arg, t_token *tok)
+static int	count_pipes(t_mch *sh, t_token *tok)
 {
 	int	pipes;
 
@@ -40,6 +40,7 @@ static int	pipes(t_cmd *arg, t_token *tok)
 			pipes++;
 		tok = tok->next;
 	}
+	sh->pipes = pipes;
 	return (pipes);
 }
 
@@ -56,7 +57,7 @@ static int	redir_type(t_token *tok)
 	return (-1);
 }
 
-static	void cmd_init(t_cmd **cmd, int pipes)
+static void cmd_init(t_cmd **cmd, int pipes)
 {
 	int	i;
 
@@ -74,9 +75,9 @@ static	void cmd_init(t_cmd **cmd, int pipes)
 	cmd[i] = NULL;
 }
 
-static void	parse(t_tok *tok, t_cmd **cmd)
+static void	parse(t_token *tok, t_cmd **cmd)
 {
-	int	j;
+	int	i;
 	int	redir;
 
 	i = 0;
@@ -84,31 +85,30 @@ static void	parse(t_tok *tok, t_cmd **cmd)
 	while (tok)
 	{
 		if (tok->type == WORD)
-			argback(&(cmd[j]->arg), argnew(ft_strdup(tok->tok)));
+			argback(&(cmd[i]->arg), argnew(ft_strdup(tok->str)));
 		else if (tok->type == REDIR)
 		{
 			redir = redir_type(tok);
 			tok = tok->next;
-			redirback(&(cmd[j]->red), redirnew(redir));
-			argback(&(redirlast(cmd[j]->red)->arg),
-				argnew(ft_strdup(tok->tok)));
+			redirback(&(cmd[i]->red), redirnew(redir));
+			argback(&(redirlast(cmd[i]->red)->arg),
+				argnew(ft_strdup(tok->str)));
 		}
 		else
 			i++;
 		tok = tok->next;
 	}
 	i++;
-	cmd[j] = NULL;
+	cmd[i] = NULL;
 }
 
-void	parser(t_mch *sh)
+void	parser(t_mch *sh, t_token *tok)
 {
 	int	pipes;
 
-	pipes = count_pipes(sh, sh->tok);
-	sh->s_cmd = malloc(sizeof (t_cmd *) * (pipes + 2));
-	init(sh->s_cmd, pipes + 1);
-	parse(sh->tok, sh->s_cmd);
+	pipes = count_pipes(sh, tok);
+	sh->cmd = malloc(sizeof (t_cmd *) * (pipes + 2));
+	cmd_init(sh->cmd, pipes + 1);
+	parse(tok, sh->cmd);
 }
 
-// NECESITAMOS CAMBIAR A STR EL TYPE PARA HACERLO MAS FACIL
