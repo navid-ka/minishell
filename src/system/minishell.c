@@ -6,7 +6,7 @@
 /*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:39:00 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/09/28 16:12:20 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/09/28 17:01:33 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ void	minishell(t_mch *sh, char **env)
 			main_lexer(line, &tok);
 			print_tok_list(tok);
 			symbol_sorter(tok);
-			//parser(sh, tok);
+			parser(sh, tok);
+			print_tok_list(tok);
 			//TODO:expansor
 			//TODO:executor
 			signal(SIGINT, sigint_handler);

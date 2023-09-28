@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bifrost <nkeyani-@student.42barcelona.c    +#+  +:+       +#+        */
+/*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/14 11:20:59 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/06/01 18:35:03 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/09/28 17:04:45 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ char	*ft_strdup(const char *s)
 	int		i;
 	char	*dup;
 
+	if (!s)
+		return (NULL);
 	len = ft_strlen(s);
 	dup = (char *) malloc(sizeof(char) * (len + 1));
 	if (dup == NULL)

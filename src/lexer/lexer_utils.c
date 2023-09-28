@@ -28,7 +28,10 @@ void 	print_tok_list(t_token *tok)
 	ptr = tok;
 	while(ptr)
 	{
-		printf("tok es %s\n", ptr->str);
+		if (ptr->str)
+			printf("tok es %s\n", ptr->str);
+		else
+			printf("redir %d\n", ptr->type);
 		ptr = ptr->next;
 	}
 }
