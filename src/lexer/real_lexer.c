@@ -6,21 +6,32 @@ void	arg_type(char *str, int *i, t_token *token)
 {
 	token->type = 0;
 	if (str[*i] == '|')
+	{	
+		token->str = "|";
 		token->type = PIPE;
+	}
 	else if (str[*i] == '<' && str[*i + 1] == '<')
 	{
+		token->str = "<<";
 		token->type = HERE_DOC;
 		(*i)++;
 	}
 	else if (str[*i] == '<')
+	{
+		token->str = "<";
 		token->type = INPUT;
+	}
 	else if (str[*i] == '>' && str[*i + 1] == '>')
 	{
+		token->str = ">>";
 		token->type = APPEND;
 		(*i)++;
 	}
 	else if (str[*i] == '>')
+	{
+		token->str = ">";
 		token->type = TRUNC;
+	}
 	(*i)++;
 }
 
