@@ -9,18 +9,18 @@ void	arg_type(char *str, int *i, t_token *token)
 		token->type = PIPE;
 	else if (str[*i] == '<' && str[*i + 1] == '<')
 	{
-		token->type = APPEND;
-		(*i)++;
-	}
-	else if (str[*i] == '<')
-		token->type = TRUNC;
-	else if (str[*i] == '>' && str[*i + 1] == '>')
-	{
 		token->type = HERE_DOC;
 		(*i)++;
 	}
-	else if (str[*i] == '>')
+	else if (str[*i] == '<')
 		token->type = INPUT;
+	else if (str[*i] == '>' && str[*i + 1] == '>')
+	{
+		token->type = APPEND;
+		(*i)++;
+	}
+	else if (str[*i] == '>')
+		token->type = TRUNC;
 	(*i)++;
 }
 

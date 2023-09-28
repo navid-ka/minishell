@@ -50,10 +50,10 @@ typedef struct s_redir
 	int				fd;
 	int				type;
 	struct s_redir	*next;
-    int   	input;
-    int		output;
-	char	*file;
-    int		permission;
+    //int   	input;
+    //int		output;
+	//char	*file;
+    //int		permission;
 }   t_redir;
 
 
@@ -168,5 +168,7 @@ char	*clean_input(char *line);
 int		next_alloc(char *line, int i);
 t_token	*next_token(char *line, int *i);
 int		main_lexer(char *str, t_token **tok);
+
+void 	print_tok_list(t_token *tok);
 
 #endif // !MINISHELL_H

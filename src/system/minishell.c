@@ -6,7 +6,7 @@
 /*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:39:00 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/09/28 12:14:00 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/09/28 16:12:20 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void	minishell(t_mch *sh, char **env)
 {
 	char	*line;
 	t_token	*tok;
+	(void)sh;
 
 	sh_init(env);
 	tok = NULL;
@@ -57,8 +58,9 @@ void	minishell(t_mch *sh, char **env)
 			add_history(line);
 			line = clean_input(line);
 			main_lexer(line, &tok);
+			print_tok_list(tok);
 			symbol_sorter(tok);
-			parser(sh, tok);
+			//parser(sh, tok);
 			//TODO:expansor
 			//TODO:executor
 			signal(SIGINT, sigint_handler);
