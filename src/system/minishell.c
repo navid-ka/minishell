@@ -6,7 +6,7 @@
 /*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:39:00 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/09/28 11:05:32 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/09/28 12:14:00 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,9 @@ void	minishell(t_mch *sh, char **env)
 			line = clean_input(line);
 			main_lexer(line, &tok);
 			symbol_sorter(tok);
-			ft_printf(1,"peta aqui? o despues symbols\n");
 			parser(sh, tok);
+			//TODO:expansor
+			//TODO:executor
 			signal(SIGINT, sigint_handler);
 			free(line);
 		}
