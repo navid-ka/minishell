@@ -36,6 +36,12 @@
 # define SCUOTE 39
 # define DCUOTE 34
 
+typedef struct s_arg
+{
+	char			*arg;
+	struct s_arg	*next;
+}	t_arg;
+
 typedef struct s_redir
 {
 	//if -1 redir from/to file
@@ -95,8 +101,6 @@ bool	bt_is_builtin(char **argv);
 void	bt_check_builtin(char **argv, char **env);
 void	bt_env(char **env);
 void	bt_exit(char *argv);
-
-
 // parser
 void	get_env(t_mch *sh, char **env);
 void	symbol_sorter(t_lexer *lex);
@@ -105,6 +109,7 @@ void	parser(t_mch *sh, t_lexer *lex);
 int		syntax_checker(char *line);
 void	syntax_error(void);
 int		pwd(void);
+
 void	bt_echo(t_lexer *lex);
 //int		bt_get_dirs(char **env, t_env *env_routes);
 //int		bt_cd(char *input, t_env env_routes);
@@ -121,16 +126,20 @@ char	*ft_strndup(const char *src, size_t len);
 int		ft_isquote(int c);
 int		ft_is_escape(int c);
 int		ft_is_shellsymbol(int c);
+
 void	print_lexers(t_lexer *lex, char *str);
+
 char	**split_cmd(char *cmd, int quotes);
 int		count_quotes(char *cmd);
 
 //utils list
+
 t_lexer	*lexer_lstnew(void);
 void	lexer_lstadd_back(t_lexer **lst, t_lexer *new);
 char	*clean_input(char *line);
 int		main_lexer(char *str, t_lexer **lex);
 
 void 	print_lex_list(t_lexer *lex);
+
 
 #endif // !MINISHELL_H

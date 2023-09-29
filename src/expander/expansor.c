@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcosta-f <fcosta-f@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:04:43 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/09/29 17:47:16 by fcosta-f         ###   ########.fr       */
+/*   Updated: 2023/09/29 14:12:32 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,4 +27,5 @@
 //sh: /Users/nkeyani-/test: is a directory
 
 //int count_expand(t_mch *sh, char *lexer, int *len);
+
 //void expansor()....
