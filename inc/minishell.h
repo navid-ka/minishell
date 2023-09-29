@@ -140,6 +140,7 @@ char	*clean_input(char *line);
 int		main_lexer(char *str, t_lexer **lex);
 
 void 	print_lex_list(t_lexer *lex);
+void 	print_pars_list(t_parser *lex);
 
 
 #endif // !MINISHELL_H

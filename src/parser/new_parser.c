@@ -6,7 +6,7 @@
 /*   By: fcosta-f <fcosta-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 16:09:24 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/09/29 19:10:17 by fcosta-f         ###   ########.fr       */
+/*   Updated: 2023/09/29 19:47:34 by fcosta-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,12 @@ static void	parse(t_lexer *lex, t_parser *parser)
 	tmp = lex;
 	while (tmp)
 	{
-		if (tmp->type == CMD && tmp->next->type != '<')
+		if (tmp->type == CMD)
 		{
 			int i = 0;
-			while (tmp->type == CMD) {
-				parser->args[i] = ft_strdup(tmp->str);
+			parser->args = malloc(sizeof(char *) * 50);
+			while (tmp && tmp->type == CMD) {
+				parser->args[i++] = ft_strdup(tmp->str);
 				tmp = tmp->next;
 			}
 			parser->cmd = parser->args[0];
@@ -50,6 +51,7 @@ static void	parse(t_lexer *lex, t_parser *parser)
 		}
 		else if (tmp->type == REDIR)
 		{
+			parser->next->red.input = tmp->type;
 			tmp = tmp->next;
 		}
 	}

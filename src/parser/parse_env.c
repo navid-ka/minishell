@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
+/*   By: fcosta-f <fcosta-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 14:21:30 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/09/29 15:06:52 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/09/29 19:29:24 by fcosta-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,3 +56,15 @@ void	get_env(t_mch *sh, char **env)
 		ft_printf(1, "%s\n", sh->env[i]);*/
 }
 
+void 	print_pars_list(t_parser *lex)
+{
+	t_parser	*ptr;
+
+	ptr = lex;
+	while(ptr)
+	{
+		printf("%s\n", ptr->cmd);
+		printf("%s %s %s\n", ptr->args[0], ptr->args[1], ptr->args[2]);
+		ptr = ptr->next;
+	}
+}
