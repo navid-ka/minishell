@@ -6,7 +6,7 @@
 /*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:39:00 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/09/28 18:04:13 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/09/29 14:59:30 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ void	free_tokens(t_token *tok)
 	}
 }
 
-static void	sh_init(char **env)
+static void	sh_init(t_mch *sh, char **env)
 {
-	get_env(env);
+	get_env(sh, env);
 	prompter();
 	signals();
 }
@@ -44,7 +44,7 @@ void	minishell(t_mch *sh, char **env)
 	t_token	*tok;
 	(void)sh;
 
-	sh_init(env);
+	sh_init(sh, env);
 	tok = NULL;
 	line = NULL;
 	while (1)
