@@ -21,27 +21,43 @@ int	ft_is_shellsymbol(int c)
 	return (0);
 }
 
-void	print_tokens(t_token *tok, char *str)
+void 	print_lex_list(t_lexer *lex)
+{
+	t_lexer	*ptr;
+
+	ptr = lex;
+	while(ptr)
+	{
+		printf("%s\n", ptr->str);
+		printf("type %d:\n", ptr->type);
+		ptr = ptr->next;
+	}
+}
+
+void	print_lexers(t_lexer *lex, char *str)
 {
 	printf("input: %s\n", str);
-	while (tok)
+	t_lexer	*ptr;
+
+	ptr = lex;
+	while (ptr)
 	{
-		if (tok->type != 0)
+		if (ptr->type != 0)
 		{
-			if (tok->type == PIPE)
+			if (ptr->type == PIPE)
 				printf("PIPE\n");
-			else if (tok->type == APPEND)
+			else if (ptr->type == APPEND)
 				printf("TRUNC\n");
-			else if (tok->type == TRUNC)
+			else if (ptr->type == TRUNC)
 				printf("APPEND\n");
-			else if (tok->type == INPUT)
+			else if (ptr->type == INPUT)
 				printf("INPUT\n");
-			else if (tok->type == HERE_DOC)
+			else if (ptr->type == HERE_DOC)
 				printf("HERE_DOC\n");
 		}
 		else
-			printf("%s\n", tok->str);
-		tok = tok->next;
+			printf("%s\n", ptr->str);
+		ptr = ptr->next;
 	}
 	printf("\n");
 }

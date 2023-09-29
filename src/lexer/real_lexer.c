@@ -2,29 +2,34 @@
 
 //si falla llamar a función de liberar xd
 
-void	arg_type(char *str, int *i, t_token *token)
+void	arg_type(char *str, int *i, t_lexer **lexer)
 {
-	token->type = 0;
 	if (str[*i] == '|')
-		token->type = PIPE;
+	{	
+		(*lexer)->type = PIPE;
+	}
 	else if (str[*i] == '<' && str[*i + 1] == '<')
 	{
-		token->type = APPEND;
+		(*lexer)->type = HERE_DOC;
 		(*i)++;
 	}
 	else if (str[*i] == '<')
-		token->type = TRUNC;
+	{
+		(*lexer)->type = INPUT;
+	}
 	else if (str[*i] == '>' && str[*i + 1] == '>')
 	{
-		token->type = HERE_DOC;
+		(*lexer)->type = APPEND;
 		(*i)++;
 	}
 	else if (str[*i] == '>')
-		token->type = INPUT;
+	{
+		(*lexer)->type = TRUNC;
+	}
 	(*i)++;
 }
 
-int cmd_type(char *str, int *i, t_token *new) {
+int cmd_type(char *str, int *i, t_lexer **new) {
 	int		quoted;
 	char	*cmd;
 	int		j;
@@ -45,30 +50,31 @@ int cmd_type(char *str, int *i, t_token *new) {
 	cmd = ft_substr(str, *i, j);
 	if (!cmd)
 		return (-1);
-	new->str = cmd;
+	(*new)->str = cmd;
+	(*new)->type = CMD;
 	*i += j;
 	return (0);
 }
 
-int	inicialize_tok(t_token **new, char *str, int *i) {
+int	inicialize_lex(t_lexer **new, char *str, int *i) {
 	if (str[*i] == '|' || str[*i] == '<' || str[*i] == '>')
-		arg_type(str, i, *new);
+		arg_type(str, i, new);
 	else
-		if (cmd_type(str, i, *new) == -1) return (-1);
+		if (cmd_type(str, i, new) == -1) return (-1);
 	return (0);
 }
 
-int	main_lexer(char *str, t_token **tok) {
-	t_token *new;
+int	main_lexer(char *str, t_lexer **lex) {
+	t_lexer *new;
 	int i = 0;
 	while (str[i]) {
 		if (str[i] != ' ') {
 			new = lexer_lstnew();
 			if (!new) return (-1);
-			if (inicialize_tok(&new, str, &i) == -1) 
+			if (inicialize_lex(&new, str, &i) == -1) 
 				return (-1);
 			// dprintf(1, "%s, %d\n", new->str, new->type);
-			lexer_lstadd_back(tok, new);
+			lexer_lstadd_back(lex, new);
 		}
 		else i++;
 	}

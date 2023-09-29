@@ -1,9 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/26 11:50:02 by nkeyani-          #+#    #+#             */
+/*   Updated: 2023/09/26 12:00:10 by nkeyani-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 
-void bt_env(char **env) {
-    int i = 0;
-    while (env[i] != NULL) {
-        printf("%s\n", env[i]);
-        i++;	
-    }
+void	bt_env(char **env)
+{
+	int	i;
+
+	i = ~0;
+	while (env[++i] != NULL)
+		ft_printf(1, "%s\n", env[i]);
 }

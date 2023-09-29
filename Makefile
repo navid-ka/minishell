@@ -28,15 +28,17 @@ SRCS 					:= src/main.c  \
 						src/builtins/echo.c \
 						src/builtins/exit.c \
 						src/utils/utils.c \
-						src/signals/signals.c \
-						src/utils/prompter.c \
+						src/system/signals.c \
+						src/system/prompter.c \
+						src/system/minishell.c \
 						src/lexer/real_lexer.c \
 						src/lexer/lexer_utils.c \
 						src/lexer/lexer_list.c \
 						src/lexer/cleaner.c \
 						src/builtins/bt_init.c \
-						src/tokenize/tokenizer.c \
-						src/parser/parse_env.c 
+						src/utils/cmd_split.c \
+						src/parser/parse_env.c \
+						src/parser/new_parser.c 	
 
 OBJS = $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRCS))
 
@@ -61,7 +63,7 @@ clean:
 
 fclean: clean
 	@$(MAKE) -C $(LIBFT) fclean
-	@rm -f $(NAME)
+	@rm -f $(NAME) minishell.dSYM/
 
 re: fclean all
 

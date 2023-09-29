@@ -5,13 +5,13 @@
 //comando >> archivo_de_salida
 //comando << DELIMITADOR
 
-int count_args(t_token *tok) {
-	t_tok *act = *tok;
+int count_args(t_lexer *lex) {
+	t_lex *act = *lex;
 	int args = 0;
 
-	while (tok->next) {
-		if (tok->type = 0) args++;
-		if (ft_is_shellsymbol(tok->next->type)) return (args);
+	while (lex->next) {
+		if (lex->type = 0) args++;
+		if (ft_is_shellsymbol(lex->next->type)) return (args);
 	}
 	return (args);
 }
@@ -20,9 +20,9 @@ int count_args(t_token *tok) {
 
 //FALTA HERE_DOC
 
-t_tok	*make_token_parsed(t_tok *original) {
-	t_tok *new;
-	t_tok *act;
+t_lex	*make_lexer_parsed(t_lex *original) {
+	t_lex *new;
+	t_lex *act;
 
 	while (original) {
 		if (ft_is_shellsymbol(original->type)) {

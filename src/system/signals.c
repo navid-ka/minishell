@@ -1,22 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/26 11:49:50 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/09/26 11:49:55 by nkeyani-         ###   ########.fr       */
+/*   Created: 2023/09/27 10:41:26 by nkeyani-          #+#    #+#             */
+/*   Updated: 2023/09/27 10:42:14 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	bt_exit(char *argv)
+void  sigint_handler(int sig)
 {
-	if (!argv)
-	{
-		ft_putstr_fd("exit\n", STDERR_FILENO);
-		exit(EXIT_SUCCESS);
-	}
+	printf("\n");
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+	(void) sig;
+}
+
+void	signals(void)
+{
+	rl_catch_signals = 0;
+	signal(SIGINT, sigint_handler);
+	signal(SIGQUIT, SIG_IGN);
 }

@@ -2,7 +2,7 @@
 
 void	syntax_error(void)
 {
-	ft_printf(STDERR_FILENO, "minishell: Invalid Syntax at token\n");
+	ft_printf(STDERR_FILENO, "minishell: Invalid Syntax at lexer\n");
 }
 
 char	*lexer_end_subshell(char *line)
