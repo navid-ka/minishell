@@ -1,73 +1,73 @@
 #include "../../inc/minishell.h"
 
-t_arg	*argnew(void *content)
-{
-	t_arg	*node;
+// t_parser	*parse_new(char **content)
+// {
+// 	t_parser	*node;
 
-	node = (t_arg *)malloc(sizeof (*node));
-	if (!node)
-		return (NULL);
-	node->arg = content;
-	node->next = NULL;
-	return (node);
-}
+// 	node = (t_parser *)malloc(sizeof (*node));
+// 	if (!node)
+// 		return (NULL);
+// 	node->args = content;
+// 	node->next = NULL;
+// 	return (node);
+// }
 
-void	argback(t_arg **lst, t_arg *new)
-{
-	t_arg	*curr;
+// void	parse_back(t_parser **lst, t_parser *new)
+// {
+// 	t_parser	*curr;
 
-	if (!lst || !new)
-		return ;
-	if (*lst == NULL)
-	{
-		*lst = new;
-		return ;
-	}
-	curr = arglast(*lst);
-	curr->next = new;
-}
+// 	if (!lst || !new)
+// 		return ;
+// 	if (*lst == NULL)
+// 	{
+// 		*lst = new;
+// 		return ;
+// 	}
+// 	curr = parse_last(*lst);
+// 	curr->next = new;
+// }
 
-t_arg	*arglast(t_arg *lst)
-{
-	if (!lst)
-		return (NULL);
-	while (lst != NULL)
-	{
-		if (lst->next == NULL)
-			return (lst);
-		lst = lst->next;
-	}
-	return (lst);
-}
+// t_parser	*parse_last(t_parser *lst)
+// {
+// 	if (!lst)
+// 		return (NULL);
+// 	while (lst != NULL)
+// 	{
+// 		if (lst->next == NULL)
+// 			return (lst);
+// 		lst = lst->next;
+// 	}
+// 	return (lst);
+// }
 
-int	argsize(t_arg *lst)
-{
-	int	c;
+// int	parse_size(t_parser *lst)
+// {
+// 	int	c;
 
-	c = 0;
-	while (lst != NULL)
-	{
-		c++;
-		lst = lst->next;
-	}
-	return (c);
-}
+// 	c = 0;
+// 	while (lst != NULL)
+// 	{
+// 		c++;
+// 		lst = lst->next;
+// 	}
+// 	return (c);
+// }
 
-void	argfront(t_arg **lst, t_arg *new)
-{
-	if (lst)
-	{
-		if (!lst || !new)
-			return ;
-		if (*lst == NULL)
-		{
-			*lst = new;
-			new->next = NULL;
-		}
-		else
-		{
-			new->next = *lst;
-			*lst = new;
-		}
-	}
-}
+// void	parse_front(t_parser **lst, t_parser *new)
+// {
+// 	if (lst)
+// 	{
+// 		if (!lst || !new)
+// 			return ;
+// 		if (*lst == NULL)
+// 		{
+// 			*lst = new;
+// 			new->next = NULL;
+// 		}
+// 		else
+// 		{
+// 			new->next = *lst;
+// 			*lst = new;
+// 		}
+// 	}
+// }

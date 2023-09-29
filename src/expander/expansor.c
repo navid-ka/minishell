@@ -26,5 +26,6 @@
 //sh-3.2$ ~+
 //sh: /Users/nkeyani-/test: is a directory
 
-//int count_expand(t_mch *sh, char *token, int *len);
+//int count_expand(t_mch *sh, char *lexer, int *len);
+
 //void expansor()....

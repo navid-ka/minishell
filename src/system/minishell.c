@@ -3,24 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
+/*   By: fcosta-f <fcosta-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:39:00 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/09/29 14:59:30 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/09/29 19:02:52 by fcosta-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	free_tokens(t_token *tok)
+void	free_lexers(t_lexer *lex)
 {
-	t_token *tmp;
+	t_lexer *tmp;
 
 	tmp = NULL;
-	while (tok)
+	while (lex)
 	{
-		free(tok->str);
-		tok = tok->next;
+		free(lex->str);
+		lex = lex->next;
 		free(tmp);
 	}
 }
@@ -41,11 +41,11 @@ static void	sh_init(t_mch *sh, char **env)
 void	minishell(t_mch *sh, char **env)
 {
 	char	*line;
-	t_token	*tok;
+	t_lexer	*lex;
 	(void)sh;
 
 	sh_init(sh, env);
-	tok = NULL;
+	lex = NULL;
 	line = NULL;
 	while (1)
 	{
@@ -57,10 +57,9 @@ void	minishell(t_mch *sh, char **env)
 				syntax_error();
 			add_history(line);
 			line = clean_input(line);
-			main_lexer(line, &tok);
-			symbol_sorter(tok);
-			parser(sh, tok);
-			print_tok_list(tok);
+			main_lexer(line, &lex);
+			//parser(sh, lex);
+			print_lex_list(lex);
 			//TODO:expansor
 			//TODO:executor
 			signal(SIGINT, sigint_handler);

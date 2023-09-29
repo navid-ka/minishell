@@ -3,112 +3,65 @@
 /*                                                        :::      ::::::::   */
 /*   new_parser.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
+/*   By: fcosta-f <fcosta-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 16:09:24 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/09/28 17:05:23 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/09/29 19:10:17 by fcosta-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	symbol_sorter(t_token *tok)
-{
-	while (tok)
-	{
-		if (ft_strcmp(tok->str, "|") == 0)
-			tok->type = PIPE;
-		else if (ft_strcmp(tok->str, ">") == 0
-			|| ft_strcmp(tok->str, "<") == 0
-			|| ft_strcmp(tok->str, ">>") == 0
-			|| ft_strcmp(tok->str, "<<") == 0)
-			tok->type = REDIR;
-		else
-			tok->type = WORD;
-		tok = tok->next;
-	}
-}
-
-static int	count_pipes(t_mch *sh, t_token *tok)
+static int	count_pipes(t_lexer *lex)
 {
 	int	pipes;
 
 	pipes = 0;
-	while (tok)
+	while (lex)
 	{
-		if (tok->type == PIPE)
+		if (lex->type == PIPE)
 			pipes++;
-		tok = tok->next;
+		lex = lex->next;
 	}
-	sh->pipes = pipes;
 	return (pipes);
 }
 
-static int	redir_type(t_token *tok)
-{
-	if (ft_strcmp(tok->str, "<") == 0)
-		return (TRUNC);
-	if (ft_strcmp(tok->str, ">") == 0)
-		return (INPUT);
-	if (ft_strcmp(tok->str, ">>") == 0)
-		return (APPEND);
-	if (ft_strcmp(tok->str, "<<") == 0)
-		return (HERE_DOC);
-	return (-1);
-}
+// static void cmd_init(t_cmd *cmd, int pipes)
+// {
+	
+// }
 
-static void cmd_init(t_cmd **cmd, int pipes)
+static void	parse(t_lexer *lex, t_parser *parser)
 {
-	int	i;
+	t_lexer *tmp;
 
-	i = 0;
-	while (i < pipes)
+	tmp = lex;
+	while (tmp)
 	{
-		cmd[i] = malloc(sizeof (t_cmd));
-		cmd[i]->red = NULL;
-		cmd[i]->red_x = NULL;
-		cmd[i]->arg = NULL;
-		cmd[i]->arg_x = NULL;
-		cmd[i]->args = NULL;
-		i++;
-	}
-	cmd[i] = NULL;
-}
-
-static void	parse(t_token *tok, t_cmd **cmd)
-{
-	int	i;
-	int	redir;
-
-	i = 0;
-	redir = 0;
-	while (tok)
-	{
-		if (tok->type == WORD)
-			argback(&(cmd[i]->arg), argnew(ft_strdup(tok->str)));
-		else if (tok->type == REDIR)
+		if (tmp->type == CMD && tmp->next->type != '<')
 		{
-			redir = redir_type(tok);
-			tok = tok->next;
-			redirback(&(cmd[i]->red), redirnew(redir));
-			argback(&(redirlast(cmd[i]->red)->arg),
-				argnew(ft_strdup(tok->str)));
+			int i = 0;
+			while (tmp->type == CMD) {
+				parser->args[i] = ft_strdup(tmp->str);
+				tmp = tmp->next;
+			}
+			parser->cmd = parser->args[0];
+			parser = parser->next;
 		}
-		else
-			i++;
-		tok = tok->next;
+		else if (tmp->type == REDIR)
+		{
+			tmp = tmp->next;
+		}
 	}
-	i++;
-	cmd[i] = NULL;
 }
 
-void	parser(t_mch *sh, t_token *tok)
+void	parser(t_mch *sh, t_lexer *lex)
 {
 	int	pipes;
 
-	pipes = count_pipes(sh, tok);
-	sh->cmd = malloc(sizeof (t_cmd *) * (pipes + 2));
-	cmd_init(sh->cmd, pipes + 1);
-	parse(tok, sh->cmd);
+	pipes = count_pipes(lex); //LIKE
+	sh->parser = malloc(sizeof (t_parser) * (pipes + 1));
+	//cmd_init(sh->cmd, pipes + 1);
+	parse(lex, sh->parser);
 }
 

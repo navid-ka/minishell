@@ -23,8 +23,7 @@
 # include <tcl.h>
 #endif
 
-# define EMPTY 0
-# define CMD 1
+# define EMPTY 0 
 //# define ARG 2
 # define APPEND 3
 # define TRUNC 4
@@ -33,7 +32,7 @@
 # define HERE_DOC 7
 # define END 8
 # define REDIR 9
-# define WORD 10
+# define CMD 10
 # define SCUOTE 39
 # define DCUOTE 34
 
@@ -46,25 +45,13 @@ typedef struct s_arg
 typedef struct s_redir
 {
 	//if -1 redir from/to file
-	t_arg			*arg;
-	int				fd;
-	int				type;
-	struct s_redir	*next;
-    //int   	input;
-    //int		output;
-	//char	*file;
-    //int		permission;
+    int   	input;
+    int		output;
+	char	*infile;
+	char	*outfile;
+	int		fd;
+    //int		permission; and more
 }   t_redir;
-
-
-typedef struct s_cmd
-{
-	char	**args;
-	t_arg	*arg;
-	t_arg	*arg_x;
-	t_redir	*red;
-	t_redir	*red_x;
-}   t_cmd;
 
 typedef struct s_clean
 {
@@ -75,24 +62,29 @@ typedef struct s_clean
 }	t_clean;
 
 
-typedef struct s_token
+typedef struct s_lexer
 {
 	char			*str;
 	int				type;
-	struct s_token	*prev;
-	struct s_token	*next;
-}	t_token;
+	struct s_lexer	*prev;
+	struct s_lexer	*next;
+}	t_lexer;
+
+typedef struct s_parser
+{
+	char	*cmd;
+	char	**args;
+	t_redir	red;
+	struct s_parser *next;
+}	t_parser;
 
 typedef struct s_mch
 {
-	t_cmd	**cmd;
-	t_redir	*redir;
-	t_token	*tok;
+	t_parser *parser;
+	t_lexer	*lex;
 	char	**env;
-	char	**arg;
 	char	*old_pwd;
 	char	*pwd;
-	int		pipes;
 }	t_mch;
 
 // system/minishell.c
@@ -109,21 +101,20 @@ bool	bt_is_builtin(char **argv);
 void	bt_check_builtin(char **argv, char **env);
 void	bt_env(char **env);
 void	bt_exit(char *argv);
-
-
 // parser
 void	get_env(t_mch *sh, char **env);
-void	symbol_sorter(t_token *tok);
-void	parser(t_mch *sh, t_token *tok);
+void	symbol_sorter(t_lexer *lex);
+void	parser(t_mch *sh, t_lexer *lex);
 
 int		syntax_checker(char *line);
 void	syntax_error(void);
 int		pwd(void);
-void	bt_echo(t_token *tok);
+
+void	bt_echo(t_lexer *lex);
 //int		bt_get_dirs(char **env, t_env *env_routes);
 //int		bt_cd(char *input, t_env env_routes);
 
-//ESTRUCTURA TOKEN CON ARGV, ARGC Y TIPO QUE PUEDE SER COMANDO O SEPARADOR
+//ESTRUCTURA lexer CON ARGV, ARGC Y TIPO QUE PUEDE SER COMANDO O SEPARADOR
 //DEJAR EN ARGV LAS COMILLAS DOBLES 
 //STRJOINCHAR PARA IR PONIENDO LOS CARÁCTERES AL LINE LIMPIO
 //ENTERO COMILLAS PARA QUE SI ESTÁN ACTIVAS SE PASE DE LOS ESPACIOS
@@ -135,29 +126,20 @@ char	*ft_strndup(const char *src, size_t len);
 int		ft_isquote(int c);
 int		ft_is_escape(int c);
 int		ft_is_shellsymbol(int c);
-void	print_tokens(t_token *tok, char *str);
+
+void	print_lexers(t_lexer *lex, char *str);
+
 char	**split_cmd(char *cmd, int quotes);
 int		count_quotes(char *cmd);
 
 //utils list
-t_token	*lexer_lstnew(void);
-void	lexer_lstadd_back(t_token **lst, t_token *new);
-t_arg	*argnew(void *content);
-t_arg	*arglast(t_arg *lst);
-void	argback(t_arg **lst, t_arg *new);
-int		argsize(t_arg *lst);
-void	argfront(t_arg **lst, t_arg *new);
-void	argclear(t_arg **lst);
-t_redir	*redirnew(int type);
-void	redirback(t_redir **lst, t_redir *new);
-t_redir	*redirlast(t_redir *lst);
-void	redclear(t_redir **lst);
 
+t_lexer	*lexer_lstnew(void);
+void	lexer_lstadd_back(t_lexer **lst, t_lexer *new);
 char	*clean_input(char *line);
-int		next_alloc(char *line, int i);
-t_token	*next_token(char *line, int *i);
-int		main_lexer(char *str, t_token **tok);
+int		main_lexer(char *str, t_lexer **lex);
 
-void 	print_tok_list(t_token *tok);
+void 	print_lex_list(t_lexer *lex);
+
 
 #endif // !MINISHELL_H

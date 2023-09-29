@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
+/*   By: fcosta-f <fcosta-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 11:54:38 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/09/29 14:22:25 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/09/29 17:47:16 by fcosta-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,4 +40,4 @@ int	main(int argc, char **argv, char **env)
 
 //hacer echo y exit
 //arreglar errores para errores en los subshells
-//tokenizar
+//lexerizar

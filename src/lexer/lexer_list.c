@@ -1,10 +1,10 @@
 #include "../../inc/minishell.h"
 
-t_token	*lexer_lstnew(void)
+t_lexer	*lexer_lstnew(void)
 {
-	t_token	*node;
+	t_lexer	*node;
 
-	node = malloc(sizeof(t_token));
+	node = malloc(sizeof(t_lexer));
 	if (!node)
 		return (NULL);
 	node->str = NULL;
@@ -14,9 +14,9 @@ t_token	*lexer_lstnew(void)
 	return (node);
 }
 
-t_token	*lexer_lstlast(t_token *lst)
+t_lexer	*lexer_lstlast(t_lexer *lst)
 {
-	t_token	*node;
+	t_lexer	*node;
 
 	if (!lst)
 		return (0);
@@ -26,9 +26,9 @@ t_token	*lexer_lstlast(t_token *lst)
 	return (node);
 }
 
-void	lexer_lstadd_back(t_token **lst, t_token *new)
+void	lexer_lstadd_back(t_lexer **lst, t_lexer *new)
 {
-	t_token	*last;
+	t_lexer	*last;
 
 	if ((*lst))
 	{
@@ -41,10 +41,10 @@ void	lexer_lstadd_back(t_token **lst, t_token *new)
 	// printf("new: %s, %d\n uwu: %s, %d", new->str, new->type, last->next->str, last->next->type);
 }
 
-void	lexer_lstclear(t_token **lst)
+void	lexer_lstclear(t_lexer **lst)
 {
-	t_token	*nxt;
-	t_token	*aux;
+	t_lexer	*nxt;
+	t_lexer	*aux;
 
 	aux = *lst;
 	while (aux)
@@ -57,7 +57,7 @@ void	lexer_lstclear(t_token **lst)
 	*lst = NULL;
 }
 
-int	lexer_lstsize(t_token *lst)
+int	lexer_lstsize(t_lexer *lst)
 {
 	int	i;
 

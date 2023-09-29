@@ -21,11 +21,11 @@ int	ft_is_shellsymbol(int c)
 	return (0);
 }
 
-void 	print_tok_list(t_token *tok)
+void 	print_lex_list(t_lexer *lex)
 {
-	t_token	*ptr;
+	t_lexer	*ptr;
 
-	ptr = tok;
+	ptr = lex;
 	while(ptr)
 	{
 		printf("%s\n", ptr->str);
@@ -34,12 +34,12 @@ void 	print_tok_list(t_token *tok)
 	}
 }
 
-void	print_tokens(t_token *tok, char *str)
+void	print_lexers(t_lexer *lex, char *str)
 {
 	printf("input: %s\n", str);
-	t_token	*ptr;
+	t_lexer	*ptr;
 
-	ptr = tok;
+	ptr = lex;
 	while (ptr)
 	{
 		if (ptr->type != 0)
