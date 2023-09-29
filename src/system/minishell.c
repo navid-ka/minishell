@@ -6,7 +6,7 @@
 /*   By: fcosta-f <fcosta-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:39:00 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/09/29 19:02:52 by fcosta-f         ###   ########.fr       */
+/*   Updated: 2023/09/29 19:30:20 by fcosta-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,9 @@ void	minishell(t_mch *sh, char **env)
 			add_history(line);
 			line = clean_input(line);
 			main_lexer(line, &lex);
-			//parser(sh, lex);
-			print_lex_list(lex);
+			parser(sh, lex);
+			print_pars_list(sh->parser);
+			//print_lex_list(lex);
 			//TODO:expansor
 			//TODO:executor
 			signal(SIGINT, sigint_handler);
