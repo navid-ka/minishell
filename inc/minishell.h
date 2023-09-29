@@ -83,17 +83,6 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
-typedef struct s_env
-{
-	char          **ms_env;
-	char          *key;
-	char          *value;
-	int           capacity;
-	struct s_env  *prev;
-	struct s_env  *next;
-}	t_env;
-
-
 typedef struct s_mch
 {
 	t_cmd	**cmd;
@@ -123,7 +112,7 @@ void	bt_exit(char *argv);
 
 
 // parser
-void	get_env(char **env);
+void	get_env(t_mch *sh, char **env);
 void	symbol_sorter(t_token *tok);
 void	parser(t_mch *sh, t_token *tok);
 
