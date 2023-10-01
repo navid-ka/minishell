@@ -6,7 +6,7 @@
 /*   By: fcosta-f <fcosta-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 14:21:30 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/09/29 19:29:24 by fcosta-f         ###   ########.fr       */
+/*   Updated: 2023/10/01 13:41:57 by fcosta-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,15 +56,19 @@ void	get_env(t_mch *sh, char **env)
 		ft_printf(1, "%s\n", sh->env[i]);*/
 }
 
-void 	print_pars_list(t_parser *lex)
+void 	print_pars_list(t_parser *pars)
 {
 	t_parser	*ptr;
 
-	ptr = lex;
+	ptr = pars;
 	while(ptr)
 	{
 		printf("%s\n", ptr->cmd);
-		printf("%s %s %s\n", ptr->args[0], ptr->args[1], ptr->args[2]);
+		int i = 0;
+		while (ptr->args[i])
+			printf("%s\n", ptr->args[i++]);
+		printf("el tipo es: %d", ptr->red->input);
+		printf("el tipo es: %d", ptr->red->output);
 		ptr = ptr->next;
 	}
 }

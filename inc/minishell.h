@@ -23,6 +23,40 @@
 # include <tcl.h>
 #endif
 
+//PIPEX
+# define ERR_ARG	1
+# define ERR_MC		2
+# define ERR_CNF	300
+# define ERR_PERM	400
+# define ERR_NFD	500
+# define ERR_PERR	1000
+
+typedef struct s_pipe
+{
+	int		infile;
+	int		outfile;
+	int		permission;
+	char	**routes;
+	pid_t	proc;
+	int		tube[2];
+	char	**cmd_args;
+	char	*cmd;
+	int		j;
+	int		here_doc;
+	char	*limiter;
+}	t_pipe;
+
+void	init_pipex(t_pipe *pipex, char **argv, char **envp);
+int		find_route(t_pipe *pipex, char **envp);
+char	*find_path(char **envp, int *found);
+char	*find_cmd(char **routes, char *cmd);
+int		wait_forks(t_pipe *pipex);
+void	last_pipe(t_pipe *pipex, int argc);
+int		ft_error(int ext, int err, char *cmd);
+void	close_pipes(t_pipe *pipex);
+
+//PIPEXFIN
+
 # define EMPTY 0 
 //# define ARG 2
 # define APPEND 3
@@ -74,7 +108,7 @@ typedef struct s_parser
 {
 	char	*cmd;
 	char	**args;
-	t_redir	red;
+	t_redir	*red;
 	struct s_parser *next;
 }	t_parser;
 
