@@ -17,11 +17,18 @@
 # include "../libs/libft/include/libft.h"
 # include <sys/stat.h>
 
-#ifdef __linux__
+#ifndef __linux__
 # include "tcl/tcl.h"
-#elif defined(__APPLE__) || defined(__MACH__)
+#endif
+
+#if defined(__APPLE__) || defined(__MACH__)
 # include <tcl.h>
 #endif
+
+#ifdef ARCHBTW
+# include <tcl.h>
+#endif
+
 
 //PIPEX
 # define ERR_ARG	1

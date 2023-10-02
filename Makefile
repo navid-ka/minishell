@@ -41,8 +41,11 @@ SRCS 					:= src/main.c  \
 						src/parser/new_parser.c 
 
 OBJS = $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRCS))
-
 CFLAGS 				:= -Wall -Wextra -Werror
+LINUX_DISTRIBUTION := $(shell lsb_release -si)
+ifeq ($(LINUX_DISTRIBUTION),EndeavourOS)
+	CFLAGS 				+= -D ARCHBTW
+endif
 
 all:
 		@$(MAKE) -C $(LIBFT)
@@ -51,11 +54,11 @@ all:
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(LIBS)
 	@printf "\rCompiling (╮°-°)╮┳━┳ : $<"
 	@mkdir -p $(@D)
-	@gcc $(CFLAGS) -c $< -o $@ $(INCLUDE)
+	gcc $(CFLAGS) -c $< -o $@ $(INCLUDE)
 
 $(NAME): $(OBJS) $(HEADERS) Makefile $(LIBS)
 	@mkdir -p $(@D)
-	@gcc $(CFLAGS) $(OBJS) $(LIBS) $(LIBS_LINK) -o $(NAME)
+	gcc $(CFLAGS) $(OBJS) $(LIBS) $(LIBS_LINK) -o $(NAME)
 
 clean:
 	@$(MAKE) -C $(LIBFT) clean
