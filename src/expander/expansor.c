@@ -45,12 +45,16 @@ void init_quotes(t_clean *quotes)
 void	expand_env(t_mch *sh, char *exp, char **new_exp)
 {
 	int i;
-	char *exit_value;
+	char *expand;
 
 	i = 0;
-	if (exp[i] == '?')
-		exit_value = ft_itoa(g_exit_status);
+	if (exp[i + 1] == '?')
+		expand = ft_itoa(g_exit_status);
 	else
+	{
+		//read_name
+		//get value
+	}
 		
 		
 }
@@ -71,10 +75,11 @@ void	expand(t_mch *sh, char **exp)
 			j++;
 		else if (exp[i][j] == '$' && !quotes.scuote)
 		{
-			expand_env(sh, &exp[i][j], exp_arg);
+			expand_env(sh, &exp[i][j], &exp_arg);
 		} else 
 			//TODO: Unir nueva variable 
 	}
+	exp[i] = exp_arg;
 }
 
 void	expansor(t_mch *sh)
