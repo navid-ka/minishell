@@ -12,21 +12,8 @@
 
 #include "../inc/minishell.h"
 
-
-// void create_cmd(char *argv, t_cmd *cmd)
-// {
-//   int quotes_count;
-
-//   quotes_count = 0;
-//   quotes_count = count_quotes(argv);
-//   cmd->argv = split_cmd(argv, quotes_count);
-//   if (!bt_is_builtin(cmd->argv))
-//     ft_printf(1, "Env execs?/n");
-//   else
-//     bt_check_builtin(cmd->argv, NULL);
-//     //TODO: aqui debemos hacer algo si no es builtin puede que ejecutarlo desde env?
-//   // o quizas me he adelantado y hay que hacer mas cosas
-// }
+//Global variable
+int	g_exit_status;
 
 int	main(int argc, char **argv, char **env)
 {
@@ -35,7 +22,7 @@ int	main(int argc, char **argv, char **env)
 	(void)argc;
 	(void)argv;
 	minishell(&sh, env);
-	return (0);
+	return (g_exit_status);
 }
 
 //hacer echo y exit
