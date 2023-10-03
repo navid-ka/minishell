@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcosta-f <fcosta-f@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 11:54:38 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/09/29 17:47:16 by fcosta-f         ###   ########.fr       */
+/*   Updated: 2023/10/03 18:24:20 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-//Global variable
-int	g_exit_status;
+int	g_exit_status = 0;
 
 int	main(int argc, char **argv, char **env)
 {
@@ -21,6 +20,7 @@ int	main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
+	g_exit_status = 0;
 	minishell(&sh, env);
 	return (g_exit_status);
 }

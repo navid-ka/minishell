@@ -63,7 +63,7 @@ int		ft_error(int ext, int err, char *cmd);
 void	close_pipes(t_pipe *pipex);
 
 //PIPEXFIN
-
+extern int	g_exit_status;
 # define EMPTY 0 
 //# define ARG 2
 # define APPEND 3
@@ -182,6 +182,12 @@ int		main_lexer(char *str, t_lexer **lex);
 
 void 	print_lex_list(t_lexer *lex);
 void 	print_pars_list(t_parser *lex);
+
+// expansor
+int	is_expandable(char e);
+void	init_quotes(t_clean *quotes);
+void	quote_updater(t_clean *quotes, char e);
+void	expansor(t_mch *sh);
 
 
 #endif // !MINISHELL_H
