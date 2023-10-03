@@ -12,6 +12,18 @@
 
 #include "../../inc/minishell.h"
 
+int	iterate_env_var(char *arg)
+{
+	int	i;
+
+	i = 1;
+	if (arg[1] == '?')
+		return (2);
+	while (arg[i] && arg[i] != '"' && arg[i] != '\'' && arg[i] != '$')
+		i++;
+	return (i);
+}
+
 char	*env_value(t_mch *sh, int env_index)
 {
 	int		c;
@@ -102,6 +114,7 @@ void	expand(t_mch *sh, char **exp)
 		else if (exp[i][j] == '$' && !quotes.scuote)
 		{
 			expand_env(sh, &exp[i][j], &exp_arg);
+			j += iterate_env_var(&exp[i][j]);
 		}
 		else
 			exp_arg = charjoin(exp_arg, exp[i][j]);
@@ -128,7 +141,6 @@ void	expansor(t_mch *sh)
 				if (is_expandable(exp->args[i][j]))
 				{
 					expand(sh, exp->args);
-					ft_printf(1, "%s", exp->args);
 					break ;
 				}
 			}

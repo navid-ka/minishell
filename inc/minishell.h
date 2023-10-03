@@ -188,6 +188,6 @@ int	is_expandable(char e);
 void	init_quotes(t_clean *quotes);
 void	quote_updater(t_clean *quotes, char e);
 void	expansor(t_mch *sh);
-
+void	print_expansor(t_mch *sh);
 
 #endif // !MINISHELL_H
