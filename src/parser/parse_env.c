@@ -72,3 +72,16 @@ void 	print_pars_list(t_parser *pars)
 		ptr = ptr->next;
 	}
 }
+
+void print_expansor(t_mch *sh)
+{
+	t_parser *ptr;
+	
+	int i = 0;
+	ptr = sh->parser;
+	while (ptr)
+	{
+		while (ptr->args[i])
+			printf("%s\n", ptr->args[i++]);
+	}
+}

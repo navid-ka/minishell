@@ -62,6 +62,7 @@ void	minishell(t_mch *sh, char **env)
 			//print_pars_list(sh->parser);
 			//print_lex_list(lex);
 			expansor(sh);
+			print_expansor(sh);
 			//TODO:executor
 			signal(SIGINT, sigint_handler);
 			line = clean_input(line);
