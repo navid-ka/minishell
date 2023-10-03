@@ -82,7 +82,7 @@ void	expand_env(t_mch *sh, char *exp, char **new_exp)
 	i = 0;
 	env_i = 0;
 	g_exit_status = 0;
-	if (exp[i + 1] == '?')
+	if (exp[1] == '?')
 		expand = ft_itoa(g_exit_status);
 	else
 	{

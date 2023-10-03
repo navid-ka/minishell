@@ -83,5 +83,6 @@ void print_expansor(t_mch *sh)
 	{
 		while (ptr->args[i])
 			printf("%s\n", ptr->args[i++]);
+		ptr = ptr->next;
 	}
 }
