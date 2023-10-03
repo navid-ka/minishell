@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   new_parser.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcosta-f <fcosta-f@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 16:09:24 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/01 14:14:25 by fcosta-f         ###   ########.fr       */
+/*   Updated: 2023/10/03 13:33:09 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,41 +42,37 @@ static void	parse(t_lexer *lex, t_parser *parser)
 	t_lexer *tmp;
 
 	tmp = lex;
+	parser->red = malloc(sizeof(t_redir) * 1);
+	parser->args = malloc(sizeof(t_parser) * 1);
 	while (tmp)
 	{
-		ft_printf(0, "uwu1\n");
-		if (tmp->type == CMD)
+		if (tmp && (tmp->type == CMD))
 		{
-			ft_printf(0, "uwu2\n");
-			parser->red = malloc(sizeof(t_redir) * 1);
+			
 			parser->red->input = 0;
 			parser->red->outfile = 0;
-			ft_printf(0, "uwu3\n");
 			int i = 0;
-			parser->args = malloc(sizeof(char *) * 50);
-			ft_printf(0, "uw4u\n");
 			while (tmp && tmp->type == CMD) {
 				parser->args[i++] = ft_strdup(tmp->str);
 				tmp = tmp->next;
 			}
-			ft_printf(0, "uwu5\n");
-			parser->cmd = parser->args[0];
+			parser->args[i] = NULL;
+			parser->cmd = ft_strdup(parser->args[0]);
 			if (tmp && tmp->type == INPUT)
 			{
-				ft_printf(0, "uwu7\n");
 				parser->red->input = tmp->type;
-				parser->red->infile = tmp->next->str;
+				parser->red->infile = ft_strdup(tmp->next->str);
 				tmp += 2;
-				ft_printf(0, "uwu6\n");
 			}
 			else{
-				parser->red->output = tmp->type;
+				/*parser->red->output = tmp->type;
 				if (tmp && (tmp->type == TRUNC || tmp->type == APPEND))
 				{
-					parser->red->outfile = tmp->next->str;
-					tmp += 2;
+					parser->red->outfile = ft_strdup(tmp->next->str);
+					tmp = tmp->next->next;
 				}
-				parser = parser->next;
+				tmp = tmp->next;
+				parser = parser->next;*/
 			}
 		}
 		else if (tmp && tmp->type == PIPE)

@@ -41,7 +41,7 @@ SRCS 					:= src/main.c  \
 						src/parser/new_parser.c 
 
 OBJS = $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRCS))
-CFLAGS 				:= -Wall -Wextra -Werror
+CFLAGS 				:= -Wall -Wextra -Werror -g
 LINUX_DISTRIBUTION := $(shell lsb_release -si)
 ifeq ($(LINUX_DISTRIBUTION),EndeavourOS)
 	CFLAGS 				+= -D ARCHBTW
