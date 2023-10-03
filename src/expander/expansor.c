@@ -91,7 +91,7 @@ void	expand_env(t_mch *sh, char *exp, char **new_exp)
 		expand = env_value(sh, env_i);
 	}
 	while (expand[i])
-		expand = charjoin(*new_exp, expand[i++]);
+		*new_exp = charjoin(*new_exp, expand[i++]);
 }
 
 void	expand(t_mch *sh, char **exp)
@@ -117,7 +117,7 @@ void	expand(t_mch *sh, char **exp)
 			j += iterate_env_var(&exp[i][j]);
 		}
 		else
-			exp_arg = charjoin(exp_arg, exp[i][j]);
+			exp_arg = charjoin(exp_arg, exp[i][j++]);
 	}
 	exp[i] = exp_arg;
 }
