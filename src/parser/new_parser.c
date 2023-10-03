@@ -6,7 +6,7 @@
 /*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 16:09:24 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/03 13:33:09 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/10/03 18:18:25 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ static void	parse(t_lexer *lex, t_parser *parser)
 			{
 				parser->red->input = tmp->type;
 				parser->red->infile = ft_strdup(tmp->next->str);
-				tmp += 2;
+				tmp = tmp->next->next;
 			}
 			else{
 				/*parser->red->output = tmp->type;

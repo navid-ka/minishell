@@ -6,7 +6,7 @@
 /*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:39:00 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/03 13:13:35 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/10/03 17:22:24 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	minishell(t_mch *sh, char **env)
 			parser(sh, lex);
 			//print_pars_list(sh->parser);
 			//print_lex_list(lex);
-			//TODO:expansor
+			expansor(sh);
 			//TODO:executor
 			signal(SIGINT, sigint_handler);
 			line = clean_input(line);

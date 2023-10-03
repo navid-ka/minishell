@@ -6,59 +6,82 @@
 /*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:04:43 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/09/29 14:12:32 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/10/03 18:36:54 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-//brace expansor https://www.gnu.org/software/bash/manual/html_node/Brace-Expansion.html
-//$? 
-//expected g_eixt_status
-//${USER}
-//user env
-
-int is_expandable(char e)
+char	*env_value(t_mch *sh, int env_index)
 {
-	return (e == '\'' || e == '"' || e == '$')
+	int		c;
+	char	*env_value;
+
+	c = 0;
+	env_value = NULL;
+	while (sh->env[env_index][c] != '=')
+		c++;
+	while (sh->env[env_index][c++])
+		env_value = charjoin(env_value, sh->env[env_index][c]);
+	return (env_value);
 }
 
-void init_quotes(t_clean *quotes)
+int	env_index(t_mch *sh, char *env_name)
 {
-	quotes->dcuote = false;
-	quotes->scuote = false;
+	int		i;
+	char	*tmp;
+
+	tmp = ft_strjoin(env_name, "=");
+	if (!tmp)
+		return (-1);
+	i = 0;
+	while (sh->env[i])
+	{
+		if (ft_strncmp(tmp, sh->env[i], ft_strlen(tmp)) == 0)
+			return (i);
+		i++;
+	}
+
+	return (-1);
 }
 
- void quote_updater(t_quotes *quotes, char e)
+char	*get_env_name(char *arg)
 {
-	if (e == '"' && quotes->dcuote == false && quotes->scuote != true)
-		quotes->dcuote = true;
-	else if (e == '"' && quotes->dcuote == true)
-		quotes->dcuote = false;
-	if (e == '"' && quotes->scuote == false && quotes->dcuote != true)
-		quotes->scuote = true;
-	else if (e == '"' && quotes->dcuote == true)
-		quote->scuote = false;
+	int		i;
+	char	*env_name;
 
+	i = 1;
+	env_name = NULL;
+	while (arg[i] && arg[i] != '"' && arg[i] != '\'' && arg[i] != '$')
+	{
+		env_name = charjoin(env_name, arg[i]);
+		i++;
+	}
+	return (env_name);
 }
 
 void	expand_env(t_mch *sh, char *exp, char **new_exp)
 {
-	int i;
-	char *expand;
+	int		i;
+	char	*expand;
+	char	*env_name;
+	int		env_i;
 
 	i = 0;
+	env_i = 0;
+	g_exit_status = 0;
 	if (exp[i + 1] == '?')
 		expand = ft_itoa(g_exit_status);
 	else
 	{
-		//read_name
-		//get value
+		env_name = get_env_name(exp);
+		env_i = env_index(sh, env_name);
+		expand = env_value(sh, env_i);
 	}
-		
-		
+	while (expand[i])
+		expand = charjoin(*new_exp, expand[i++]);
 }
-	
+
 void	expand(t_mch *sh, char **exp)
 {
 	int		i; 
@@ -66,39 +89,48 @@ void	expand(t_mch *sh, char **exp)
 	char	*exp_arg;
 	t_clean	quotes;
 
+	i = 0;
+	j = 0;
+	exp_arg = NULL;
 	init_quotes(&quotes);
 	if (exp[i][j])
 	{
 		quote_updater(&quotes, exp[i][j]);
-		if ((exp[i][j] == '"' && !quotes.scuote
-			|| exp[i][j] == '\'' && !quotes.duote))
+		if ((exp[i][j] == '"' && !quotes.scuote) \
+			|| (exp[i][j] == '\'' && !quotes.dcuote))
 			j++;
 		else if (exp[i][j] == '$' && !quotes.scuote)
 		{
 			expand_env(sh, &exp[i][j], &exp_arg);
-		} else 
-			//TODO: Unir nueva variable 
+		}
+		else
+			exp_arg = charjoin(exp_arg, exp[i][j]);
 	}
 	exp[i] = exp_arg;
 }
 
 void	expansor(t_mch *sh)
 {
+	int	j;
+	int	i;
 	t_parser *exp;
-	int		i;
-	int		j;
-	
+
+
 	i = ~0;
 	j = ~0;
 	exp = sh->parser;
 	while (exp)
 	{
-		while(exp->args[++i])
+		while (exp->args[++i])
 		{
 			while (exp->args[i][++j])
 			{
 				if (is_expandable(exp->args[i][j]))
+				{
 					expand(sh, exp->args);
+					ft_printf(1, "%s", exp->args);
+					break ;
+				}
 			}
 		}
 		i = ~0;

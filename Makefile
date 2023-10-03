@@ -38,7 +38,9 @@ SRCS 					:= src/main.c  \
 						src/builtins/bt_init.c \
 						src/utils/cmd_split.c \
 						src/parser/parse_env.c \
-						src/parser/new_parser.c 
+						src/parser/new_parser.c \
+						src/expander/expansor_utils.c \
+						src/expander/expansor.c
 
 OBJS = $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRCS))
 CFLAGS 				:= -Wall -Wextra -Werror -g
