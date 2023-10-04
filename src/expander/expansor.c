@@ -6,7 +6,7 @@
 /*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:04:43 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/03 18:36:54 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/10/04 11:10:07 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,9 +89,11 @@ void	expand_env(t_mch *sh, char *exp, char **new_exp)
 		env_name = get_env_name(exp);
 		env_i = env_index(sh, env_name);
 		expand = env_value(sh, env_i);
+		free(env_name);
 	}
 	while (expand[i])
 		*new_exp = charjoin(*new_exp, expand[i++]);
+	free(expand);
 }
 
 void	expand(t_mch *sh, char **exp)
@@ -119,6 +121,7 @@ void	expand(t_mch *sh, char **exp)
 		else
 			exp_arg = charjoin(exp_arg, exp[i][j++]);
 	}
+	free(exp_arg);
 	exp[i] = exp_arg;
 }
 
