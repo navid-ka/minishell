@@ -6,7 +6,7 @@
 /*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:19:59 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/04 12:07:01 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/10/04 13:01:54 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,8 @@
 
 void	executor(t_mch *sh)
 {
-	t_parser *cmd;
+	t_parser const	*cmd = sh->parser;
 
-	cmd = sh->parser;
 	if (bt_is_builtin(cmd->args))
 		bt_check_builtin(sh);
 }
