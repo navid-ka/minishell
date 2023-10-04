@@ -6,7 +6,7 @@
 /*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 11:13:51 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/09/26 11:34:48 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/10/04 12:04:30 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,17 +31,19 @@ bool	bt_is_builtin(char **argv)
 	return (false);
 }
 
-void  bt_check_builtin(char **argv, char **env)
+void  bt_check_builtin(t_mch *sh)
 {
-	if (ft_strcmp(argv[0], "cd") == 0)
+	t_parser *cmd;
+
+	cmd = sh->parser;
+	/*if (ft_strcmp(argv[0], "cd") == 0)
 		//bt_cd(argv, env);
-		ft_printf(1, "to implement\n");
-	if (ft_strcmp(argv[0], "env") == 0)
-		bt_env(env);
-	if (ft_strcmp(argv[0], "echo") == 0)
-		ft_printf(1, "to implement\n");
-		//bt_echo(argv);
-	if (ft_strcmp(argv[0], "pwd") == 0)
+		ft_printf(1, "to implement\n");*/
+	if (ft_strcmp(cmd->args[0], "env") == 0)
+		bt_env(sh);
+	if (ft_strcmp(cmd->args[0], "echo") == 0)
+		bt_echo(sh);
+	/*if (ft_strcmp(argv[0], "pwd") == 0)
 		ft_printf(1, "to implement\n");
 		//bt_pwd();
 	if (ft_strcmp(argv[0], "export") == 0)
@@ -52,5 +54,5 @@ void  bt_check_builtin(char **argv, char **env)
 		//bt_unset();
 	if (ft_strcmp(argv[0], "exit") == 0)
 	ft_printf(1, "to implement\n");
-		//bt_exit();
+		//bt_exit();*/
 }

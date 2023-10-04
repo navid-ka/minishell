@@ -3,25 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcosta-f <fcosta-f@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 11:52:43 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/09/29 17:47:16 by fcosta-f         ###   ########.fr       */
+/*   Updated: 2023/10/04 12:03:01 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	bt_echo(t_lexer *lex)
+void	bt_echo(t_mch *sh)
 {
 	int endl;
-
+	t_parser *cmd;
+	int i;
+	
+	i = 0;
+	cmd = sh->parser;
 	endl = 0;
-	if (strcmp(lex->str, "-n") == 0)
+	if (strcmp(cmd->args[0], "-n") == 0)
 		endl = 1;
 	if (endl)
-		lex = lex->next;
-	ft_printf(1, "%s", lex->str);
+		cmd = cmd->next;
+	ft_printf(1, "%s", cmd->args[0]);
 	if (!endl)
 		ft_printf(1, "\n");
+
 }
