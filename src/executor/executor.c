@@ -6,10 +6,13 @@
 /*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:19:59 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/09/28 12:23:47 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/10/04 10:45:49 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-//void executor()....
+void	executor(t_mch *sh)
+{
+	
+}
