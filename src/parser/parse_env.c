@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcosta-f <fcosta-f@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 14:21:30 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/01 13:41:57 by fcosta-f         ###   ########.fr       */
+/*   Updated: 2023/10/04 12:08:40 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void print_expansor(t_mch *sh)
 	while (ptr)
 	{
 		while (ptr->args[i])
-			printf("%s\n", ptr->args[i++]);
+			printf("EXPANDER: %s", ptr->args[i++]);
 		ptr = ptr->next;
 	}
 }

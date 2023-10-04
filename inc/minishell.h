@@ -139,8 +139,8 @@ char	*shell_prompt(int i);
 
 // builtins env
 bool	bt_is_builtin(char **argv);
-void	bt_check_builtin(char **argv, char **env);
-void	bt_env(char **env);
+void	bt_check_builtin(t_mch *sh);
+void	bt_env(t_mch *sh);
 void	bt_exit(char *argv);
 // parser
 void	get_env(t_mch *sh, char **env);
@@ -151,7 +151,7 @@ int		syntax_checker(char *line);
 void	syntax_error(void);
 int		pwd(void);
 
-void	bt_echo(t_lexer *lex);
+void	bt_echo(t_mch *sh);
 //int		bt_get_dirs(char **env, t_env *env_routes);
 //int		bt_cd(char *input, t_env env_routes);
 
@@ -189,5 +189,8 @@ void	init_quotes(t_clean *quotes);
 void	quote_updater(t_clean *quotes, char e);
 void	expansor(t_mch *sh);
 void	print_expansor(t_mch *sh);
+
+// executor
+void	executor(t_mch *sh);
 
 #endif // !MINISHELL_H
