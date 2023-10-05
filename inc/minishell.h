@@ -92,6 +92,7 @@ typedef struct s_redir
 	char	*outfile;
 	//int		fd;
 	// struct s_redir *next;
+
     //int		permission; and more
 }   t_redir;
 
