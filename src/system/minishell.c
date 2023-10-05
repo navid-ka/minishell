@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:39:00 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/05 13:38:36 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/05 15:05:50 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,9 @@ void	minishell(t_mch *sh, char **env)
 			add_history(line);
 			line = clean_input(line);
 			main_lexer(line, &lex);
-			parser(sh, lex);
-			//print_pars_list(sh->parser);
 			print_lex_list(lex);
+			parser(sh, lex);
+			print_pars_list(sh->parser);
 			//expansor(sh);
 			//print_expansor(sh);
 			//executor(sh);
