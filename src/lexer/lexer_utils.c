@@ -28,7 +28,7 @@ void 	print_lex_list(t_lexer *lex)
 	ptr = lex;
 	while(ptr)
 	{
-		printf("%s\n", ptr->str);
+		//printf("%s\n", ptr->str);
 		printf("type %d:\n", ptr->type);
 		ptr = ptr->next;
 	}

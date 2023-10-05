@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
+/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 14:21:30 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/04 12:08:40 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/10/05 13:36:56 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	get_env(t_mch *sh, char **env)
 	j = ~0;
 	while (env[++j])
 		;
-	sh->env = ft_calloc(sizeof(sh->env + 1), j);
+	sh->env = ft_calloc(sizeof(char *), (j + 1));
 	while (env[++i])
 		sh->env[i] = ft_strdup(env[i]);
 	sh->env[i] = NULL;
@@ -67,8 +67,9 @@ void 	print_pars_list(t_parser *pars)
 		int i = 0;
 		while (ptr->args[i])
 			printf("%s\n", ptr->args[i++]);
-		printf("el tipo es: %d", ptr->red->input);
-		printf("el tipo es: %d", ptr->red->output);
+		printf("el tipo es: %s", ptr->red->infile);
+		printf("el tipo es: %s", ptr->red->outfile);
+		ptr->red = ptr->red->next;
 		ptr = ptr->next;
 	}
 }

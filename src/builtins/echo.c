@@ -16,9 +16,7 @@ void	bt_echo(t_mch *sh)
 {
 	int endl;
 	t_parser *cmd;
-	int i;
 	
-	i = 0;
 	cmd = sh->parser;
 	endl = 0;
 	if (strcmp(cmd->args[0], "-n") == 0)
