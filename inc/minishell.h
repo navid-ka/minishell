@@ -17,11 +17,18 @@
 # include "../libs/libft/include/libft.h"
 # include <sys/stat.h>
 
-#ifdef __linux__
+#ifndef __linux__
 # include "tcl/tcl.h"
-#elif defined(__APPLE__) || defined(__MACH__)
+#endif
+
+#if defined(__APPLE__) || defined(__MACH__)
 # include <tcl.h>
 #endif
+
+#ifdef ARCHBTW
+# include <tcl.h>
+#endif
+
 
 //PIPEX
 # define ERR_ARG	1
@@ -56,7 +63,7 @@ int		ft_error(int ext, int err, char *cmd);
 void	close_pipes(t_pipe *pipex);
 
 //PIPEXFIN
-
+extern int	g_exit_status;
 # define EMPTY 0 
 //# define ARG 2
 # define APPEND 3
@@ -83,7 +90,8 @@ typedef struct s_redir
     int		output;
 	char	*infile;
 	char	*outfile;
-	int		fd;
+	//int		fd;
+	// struct s_redir *next;
     //int		permission; and more
 }   t_redir;
 
@@ -106,10 +114,11 @@ typedef struct s_lexer
 
 typedef struct s_parser
 {
-	char	*cmd;
+	//char	*cmd;
 	char	**args;
-	t_redir	*red;
+	t_redir	red;
 	struct s_parser *next;
+	//seguramente ponga struct s_parser *prev
 }	t_parser;
 
 typedef struct s_mch
@@ -132,19 +141,21 @@ char	*shell_prompt(int i);
 
 // builtins env
 bool	bt_is_builtin(char **argv);
-void	bt_check_builtin(char **argv, char **env);
-void	bt_env(char **env);
+void	bt_check_builtin(t_mch *sh);
+void	bt_env(t_mch *sh);
 void	bt_exit(char *argv);
 // parser
 void	get_env(t_mch *sh, char **env);
 void	symbol_sorter(t_lexer *lex);
 void	parser(t_mch *sh, t_lexer *lex);
+t_parser *convertLexerToParser(t_lexer *lexerList);
+void printParserList(t_parser *parserList);
 
 int		syntax_checker(char *line);
 void	syntax_error(void);
 int		pwd(void);
 
-void	bt_echo(t_lexer *lex);
+void	bt_echo(t_mch *sh);
 //int		bt_get_dirs(char **env, t_env *env_routes);
 //int		bt_cd(char *input, t_env env_routes);
 
@@ -176,5 +187,14 @@ int		main_lexer(char *str, t_lexer **lex);
 void 	print_lex_list(t_lexer *lex);
 void 	print_pars_list(t_parser *lex);
 
+// expansor
+int	is_expandable(char e);
+void	init_quotes(t_clean *quotes);
+void	quote_updater(t_clean *quotes, char e);
+void	expansor(t_mch *sh);
+void	print_expansor(t_mch *sh);
+
+// executor
+void	executor(t_mch *sh);
 
 #endif // !MINISHELL_H

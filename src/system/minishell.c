@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcosta-f <fcosta-f@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcosta-f <fcosta-f@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:39:00 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/01 13:50:07 by fcosta-f         ###   ########.fr       */
+/*   Updated: 2023/10/05 20:55:10 by fcosta-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,14 @@ void	minishell(t_mch *sh, char **env)
 			add_history(line);
 			line = clean_input(line);
 			main_lexer(line, &lex);
-			parser(sh, lex);
-			print_pars_list(sh->parser);
-			//print_lex_list(lex);
-			//TODO:expansor
-			//TODO:executor
+			// print_lex_list(lex);
+			// parser(sh, lex);
+			// print_pars_list(sh->parser);
+			//expansor(sh);
+			//print_expansor(sh);
+			//executor(sh);
+			t_parser *parserList = convertLexerToParser(lex); //se mueve lex?
+			printParserList(parserList);
 			signal(SIGINT, sigint_handler);
 			line = clean_input(line);
 			free(line);

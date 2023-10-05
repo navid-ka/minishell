@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_env.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcosta-f <fcosta-f@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcosta-f <fcosta-f@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 14:21:30 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/01 13:41:57 by fcosta-f         ###   ########.fr       */
+/*   Updated: 2023/10/05 20:54:15 by fcosta-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	get_env(t_mch *sh, char **env)
 	j = ~0;
 	while (env[++j])
 		;
-	sh->env = ft_calloc(sizeof(sh->env + 1), j);
+	sh->env = ft_calloc(sizeof(char *), (j + 1));
 	while (env[++i])
 		sh->env[i] = ft_strdup(env[i]);
 	sh->env[i] = NULL;
@@ -56,19 +56,34 @@ void	get_env(t_mch *sh, char **env)
 		ft_printf(1, "%s\n", sh->env[i]);*/
 }
 
-void 	print_pars_list(t_parser *pars)
-{
-	t_parser	*ptr;
+// void 	print_pars_list(t_parser *pars)
+// {
+// 	t_parser	*ptr;
 
-	ptr = pars;
-	while(ptr)
+// 	ptr = pars;
+// 	while(ptr)
+// 	{
+// 		//printf("%s\n", ptr->cmd);
+// 		int i = 0;
+// 		while (ptr->args[i])
+// 			printf("%s\n", ptr->args[i++]);
+// 		//printf("el tipo es: %s", ptr->red->infile);
+// 		//printf("el tipo es: %s", ptr->red->outfile);
+// 		//ptr->red = ptr->red->next;
+// 		ptr = ptr->next;
+// 	}
+// }
+
+void print_expansor(t_mch *sh)
+{
+	t_parser *ptr;
+	
+	int i = 0;
+	ptr = sh->parser;
+	while (ptr)
 	{
-		printf("%s\n", ptr->cmd);
-		int i = 0;
 		while (ptr->args[i])
-			printf("%s\n", ptr->args[i++]);
-		printf("el tipo es: %d", ptr->red->input);
-		printf("el tipo es: %d", ptr->red->output);
+			printf("EXPANDER: %s", ptr->args[i++]);
 		ptr = ptr->next;
 	}
 }

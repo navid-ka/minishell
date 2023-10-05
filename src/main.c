@@ -3,30 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcosta-f <fcosta-f@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 11:54:38 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/09/29 17:47:16 by fcosta-f         ###   ########.fr       */
+/*   Updated: 2023/10/03 18:24:20 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-
-// void create_cmd(char *argv, t_cmd *cmd)
-// {
-//   int quotes_count;
-
-//   quotes_count = 0;
-//   quotes_count = count_quotes(argv);
-//   cmd->argv = split_cmd(argv, quotes_count);
-//   if (!bt_is_builtin(cmd->argv))
-//     ft_printf(1, "Env execs?/n");
-//   else
-//     bt_check_builtin(cmd->argv, NULL);
-//     //TODO: aqui debemos hacer algo si no es builtin puede que ejecutarlo desde env?
-//   // o quizas me he adelantado y hay que hacer mas cosas
-// }
+int	g_exit_status = 0;
 
 int	main(int argc, char **argv, char **env)
 {
@@ -34,8 +20,9 @@ int	main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
+	g_exit_status = 0;
 	minishell(&sh, env);
-	return (0);
+	return (g_exit_status);
 }
 
 //hacer echo y exit

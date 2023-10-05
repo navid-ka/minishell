@@ -6,17 +6,17 @@
 /*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 11:50:02 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/09/26 12:00:10 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/10/04 12:01:48 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	bt_env(char **env)
+void	bt_env(t_mch *sh)
 {
 	int	i;
 
 	i = ~0;
-	while (env[++i] != NULL)
-		ft_printf(1, "%s\n", env[i]);
+	while (sh->env[++i] != NULL)
+		ft_printf(1, "%s\n", sh->env[i]);
 }
