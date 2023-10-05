@@ -56,23 +56,23 @@ void	get_env(t_mch *sh, char **env)
 		ft_printf(1, "%s\n", sh->env[i]);*/
 }
 
-void 	print_pars_list(t_parser *pars)
-{
-	t_parser	*ptr;
+// void 	print_pars_list(t_parser *pars)
+// {
+// 	t_parser	*ptr;
 
-	ptr = pars;
-	while(ptr)
-	{
-		//printf("%s\n", ptr->cmd);
-		int i = 0;
-		while (ptr->args[i])
-			printf("%s\n", ptr->args[i++]);
-		//printf("el tipo es: %s", ptr->red->infile);
-		//printf("el tipo es: %s", ptr->red->outfile);
-		//ptr->red = ptr->red->next;
-		ptr = ptr->next;
-	}
-}
+// 	ptr = pars;
+// 	while(ptr)
+// 	{
+// 		//printf("%s\n", ptr->cmd);
+// 		int i = 0;
+// 		while (ptr->args[i])
+// 			printf("%s\n", ptr->args[i++]);
+// 		//printf("el tipo es: %s", ptr->red->infile);
+// 		//printf("el tipo es: %s", ptr->red->outfile);
+// 		//ptr->red = ptr->red->next;
+// 		ptr = ptr->next;
+// 	}
+// }
 
 void print_expansor(t_mch *sh)
 {
@@ -83,6 +83,7 @@ void print_expansor(t_mch *sh)
 	while (ptr)
 	{
 		while (ptr->args[i])
+
 			printf("EXPANDER: %s", ptr->args[i++]);
 		ptr = ptr->next;
 	}

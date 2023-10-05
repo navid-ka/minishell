@@ -90,8 +90,9 @@ typedef struct s_redir
     int		output;
 	char	*infile;
 	char	*outfile;
-	int		fd;
-	struct s_redir *next;
+	//int		fd;
+	// struct s_redir *next;
+
     //int		permission; and more
 }   t_redir;
 
@@ -114,10 +115,11 @@ typedef struct s_lexer
 
 typedef struct s_parser
 {
-	char	*cmd;
+	//char	*cmd;
 	char	**args;
-	t_redir	*red;
+	t_redir	red;
 	struct s_parser *next;
+	//seguramente ponga struct s_parser *prev
 }	t_parser;
 
 typedef struct s_mch
@@ -147,6 +149,8 @@ void	bt_exit(char *argv);
 void	get_env(t_mch *sh, char **env);
 void	symbol_sorter(t_lexer *lex);
 void	parser(t_mch *sh, t_lexer *lex);
+t_parser *convertLexerToParser(t_lexer *lexerList);
+void printParserList(t_parser *parserList);
 
 int		syntax_checker(char *line);
 void	syntax_error(void);

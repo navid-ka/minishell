@@ -35,7 +35,7 @@ static int count_pipes(t_lexer *lexer)
 
 static void init_parser(t_parser *parser)
 {
-    parser->cmd = NULL;
+
     parser->args = NULL;
     parser->red = NULL;
     parser->next = NULL;
