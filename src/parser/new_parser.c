@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   new_parser.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
+/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 16:09:24 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/03 18:18:25 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/10/05 13:41:24 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,16 @@ static void	parse(t_lexer *lex, t_parser *parser)
 	t_lexer *tmp;
 
 	tmp = lex;
-	parser->red = malloc(sizeof(t_redir) * 1);
-	parser->args = malloc(sizeof(t_parser) * 1);
+	parser->red = malloc(sizeof(t_redir) * 1000);
+	parser->args = malloc(sizeof(t_parser) * 1000);
+	parser->red->input = 0;
+	parser->red->output = 0;
+	parser->red->infile = NULL;
+	parser->red->outfile = NULL;
 	while (tmp)
 	{
 		if (tmp && (tmp->type == CMD))
 		{
-			
-			parser->red->input = 0;
-			parser->red->outfile = 0;
 			int i = 0;
 			while (tmp && tmp->type == CMD) {
 				parser->args[i++] = ft_strdup(tmp->str);
@@ -62,22 +63,28 @@ static void	parse(t_lexer *lex, t_parser *parser)
 			{
 				parser->red->input = tmp->type;
 				parser->red->infile = ft_strdup(tmp->next->str);
+				parser->red = parser->red->next;
+				parser = parser->next;
 				tmp = tmp->next->next;
 			}
 			else{
-				/*parser->red->output = tmp->type;
+				//parser->red->output = tmp->type;
 				if (tmp && (tmp->type == TRUNC || tmp->type == APPEND))
 				{
 					parser->red->outfile = ft_strdup(tmp->next->str);
+					parser->red = parser->red->next;
+					parser = parser->next;
 					tmp = tmp->next->next;
 				}
 				tmp = tmp->next;
-				parser = parser->next;*/
+				parser->red = parser->red->next;
+				parser = parser->next;
 			}
 		}
 		else if (tmp && tmp->type == PIPE)
 		{
 			parser->red->input = tmp->type;
+			parser->red = parser->red->next;
 			tmp = tmp->next;
 		}
 	}
