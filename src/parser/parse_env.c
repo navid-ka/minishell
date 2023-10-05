@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 14:21:30 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/05 13:36:56 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/05 16:51:11 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,13 +63,13 @@ void 	print_pars_list(t_parser *pars)
 	ptr = pars;
 	while(ptr)
 	{
-		printf("%s\n", ptr->cmd);
+		//printf("%s\n", ptr->cmd);
 		int i = 0;
 		while (ptr->args[i])
 			printf("%s\n", ptr->args[i++]);
-		printf("el tipo es: %s", ptr->red->infile);
-		printf("el tipo es: %s", ptr->red->outfile);
-		ptr->red = ptr->red->next;
+		//printf("el tipo es: %s", ptr->red->infile);
+		//printf("el tipo es: %s", ptr->red->outfile);
+		//ptr->red = ptr->red->next;
 		ptr = ptr->next;
 	}
 }
