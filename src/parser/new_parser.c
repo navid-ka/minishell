@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 16:09:24 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/05 15:02:57 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/05 16:48:50 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 //comando >> archivo_de_salida
 //comando << DELIMITADOR
 
-// Function to count pipes in the lexer
+
 static int count_pipes(t_lexer *lexer)
 {
     int pipes = 0;
@@ -33,7 +33,6 @@ static int count_pipes(t_lexer *lexer)
     return pipes;
 }
 
-// Function to initialize a t_parser structure
 static void init_parser(t_parser *parser)
 {
     parser->cmd = NULL;
@@ -41,8 +40,7 @@ static void init_parser(t_parser *parser)
     parser->red = NULL;
     parser->next = NULL;
 }
-
-// Function to initialize a t_redir structure
+/*
 static void init_redir(t_redir *redir)
 {
     redir->input = 0;
@@ -51,45 +49,68 @@ static void init_redir(t_redir *redir)
     redir->outfile = NULL;
     redir->fd = 0;
     redir->next = NULL;
-}
+}*/
 
-// Function to parse a command and populate a t_parser structure
 static void parse_cmd(t_lexer **lex, t_parser *parser)
 {
+    t_lexer *tmp = *lex; 
     int i = 0;
-    while (*lex && (*lex)->type == CMD)
-    {
-        parser->args = realloc(parser->args, (i + 2) * sizeof(char *));
-        parser->args[i++] = ft_strdup((*lex)->str);
-        *lex = (*lex)->next;
-    }
-    parser->args[i] = NULL;
-    parser->cmd = ft_strdup(parser->args[0]);
-}
 
-// Function to parse redirection and create a t_redir structure
+    parser->args = malloc(sizeof(char *) + 2); 
+    while (tmp && tmp->type == CMD)
+    {
+        parser->args[i++] = ft_strdup(tmp->str);
+        tmp = tmp->next;
+    }
+
+    //parser->args[i] = NULL;
+    //parser->cmd = ft_strdup(parser->args[0]);
+}
+/*
 static t_redir *parse_redirection(t_lexer **lex)
 {
     t_redir *redir = malloc(sizeof(t_redir));
+    if (redir == NULL)
+    {
+        ft_printf(2,"Error: Invalid output redirection format.\n");
+        exit(1);  // Adjust the exit behavior as needed
+    }
     init_redir(redir);
 
     if ((*lex)->type == INPUT)
     {
         redir->input = (*lex)->type;
-        redir->infile = ft_strdup((*lex)->next->str);
-        *lex = (*lex)->next->next;
+        if ((*lex)->next && (*lex)->next->str) // Check if next node exists and has a string
+        {
+            redir->infile = ft_strdup((*lex)->next->str);
+            *lex = (*lex)->next->next;
+        }
+        else
+        {
+            // Handle the case where there is no next node or no string
+            ft_printf(2,"Error: Invalid output redirection format.\n");
+            exit(1); // Or adjust the exit behavior as needed
+        }
     }
     else if ((*lex)->type == TRUNC || (*lex)->type == APPEND)
     {
         redir->output = (*lex)->type;
-        redir->outfile = ft_strdup((*lex)->next->str);
-        *lex = (*lex)->next->next;
+        if ((*lex)->next && (*lex)->next->str) // Check if next node exists and has a string
+        {
+            redir->outfile = ft_strdup((*lex)->next->str);
+            *lex = (*lex)->next->next;
+        }
+        else
+        {
+            // Handle the case where there is no next node or no string
+            ft_printf(2,"Error: Invalid output redirection format.\n");
+            exit(1); // Or adjust the exit behavior as needed
+        }
     }
 
     return redir;
 }
 
-// Function to append a t_redir structure to the linked list of redirections
 static void append_redir(t_parser *parser, t_redir *redir)
 {
     if (parser->red == NULL)
@@ -107,21 +128,33 @@ static void append_redir(t_parser *parser, t_redir *redir)
     }
 }
 
-// Function to handle pipe logic
-static void parse_pipe(t_lexer **lex)
+static void parse_pipe(t_lexer **lex, t_parser *parser)
 {
-    // Handle pipe logic here
+    // Create a new redir structure for the pipe
+    t_redir *redir = malloc(sizeof(t_redir));
+    if (redir == NULL)
+    {
+        ft_printf(2, "Error: Memory allocation for pipe redirection failed.\n");
+        exit(1); // Adjust the exit behavior as needed
+    }
+    init_redir(redir);
+
+    // Set the output field in the redir structure
+    redir->output = (*lex)->type;
+
+    // Update the parser's redir field with the new redir structure
+    append_redir(parser, redir);
+
     if (*lex)
     {
         (*lex) = (*lex)->next;
     }
 }
-
-// Function to handle the overall parsing loop and creation of t_parser structures
-// Function to handle the overall parsing loop and creation of t_parser structures
+*/
 void parse_input(t_lexer *lex, t_parser *parser)
 {
     t_lexer *tmp = lex;
+    //t_redir *redir = NULL;
 
     while (tmp)
     {
@@ -129,32 +162,29 @@ void parse_input(t_lexer *lex, t_parser *parser)
         {
             parse_cmd(&tmp, parser);
         }
-        else if (tmp->type == INPUT || tmp->type == TRUNC || tmp->type == APPEND)
+        /*else if (tmp->type == INPUT || tmp->type == TRUNC || tmp->type == APPEND)
         {
-            t_redir *redir = parse_redirection(&tmp);
+            redir = parse_redirection(&tmp);
             append_redir(parser, redir);
         }
         else if (tmp->type == PIPE)
-        {
-            parse_pipe(&tmp);  // Remove the 'parser' argument here
-        }
+            parse_pipe(&tmp, parser);*/
 
         tmp = tmp->next;
-
-        if (tmp)
-        {
-            parser->next = malloc(sizeof(t_parser));
-            init_parser(parser->next);
-            parser = parser->next;
-        }
     }
+    
+   /* if (tmp && tmp->next)
+    {
+        parser->next = malloc(sizeof(t_parser));
+        init_parser(parser->next);
+        parser = parser->next;
+    }*/
 }
 
-// Function to initiate the parsing process
 void parser(t_mch *sh, t_lexer *lex)
 {
     int pipes = count_pipes(lex);
-    sh->parser = malloc(sizeof(t_parser) * (pipes + 1));
+    sh->parser = malloc(sizeof(t_parser) * (pipes + 2));
     init_parser(sh->parser);
     parse_input(lex, sh->parser);
 }
