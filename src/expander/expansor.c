@@ -121,8 +121,8 @@ void	expand(t_mch *sh, char **exp)
 		else
 			exp_arg = charjoin(exp_arg, exp[i][j++]);
 	}
-	free(exp_arg);
 	exp[i] = exp_arg;
+	free(exp_arg);
 }
 
 void	expansor(t_mch *sh)

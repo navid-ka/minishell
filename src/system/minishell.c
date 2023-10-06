@@ -12,16 +12,22 @@
 
 #include "../../inc/minishell.h"
 
-void	free_lexers(t_lexer *lex)
+void	free_lexers(t_mch **sh)
 {
-	t_lexer *tmp;
+	t_lexer *lex;
+	t_lexer *l_tmp;
+	t_parser *parser;
+	t_parser *t_pars;
 
-	tmp = NULL;
+	lex = (*sh)->lex;
+	parser = (*sh)->parser;
 	while (lex)
 	{
 		free(lex->str);
+		l_tmp = lex;
 		lex = lex->next;
-		free(tmp);
+		free(l_tmp);
+		l_tmp =  NULL;
 	}
 }
 
@@ -66,6 +72,7 @@ void	minishell(t_mch *sh, char **env)
 			//executor(sh);
 			t_parser *parserList = convertLexerToParser(lex); //se mueve lex?
 			printParserList(parserList);
+			//free_lexers(sh);
 			signal(SIGINT, sigint_handler);
 			line = clean_input(line);
 			free(line);
