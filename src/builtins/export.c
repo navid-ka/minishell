@@ -50,13 +50,14 @@ void	bt_export(t_mch *sh)
 
 	i = 0;
 	exp = sh->parser;
-    if (exp->next->type != CMD)
+    if (exp->args[1] == NULL)
         print_export();
-	while (exp->next)
+	while (exp)
 	{
-        if (ft_strncmp(exp->arg[1], sh->env[i], pos_chr(sh->env[i], '=')) == 0)
+        if (ft_strncmp(exp->args[1], sh->env[i], pos_chr(sh->env[i], '=')) == 0)
             update_env_value
         else
             append_env
+        exp = exp->next;
 	}
 }
