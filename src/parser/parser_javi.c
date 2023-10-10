@@ -6,7 +6,7 @@
 /*   By: fcosta-f <fcosta-f@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 19:16:14 by fcosta-f          #+#    #+#             */
-/*   Updated: 2023/10/05 21:26:57 by fcosta-f         ###   ########.fr       */
+/*   Updated: 2023/10/06 19:43:14 by fcosta-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ t_parser *convertLexerToParser(t_lexer *lexerList) {
 					printf("entra output\n");
                     // Iniciar redirección de salida
                     currentRedir = createRedirNode(0, TRUNC, NULL, currentLexer->next->str);
-                    currentLexer = currentLexer->next; // Saltar el nombre del archivo de salida
+                    currentLexer = currentLexer->next->next; // Saltar el nombre del archivo de salida
                 }
                 //currentLexer = currentLexer->next;
             }
