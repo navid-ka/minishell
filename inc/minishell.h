@@ -63,7 +63,6 @@ int		ft_error(int ext, int err, char *cmd);
 void	close_pipes(t_pipe *pipex);
 
 //PIPEXFIN
-extern int	g_exit_status;
 # define EMPTY 0 
 //# define ARG 2
 # define APPEND 3
@@ -129,6 +128,7 @@ typedef struct s_mch
 	char	**env;
 	char	*old_pwd;
 	char	*pwd;
+	int		exit;
 }	t_mch;
 
 // system/minishell.c

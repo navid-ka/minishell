@@ -81,9 +81,8 @@ void	expand_env(t_mch *sh, char *exp, char **new_exp)
 
 	i = 0;
 	env_i = 0;
-	g_exit_status = 0;
 	if (exp[1] == '?')
-		expand = ft_itoa(g_exit_status);
+		expand = ft_itoa(sh->exit);
 	else
 	{
 		env_name = get_env_name(exp);
