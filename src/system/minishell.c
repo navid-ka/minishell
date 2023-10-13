@@ -6,43 +6,67 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:39:00 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/13 18:13:34 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/13 23:20:50 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	free_lexers(t_mch **sh)
+void	clear_lexer(t_lexer **lexer_list)
 {
-	t_lexer *lex;
-	t_lexer *l_tmp;
-	t_parser *parser;
-	t_parser *t_pars;
+	t_lexer	*current;
 
-	lex = (*sh)->lex;
-	parser = (*sh)->parser;
-	while (lex)
+	current = *lexer_list;
+	if (lexer_list == NULL || current == NULL)
+		return ;
+	if (lexer_list)
 	{
-		free(lex->str);
-		l_tmp = lex;
-		lex = lex->next;
-		free(l_tmp);
-		l_tmp =  NULL;
+		while (current->next != NULL)
+		{
+			current = (*lexer_list)->next;
+			free((*lexer_list)->str);
+			free(*lexer_list);
+			*lexer_list = current;
+		}
+		free((*lexer_list)->str);
+		free(*lexer_list);
 	}
 }
 
+void	clear_parser(t_parser **parser_list)
+{
+	t_parser	*current;
+
+	current = *parser_list;
+	if (parser_list == NULL || current == NULL)
+		return ;
+	if (parser_list)
+	{
+		while (current->next != NULL)
+		{
+			current = (*parser_list)->next;
+			free_tab((*parser_list)->args);
+			*parser_list = current;
+		}
+		free_tab((*parser_list)->args);
+		free(*parser_list);
+	}
+}
+
+
 static void	sh_init(t_mch *sh, char **env)
 {
+	sh->env = NULL;
 	get_env(sh, env);
 	prompter();
 	signals();
 }
 
-/*static int (t_mch *sh, char *line)
+static void	clear_line(char **line)
 {
-
-	return (0);
-}*/
+	free(*line);
+	*line = NULL;
+}
 
 void	minishell(t_mch *sh, char **env)
 {
@@ -69,10 +93,10 @@ void	minishell(t_mch *sh, char **env)
 			//expansor(sh);
 			//print_expansor(sh);
 			executor(sh);
-			// free_lexers(sh);
 			signal(SIGINT, sigint_handler);
-			line = clean_input(line);
-			free(line);
+			clear_line(&line);
+			//clear_lexer(&lex);
+			//clear_parser(&sh->parser);
 		}
 	}
 }

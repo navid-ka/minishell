@@ -188,13 +188,14 @@ void	print_lexers(t_lexer *lex, char *str);
 
 char	**split_cmd(char *cmd, int quotes);
 int		count_quotes(char *cmd);
-void	*ft_realloc(void *ptr, size_t newsize, size_t oldsize);
+char	*find_in_env_variables(t_mch *sh, char *variable_name);
 
 //utils list
 
 t_lexer	*lexer_lstnew(void);
 void	lexer_lstadd_back(t_lexer **lst, t_lexer *new);
 char	*clean_input(char *line);
+void	free_tab(char **args);
 int		main_lexer(char *str, t_lexer **lex);
 void	add_env_to_list(t_env **env, t_env *new_env);
 

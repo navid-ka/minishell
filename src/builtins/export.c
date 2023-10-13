@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 11:53:36 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/13 18:57:52 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/13 23:11:33 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,17 @@ void	free_tab(char **args)
 	int	i;
 
 	i = 0;
-	if (args == NULL)
+	if (!args)
 		return ;
-	while (args[i] != NULL)
+	if (args)
 	{
-		free(args[i]);
-		i++;
+		while (args[i] != NULL)
+		{
+			free(args[i]);
+			i++;
+		}
+		free(args);
 	}
-	free(args);
 }
 
 void	add_or_update_env(t_mch *sh, char *name, char *value)
@@ -63,7 +66,6 @@ void	print_env(t_mch *sh)
 	}
 }
 
-//  export alone joins "declare -x"  with normal env
 void	bt_export(t_mch *sh, char **args)
 {
 	int	i;
