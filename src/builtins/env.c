@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 11:50:02 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/13 16:04:08 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/13 17:30:53 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,17 @@
 
 void	bt_env(t_mch *sh)
 {
-	int	i;
+	t_env	*env;
 
-	i = ~0;
-	while (sh->env != NULL)
-		ft_printf(1, "%s%s\n", sh->env->name, sh->env->value);
+	env = sh->env;
+	while (env != NULL && env->value != NULL)
+	{
+		if (ft_printf(STDOUT_FILENO, "%s=%s\n", env->name, env->value) == 0)
+		{
+			sh->exit = EXIT_FAILURE;
+			return ;
+		}
+		env = env->next;
+	}
+	sh->exit = EXIT_SUCCESS;
 }
