@@ -6,90 +6,86 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 11:53:36 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/13 16:00:54 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/13 18:57:52 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-
-
-// this will help me find the index of '='
-int	pos_chr(const char *s, int c)
+void	free_tab(char **args)
 {
 	int	i;
 
-	if (!s)
-		return (-2);
 	i = 0;
-	while (s[i] && s[i] != (unsigned char)c)
+	if (args == NULL)
+		return ;
+	while (args[i] != NULL)
+	{
+		free(args[i]);
 		i++;
-	if (s[i] == (unsigned char)c)
-		return (i);
-	return (-1);
+	}
+	free(args);
 }
 
-//in expansor.c maybe move to env_utils
-int	env_index(t_mch *sh, char *env_name);
-
-int is_exportable(char *e, char *env)
+void	add_or_update_env(t_mch *sh, char *name, char *value)
 {
-	size_t env_len;
+	t_env	*env;
+	t_env	*new_env;
 
-	env_len = ft_strlen(env);
-    if (ft_isdigit(e[0]))
-        return (0);
-    if (ft_strncmp(e, env, env_len) == 0) 
-        if (e[env_len] == '\0' || e[env_len] == '+' || (e[env_len] == '=' && e[env_len + 1] != '\0'))
-            return (1);
-    return (0);
+	env = sh->env;
+	while (env != NULL)
+	{
+		if (ft_strncmp(env->name, name, ft_strlen(name)) == 0
+			&& ft_strlen(env->name) == ft_strlen(name))
+		{
+			free(env->value);
+			env->value = ft_strdup(value);
+			return ;
+		}
+		env = env->next;
+	}
+	new_env = malloc(sizeof(t_env));
+	new_env->name = ft_strdup(name);
+	new_env->value = ft_strdup(value);
+	new_env->next = NULL;
+	add_env_to_list(&sh->env, new_env);
 }
 
-void    update_env_value;
-
-void	append_env(t_mch *sh, const char *env_name)
+void	print_env(t_mch *sh)
 {
-	size_t	i;
-	size_t	new_len;
-	char **new_env;
+	t_env	*env;
 
-	i = ~0;
-	new_len = sizeof(char *) * (i + 2);
-	while(sh->env[++i])
-		;
-	new_env = ft_realloc(sh->env, new_len, i);
-	sh->env = new_env;
-	sh->env[i] = ft_strdup(env_name);
-	sh->env[i++] = NULL;
-}
-
-void    print_export(void)
-{
-	t_mch shell;
-	int	i; 
-	
-	i = ~0;
-	while (sh.env[++i])
-		ft_printf(1, "declare -x %s", sh.env[i]);
+	env = sh->env;
+	while (env != NULL)
+	{
+		ft_printf(STDOUT_FILENO, "declare -x %s=%s\n", env->name, env->value);
+		env = env->next;
+	}
 }
 
 //  export alone joins "declare -x"  with normal env
-void	bt_export(t_mch *sh)
+void	bt_export(t_mch *sh, char **args)
 {
 	int	i;
-	t_parser *exp;
-	char *env_name;
+	char **vars;
 
 	i = 0;
-	exp = sh->parser;
-	env_name = exp->args[i];
-    if (exp->next->type != CMD)
-        print_export();
-	while (exp->args[i])
-    {
-        if (is_exportable(env_name, sh->env[i]))
-            update_env_value(sh, env_name); //TODO:
-        else
-            append_env(sh, env_name);
-        i++;
+ 	if (args[1] == NULL)
+		print_env(sh);
+	else
+	{
+		i = 1;
+		while (args[i] != NULL)
+		{
+			vars = ft_split(args[i], '=');
+			if (ft_isdigit(vars[0][0]))
+				ft_printf(2,"export: `%s=%s': not a valid identifier\n",vars[0], vars[1]);
+			else
+				add_or_update_env(sh, vars[0], vars[1]);
+			free_tab(vars);
+			i++;
+		}
+       
     }
+}
+	

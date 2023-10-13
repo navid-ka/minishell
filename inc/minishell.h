@@ -153,7 +153,10 @@ char	*shell_prompt(int i);
 bool	bt_is_builtin(char **argv);
 void	bt_check_builtin(t_mch *sh);
 void	bt_env(t_mch *sh);
+void	bt_export(t_mch *sh, char **args);
 void	bt_exit(char *argv);
+void	bt_echo(t_mch *sh);
+int		bt_pwd(void);
 // parser
 void	get_env(t_mch *sh, char **env);
 void	symbol_sorter(t_lexer *lex);
@@ -163,9 +166,8 @@ void printParserList(t_parser *parserList);
 
 int		syntax_checker(char *line);
 void	syntax_error(void);
-int		pwd(void);
 
-void	bt_echo(t_mch *sh);
+
 //int		bt_get_dirs(char **env, t_env *env_routes);
 //int		bt_cd(char *input, t_env env_routes);
 
@@ -194,6 +196,7 @@ t_lexer	*lexer_lstnew(void);
 void	lexer_lstadd_back(t_lexer **lst, t_lexer *new);
 char	*clean_input(char *line);
 int		main_lexer(char *str, t_lexer **lex);
+void	add_env_to_list(t_env **env, t_env *new_env);
 
 
 void 	print_lex_list(t_lexer *lex);
