@@ -6,37 +6,13 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 11:53:36 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/13 12:23:48 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/13 16:00:54 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	*ft_realloc(void *ptr, size_t newsize, size_t oldsize)
-{
-    size_t	copy_size;
-    void	*newptr;
 
-    if (!ptr)
-        return (malloc(newsize));
-    if (newsize == 0)
-	{
-        free(ptr);
-        return (NULL);
-	}
-    if (newsize == oldsize)
-        return (ptr);
-    newptr = malloc(newsize);
-    if (!newptr)
-        return (NULL);
-    if (newsize < oldsize)
-        copy_size = newsize;
-    else
-        copy_size = oldsize;
-    ft_memcpy(newptr, ptr, copy_size);
-    free(ptr);
-    return (newptr);
-}
 
 // this will help me find the index of '='
 int	pos_chr(const char *s, int c)

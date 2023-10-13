@@ -38,7 +38,7 @@
 # define ERR_PERM	400
 # define ERR_NFD	500
 # define ERR_PERR	1000
-
+/*
 typedef struct s_pipe
 {
 	int		infile;
@@ -52,16 +52,7 @@ typedef struct s_pipe
 	int		j;
 	int		here_doc;
 	char	*limiter;
-}	t_pipe;
-
-void	init_pipex(t_pipe *pipex, char **envp);
-int		find_route(t_pipe *pipex, char **envp);
-char	*find_path(char **envp, int *found);
-char	*find_cmd(char **routes, char *cmd);
-int		wait_forks(t_pipe *pipex);
-void	last_pipe(t_pipe *pipex, int argc);
-int		ft_error(int ext, int err, char *cmd);
-void	close_pipes(t_pipe *pipex);
+}	t_pipe;*/
 
 //PIPEXFIN
 # define EMPTY 0 
@@ -77,11 +68,12 @@ void	close_pipes(t_pipe *pipex);
 # define SCUOTE 39
 # define DCUOTE 34
 
-typedef struct s_arg
+typedef struct s_env
 {
-	char			*arg;
-	struct s_arg	*next;
-}	t_arg;
+	char			*name;
+	char			*value;
+	struct s_env	*next;
+}	t_env;
 
 typedef struct s_redir
 {
@@ -122,17 +114,6 @@ typedef struct s_parser
 	//seguramente ponga struct s_parser *prev
 }	t_parser;
 
-typedef struct s_mch
-{
-	t_parser *parser;
-	t_lexer	*lex;
-	t_pipe	*pipex;
-	char	**env;
-	char	*old_pwd;
-	char	*pwd;
-	int		exit;
-}	t_mch;
-
 typedef struct s_pipe
 {
 	int		fd_infile;
@@ -145,6 +126,19 @@ typedef struct s_pipe
 	int		here_doc;
 	char	*limiter;
 }	t_pipe;
+
+typedef struct s_mch
+{
+	t_parser *parser;
+	t_lexer	*lex;
+	t_pipe	*pipex;
+	t_env	*env;
+	char	*old_pwd;
+	char	*pwd;
+	int		exit;
+}	t_mch;
+
+
 
 // system/minishell.c
 void	minishell(t_mch *sh, char **env);
@@ -192,6 +186,7 @@ void	print_lexers(t_lexer *lex, char *str);
 
 char	**split_cmd(char *cmd, int quotes);
 int		count_quotes(char *cmd);
+void	*ft_realloc(void *ptr, size_t newsize, size_t oldsize);
 
 //utils list
 
@@ -199,6 +194,7 @@ t_lexer	*lexer_lstnew(void);
 void	lexer_lstadd_back(t_lexer **lst, t_lexer *new);
 char	*clean_input(char *line);
 int		main_lexer(char *str, t_lexer **lex);
+
 
 void 	print_lex_list(t_lexer *lex);
 void 	print_pars_list(t_parser *lex);
@@ -212,5 +208,16 @@ void	print_expansor(t_mch *sh);
 
 // executor
 void	executor(t_mch *sh);
+
+// pipes
+void	init_pipex(t_pipe *pipex, char **envp);
+int		find_route(t_pipe *pipex, char **envp);
+char	*find_path(char **envp, int *found);
+char	*find_cmd(char **routes, char *cmd);
+int		wait_forks(t_pipe *pipex);
+void	last_pipe(t_pipe *pipex, int argc);
+int		ft_error(int ext, int err, char *cmd);
+void	close_pipes(t_pipe *pipex);
+
 
 #endif // !MINISHELL_H

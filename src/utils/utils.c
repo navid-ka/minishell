@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
+/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:35:01 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/09/27 10:36:46 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/10/13 16:01:00 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,30 @@ int	count_quotes(char *cmd)
 			count++;
 	}
 	return (count);
+}
+
+void	*ft_realloc(void *ptr, size_t newsize, size_t oldsize)
+{
+    size_t	copy_size;
+    void	*newptr;
+
+    if (!ptr)
+        return (malloc(newsize));
+    if (newsize == 0)
+	{
+        free(ptr);
+        return (NULL);
+	}
+    if (newsize == oldsize)
+        return (ptr);
+    newptr = malloc(newsize);
+    if (!newptr)
+        return (NULL);
+    if (newsize < oldsize)
+        copy_size = newsize;
+    else
+        copy_size = oldsize;
+    ft_memcpy(newptr, ptr, copy_size);
+    free(ptr);
+    return (newptr);
 }

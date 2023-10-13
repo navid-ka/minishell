@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:04:43 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/09 15:50:07 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/13 16:38:14 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	iterate_env_var(char *arg)
 	return (i);
 }
 
-char	*env_value(t_mch *sh, int env_index)
+/*(char	*env_value(t_mch *sh, int env_index)
 {
 	int		c;
 	char	*env_value;
@@ -55,6 +55,27 @@ int	env_index(t_mch *sh, char *env_name)
 	}
 
 	return (-1);
+}*/
+
+char	*find_in_env_variables(t_mch *sh, char *variable_name)
+{
+	t_env	*env;
+	int		env_name_len;
+	int		var_name_len;
+
+	if (variable_name == NULL)
+		return (NULL);
+	env = sh->env;
+	var_name_len = ft_strlen(variable_name);
+	while (env != NULL)
+	{
+		env_name_len = ft_strlen(env->name);
+		if (ft_strncmp(env->name, variable_name, env_name_len) == 0
+			&& (env_name_len == var_name_len))
+			return (env->value);
+		env = env->next;
+	}
+	return (NULL);
 }
 
 char	*get_env_name(char *arg)
@@ -86,8 +107,7 @@ void	expand_env(t_mch *sh, char *exp, char **new_exp)
 	else
 	{
 		env_name = get_env_name(exp);
-		env_i = env_index(sh, env_name);
-		expand = env_value(sh, env_i);
+		expand = find_in_env_variables(sh, env_name);
 		free(env_name);
 	}
 	while (expand[i])
