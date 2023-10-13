@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:39:00 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/13 16:58:52 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/13 18:13:34 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,6 @@ void	free_lexers(t_mch **sh)
 
 static void	sh_init(t_mch *sh, char **env)
 {
-	sh = malloc(sizeof(t_mch));
-	sh->env = NULL;
 	get_env(sh, env);
 	prompter();
 	signals();
