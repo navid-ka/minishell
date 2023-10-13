@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:39:00 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/13 16:42:39 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/13 16:58:52 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	minishell(t_mch *sh, char **env)
 			printParserList(sh->parser); //hacerlo void como proyecto a futuro
 			//expansor(sh);
 			//print_expansor(sh);
-			//executor(sh);
+			executor(sh);
 			// free_lexers(sh);
 			signal(SIGINT, sigint_handler);
 			line = clean_input(line);

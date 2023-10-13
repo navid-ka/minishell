@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcosta-f <fcosta-f@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:19:59 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/13 12:49:48 by fcosta-f         ###   ########.fr       */
+/*   Updated: 2023/10/13 17:11:00 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,8 +203,9 @@ int pipex(t_mch *all) {
 
 void	executor(t_mch *sh)
 {
-	t_parser const	*cmd = sh->parser;
+	t_parser *cmd = sh->parser;
 
+	ft_printf(1,"EXECUTOR %s\n", cmd->args[0]);
 	if (bt_is_builtin(cmd->args))
 		bt_check_builtin(sh);
 	else {
