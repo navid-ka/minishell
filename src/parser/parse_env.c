@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 14:21:30 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/13 17:43:45 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/13 23:17:33 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ void	get_env(t_mch *sh, char **env)
 		sh_env->name = ft_substr(env[i], 0, ft_strchr(env[i], '=') - env[i]);
 		sh_env->value = ft_strdup(getenv(sh_env->name));
 		sh_env->next = NULL;
-		ft_printf(STDOUT_FILENO, "%s=%s\n", sh_env->name, sh_env->value);
 		add_env_to_list(&sh->env, sh_env);
 	}
 }
