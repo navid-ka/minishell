@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
+/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:04:43 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/04 11:10:07 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/10/09 15:50:07 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,8 @@ void	expand_env(t_mch *sh, char *exp, char **new_exp)
 
 	i = 0;
 	env_i = 0;
-	g_exit_status = 0;
 	if (exp[1] == '?')
-		expand = ft_itoa(g_exit_status);
+		expand = ft_itoa(sh->exit);
 	else
 	{
 		env_name = get_env_name(exp);

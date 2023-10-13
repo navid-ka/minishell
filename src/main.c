@@ -12,7 +12,6 @@
 
 #include "../inc/minishell.h"
 
-int	g_exit_status = 0;
 
 int	main(int argc, char **argv, char **env)
 {
@@ -20,9 +19,9 @@ int	main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
-	g_exit_status = 0;
+	sh.exit = 0;
 	minishell(&sh, env);
-	return (g_exit_status);
+	return (sh.exit);
 }
 
 //hacer echo y exit

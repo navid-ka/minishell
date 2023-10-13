@@ -6,7 +6,7 @@
 /*   By: fcosta-f <fcosta-f@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:39:00 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/06 19:43:55 by fcosta-f         ###   ########.fr       */
+/*   Updated: 2023/10/11 10:48:07 by fcosta-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	minishell(t_mch *sh, char **env)
 			//expansor(sh);
 			//print_expansor(sh);
 			//executor(sh);
-			//free_lexers(sh);
+			// free_lexers(sh);
 			signal(SIGINT, sigint_handler);
 			line = clean_input(line);
 			free(line);
