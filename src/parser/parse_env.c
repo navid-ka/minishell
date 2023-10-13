@@ -6,39 +6,51 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 14:21:30 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/05 16:51:11 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/13 16:48:50 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-/*int	pos_chr(const char *s, int c)
+static t_env	*last_env(t_env *env)
 {
-	int	i;
-
-	if (!s)
-		return (-2);
-	i = 0;
-	while (s[i] && s[i] != (unsigned char)c)
-		i++;
-	if (s[i] == (unsigned char)c)
-		return (i);
-	return (-1);
+	if (env == NULL)
+		return (NULL);
+	while (env->next != NULL)
+		env = env->next;
+	return (env);
 }
 
-t_env	*append_env(char *key, char *value)
+void	add_env_to_list(t_env **env, t_env *new_env)
 {
-	t_env *ls;
-
-	ls = ft_calloc(sizeof(t_env), 1);
-	if (!ls)
-		return (NULL);
-	ls->key = key;
-	ls->value = value;
-	return (ls);
-}*/
+	if (new_env == NULL)
+		return ;
+	if (*env == NULL)
+	{
+		*env = new_env;
+		return ;
+	}
+	last_env(*env)->next = new_env;
+}
 
 void	get_env(t_mch *sh, char **env)
+{
+	t_env	*sh_env;
+	int		i;
+
+	i = ~0;
+	while (env[++i] != NULL)
+	{
+		sh_env = malloc(sizeof(t_env));
+		sh_env->name = ft_substr(env[i], 0, ft_strchr(env[i], '=') - env[i]);
+		sh_env->value = ft_strdup(getenv(sh_env->name));
+		sh_env->next = NULL;
+		add_env_to_list(&sh->env, sh_env);
+	}
+}
+
+/*
+void	load_env(t_mch *sh, char **env)
 {
 	int	i;
 	int	j;
@@ -51,40 +63,4 @@ void	get_env(t_mch *sh, char **env)
 	while (env[++i])
 		sh->env[i] = ft_strdup(env[i]);
 	sh->env[i] = NULL;
-	/*i = ~0;
-	while (sh->env[++i])
-		ft_printf(1, "%s\n", sh->env[i]);*/
-}
-
-// void 	print_pars_list(t_parser *pars)
-// {
-// 	t_parser	*ptr;
-
-// 	ptr = pars;
-// 	while(ptr)
-// 	{
-// 		//printf("%s\n", ptr->cmd);
-// 		int i = 0;
-// 		while (ptr->args[i])
-// 			printf("%s\n", ptr->args[i++]);
-// 		//printf("el tipo es: %s", ptr->red->infile);
-// 		//printf("el tipo es: %s", ptr->red->outfile);
-// 		//ptr->red = ptr->red->next;
-// 		ptr = ptr->next;
-// 	}
-// }
-
-void print_expansor(t_mch *sh)
-{
-	t_parser *ptr;
-	
-	int i = 0;
-	ptr = sh->parser;
-	while (ptr)
-	{
-		while (ptr->args[i])
-
-			printf("EXPANDER: %s", ptr->args[i++]);
-		ptr = ptr->next;
-	}
-}
+}*/

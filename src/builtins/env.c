@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
+/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 11:50:02 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/04 12:01:48 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/10/13 16:04:08 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,6 @@ void	bt_env(t_mch *sh)
 	int	i;
 
 	i = ~0;
-	while (sh->env[++i] != NULL)
-		ft_printf(1, "%s\n", sh->env[i]);
+	while (sh->env != NULL)
+		ft_printf(1, "%s%s\n", sh->env->name, sh->env->value);
 }
