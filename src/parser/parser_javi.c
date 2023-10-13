@@ -6,7 +6,7 @@
 /*   By: fcosta-f <fcosta-f@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 19:16:14 by fcosta-f          #+#    #+#             */
-/*   Updated: 2023/10/06 19:43:14 by fcosta-f         ###   ########.fr       */
+/*   Updated: 2023/10/13 12:34:40 by fcosta-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,13 +107,17 @@ t_parser *convertLexerToParser(t_lexer *lexerList) {
             if (parserList == NULL) {
                 parserList = newParserNode;
                 currentParser = parserList;
+				parserList->num_cmds = 1;
 				printf("primer nodo hecho\n");
             }
 			else {
                 currentParser->next = newParserNode;
                 currentParser = newParserNode;
 				printf("nodo next hecho\n");
+				parserList->num_cmds++;
+				// if (currentLexer->prev && currentLexer->prev->prev != NULL) currentParser->red.input = currentLexer->prev->type;
             }
+			if (currentLexer) currentParser->red.output = currentLexer->type;
         } 
 		else {
             // Continuar recorriendo la lista de t_lexer

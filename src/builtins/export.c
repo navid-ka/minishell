@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 11:53:36 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/13 12:21:02 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/13 12:23:48 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,6 @@ void	append_env(t_mch *sh, const char *env_name)
 	new_len = sizeof(char *) * (i + 2);
 	while(sh->env[++i])
 		;
-	free(sh->env);
 	new_env = ft_realloc(sh->env, new_len, i);
 	sh->env = new_env;
 	sh->env[i] = ft_strdup(env_name);

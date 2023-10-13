@@ -16,6 +16,7 @@
 # include <readline/history.h>
 # include "../libs/libft/include/libft.h"
 # include <sys/stat.h>
+# include <fcntl.h>
 
 #ifndef __linux__
 # include "tcl/tcl.h"
@@ -53,7 +54,7 @@ typedef struct s_pipe
 	char	*limiter;
 }	t_pipe;
 
-void	init_pipex(t_pipe *pipex, char **argv, char **envp);
+void	init_pipex(t_pipe *pipex, char **envp);
 int		find_route(t_pipe *pipex, char **envp);
 char	*find_path(char **envp, int *found);
 char	*find_cmd(char **routes, char *cmd);
@@ -84,7 +85,6 @@ typedef struct s_arg
 
 typedef struct s_redir
 {
-	//if -1 redir from/to file
     int   	input;
     int		output;
 	char	*infile;
@@ -117,6 +117,7 @@ typedef struct s_parser
 	//char	*cmd;
 	char	**args;
 	t_redir	red;
+	int num_cmds; //no he probado este argc
 	struct s_parser *next;
 	//seguramente ponga struct s_parser *prev
 }	t_parser;
@@ -125,11 +126,25 @@ typedef struct s_mch
 {
 	t_parser *parser;
 	t_lexer	*lex;
+	t_pipe	*pipex;
 	char	**env;
 	char	*old_pwd;
 	char	*pwd;
 	int		exit;
 }	t_mch;
+
+typedef struct s_pipe
+{
+	int		fd_infile;
+	int		fd_outfile;
+	int		permission;
+	char	**routes;
+	pid_t	proc;
+	int		tube[2];
+	int		j;
+	int		here_doc;
+	char	*limiter;
+}	t_pipe;
 
 // system/minishell.c
 void	minishell(t_mch *sh, char **env);
