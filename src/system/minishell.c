@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:39:00 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/14 13:43:17 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/14 13:56:22 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,10 @@ void	minishell(t_mch *sh, char **env)
 
 	sh_init(sh, env);
 	lex = NULL;
-	line = NULL;	ft_printf(1,"EXECUTOR %s\n", cmd->args[0]);));
+	line = NULL;
+	while (1)
+	{
+		line = readline(shell_prompt(0));
 		bt_exit(line);
 		if (*line)
 		{
