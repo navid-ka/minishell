@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcosta-f <fcosta-f@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:19:59 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/14 12:38:38 by fcosta-f         ###   ########.fr       */
+/*   Updated: 2023/10/14 13:38:28 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,7 +145,7 @@ static void	child(t_pipe pipex, t_parser *pars, char **envp)
 	if (pars->red.output = TRUNC)
 		open_outfile(&pipex, pars);
 	if (pars->red.input = PIPE)
-		dup2(pipex->tube[1], STDOUT_FILENO);
+		dup2(pipex.tube[1], STDOUT_FILENO);
 	if (pars->red.output = PIPE)
 		dup2(pipex.tube[1], STDOUT_FILENO);
 	close_pipes(&pipex);
