@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
+/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/20 15:33:05 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/07/07 13:01:03 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/10/15 01:35:25 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ char	*ft_strchr(const char *s, int c)
 	unsigned int	i;
 
 	i = 0;
+	if (!s)
+		return (NULL);
 	while (s[i])
 	{
 		if (s[i] == (char)c)

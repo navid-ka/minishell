@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:39:00 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/15 00:50:19 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/15 01:00:17 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	minishell(t_mch *sh, char **env)
 			executor(sh);
 			signal(SIGINT, sigint_handler);
 			clear_lexer(&lex);
-			//clear_parser(&sh->parser);
+			clear_parser(&sh->parser);
 			free_env(&envi);
 			clear_line(&line);
 		}

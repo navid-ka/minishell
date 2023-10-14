@@ -155,6 +155,7 @@ void	clear_lexer(t_lexer **lexer_list);
 void	free_tab(char **args);
 void	clear_line(char **line);
 void	free_env(t_env **env);
+void	unset_free(t_env *env);
 
 // builtins env
 bool	bt_is_builtin(char **argv);
@@ -164,6 +165,8 @@ void	bt_export(t_mch *sh, char **args);
 void	bt_exit(char *argv);
 void	bt_echo(t_mch *sh);
 int		bt_pwd(void);
+void    bt_unset(t_mch *sh, char **args);
+
 // parser
 void	get_env(t_mch *sh, char **env);
 void	symbol_sorter(t_lexer *lex);
