@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fcosta-f <fcosta-f@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:19:59 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/13 17:11:00 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/14 12:38:38 by fcosta-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,6 @@ static void	open_infile(t_pipe *pipex, t_parser *pars)
 		exit(ft_error(1, ERR_PERM, pars->red.infile));
 	}
 	dup2(pipex->fd_infile, STDIN_FILENO);
-	dup2(pipex->tube[1], STDOUT_FILENO);
 	close_pipes(pipex);
 	close(pipex->fd_infile);
 }
@@ -141,15 +140,15 @@ static void	open_outfile(t_pipe *pipex, t_parser *pars)
 
 static void	child(t_pipe pipex, t_parser *pars, char **envp)
 {
-	if (pipex.j == 2)
+	if (pars->red.input = INPUT)
 		open_infile(&pipex, pars);
-	else if (pipex.j == pars->num_cmds - 1)
+	if (pars->red.output = TRUNC)
 		open_outfile(&pipex, pars);
-	else
-	{
+	if (pars->red.input = PIPE)
+		dup2(pipex->tube[1], STDOUT_FILENO);
+	if (pars->red.output = PIPE)
 		dup2(pipex.tube[1], STDOUT_FILENO);
-		close_pipes(&pipex);
-	}
+	close_pipes(&pipex);
 	pars->args[0] = find_cmd(envp, pars->args[0]);
 	if (!pars->args[0])
 		exit(127);
