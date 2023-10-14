@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:39:00 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/13 23:20:50 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/14 13:43:17 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,7 @@ void	minishell(t_mch *sh, char **env)
 
 	sh_init(sh, env);
 	lex = NULL;
-	line = NULL;
-	while (1)
-	{
-		line = readline(shell_prompt(0));
+	line = NULL;	ft_printf(1,"EXECUTOR %s\n", cmd->args[0]);));
 		bt_exit(line);
 		if (*line)
 		{
@@ -89,7 +86,7 @@ void	minishell(t_mch *sh, char **env)
 			main_lexer(line, &lex);
 			// print_lex_list(lex);
 			sh->parser = convertLexerToParser(lex); //se mueve lex?
-			printParserList(sh->parser); //hacerlo void como proyecto a futuro
+			//printParserList(sh->parser); //hacerlo void como proyecto a futuro
 			//expansor(sh);
 			//print_expansor(sh);
 			executor(sh);
