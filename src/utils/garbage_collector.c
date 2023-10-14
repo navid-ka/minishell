@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 17:47:49 by bifrost           #+#    #+#             */
-/*   Updated: 2023/10/15 00:18:47 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/15 01:25:44 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,4 +86,12 @@ void	free_env(t_env **env)
 		current = tmp;
 	}
 	*env = NULL;
+}
+
+void	unset_free(t_env *env)
+{
+	free(env->name);
+	free(env->value);
+	free(env);
+	env = NULL;
 }

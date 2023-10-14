@@ -28,6 +28,7 @@ SRCS 					:= src/main.c  \
 						src/builtins/echo.c \
 						src/builtins/exit.c \
 						src/builtins/export.c \
+						src/builtins/unset.c \
 						src/utils/utils.c \
 						src/system/signals.c \
 						src/system/prompter.c \
