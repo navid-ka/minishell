@@ -6,29 +6,11 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 11:53:36 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/13 23:11:33 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/14 17:48:29 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-
-void	free_tab(char **args)
-{
-	int	i;
-
-	i = 0;
-	if (!args)
-		return ;
-	if (args)
-	{
-		while (args[i] != NULL)
-		{
-			free(args[i]);
-			i++;
-		}
-		free(args);
-	}
-}
 
 void	add_or_update_env(t_mch *sh, char *name, char *value)
 {

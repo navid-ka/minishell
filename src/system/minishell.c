@@ -6,52 +6,11 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:39:00 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/14 13:56:22 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/14 17:48:13 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-
-void	clear_lexer(t_lexer **lexer_list)
-{
-	t_lexer	*current;
-
-	current = *lexer_list;
-	if (lexer_list == NULL || current == NULL)
-		return ;
-	if (lexer_list)
-	{
-		while (current->next != NULL)
-		{
-			current = (*lexer_list)->next;
-			free((*lexer_list)->str);
-			free(*lexer_list);
-			*lexer_list = current;
-		}
-		free((*lexer_list)->str);
-		free(*lexer_list);
-	}
-}
-
-void	clear_parser(t_parser **parser_list)
-{
-	t_parser	*current;
-
-	current = *parser_list;
-	if (parser_list == NULL || current == NULL)
-		return ;
-	if (parser_list)
-	{
-		while (current->next != NULL)
-		{
-			current = (*parser_list)->next;
-			free_tab((*parser_list)->args);
-			*parser_list = current;
-		}
-		free_tab((*parser_list)->args);
-		free(*parser_list);
-	}
-}
 
 
 static void	sh_init(t_mch *sh, char **env)
@@ -95,8 +54,8 @@ void	minishell(t_mch *sh, char **env)
 			executor(sh);
 			signal(SIGINT, sigint_handler);
 			clear_line(&line);
-			//clear_lexer(&lex);
-			//clear_parser(&sh->parser);
+			clear_lexer(&lex);
+			clear_parser(&sh->parser);
 		}
 	}
 }
