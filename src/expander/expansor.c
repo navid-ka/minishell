@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:04:43 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/13 16:38:14 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/14 18:56:45 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,11 @@ void	expand_env(t_mch *sh, char *exp, char **new_exp)
 	else
 	{
 		env_name = get_env_name(exp);
+		if (!env_name)
+		{
+			free(env_name);
+			return ;
+		}
 		expand = find_in_env_variables(sh, env_name);
 		free(env_name);
 	}
@@ -142,6 +147,7 @@ void	expand(t_mch *sh, char **exp)
 	}
 	exp[i] = exp_arg;
 	free(exp_arg);
+	exp_arg = NULL;
 }
 
 void	expansor(t_mch *sh)

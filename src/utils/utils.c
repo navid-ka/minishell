@@ -6,37 +6,37 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:35:01 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/13 16:01:00 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/14 18:55:45 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-char	*charjoin(char *s1, char c)
+char	*charjoin(char *str, char ch)
 {
-	int i;
-	char *result;
+	char	*copy;
+	int		c;
 
-	i = 0;
-	if (!s1)
+	c = -0;
+	if (str == NULL)
 	{
-		s1 = malloc(sizeof(char) * 1);
-		if (!s1)
+		str = malloc(sizeof(char) * 1);
+		if (!str)
 			return (NULL);
-		s1[0] = '\0';
+		str[0] = '\0';
 	}
-	result = malloc(sizeof(char) * (ft_strlen(s1) + 1 + 1));
-	while (s1[i])
+	copy = (char *)malloc(sizeof(char) * ft_strlen(str) + 2);
+	if (!copy)
+		return (free(copy), NULL);
+	while (str[c])
 	{
-		result[i] = s1[i];
-		i++;
+		copy[c] = str[c];
+		c++;
 	}
-	result[i++] = c;
-	result[i] = '\0';
-	if (s1)
-		free(s1);
-	s1 = NULL;
-	return (result);
+	copy[c] = ch;
+	copy[c + 1] = '\0';
+	free(str);
+	return (copy);
 }
 
 char	*ft_strndup(const char *src, size_t len)

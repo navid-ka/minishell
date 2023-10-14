@@ -6,11 +6,17 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 17:47:49 by bifrost           #+#    #+#             */
-/*   Updated: 2023/10/14 18:02:35 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/14 18:52:51 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+void	clear_line(char **line)
+{
+	free(*line);
+	*line = NULL;
+}
 
 void	free_tab(char **args)
 {

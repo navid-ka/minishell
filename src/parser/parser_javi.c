@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 19:16:14 by fcosta-f          #+#    #+#             */
-/*   Updated: 2023/10/14 13:42:05 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/14 18:48:37 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ t_parser *convertLexerToParser(t_lexer *lexerList) {
 				//printf("se mete en if, siguiente no es símbolo\n");
 				int argCount = 0;
 				//printf("tiene tantas palabras %d\n", count_words(currentLexer));
-				args = (char **)malloc(count_words(currentLexer) * sizeof(char *));
+				args = (char **)malloc((count_words(currentLexer) + 1) * sizeof(char *));
                 while (currentLexer && currentLexer->type == CMD) {
 					//printf("se mete en while de comandos\n");
 					//printf("vuelta %d de cmd %s\n", argCount, currentLexer->str);
