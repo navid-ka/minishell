@@ -149,6 +149,11 @@ void 	sigint_handler(int sig);
 void	prompter(void);
 char	*shell_prompt(int i);
 
+// Garbage collection 
+void	clear_parser(t_parser **lst);
+void	clear_lexer(t_lexer **lexer_list);
+void	free_tab(char **args);
+
 // builtins env
 bool	bt_is_builtin(char **argv);
 void	bt_check_builtin(t_mch *sh);
