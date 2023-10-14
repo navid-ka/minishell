@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:39:00 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/14 18:53:13 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/14 21:02:26 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,13 @@ void	minishell(t_mch *sh, char **env)
 			// print_lex_list(lex);
 			sh->parser = convertLexerToParser(lex); //se mueve lex?
 			//printParserList(sh->parser); //hacerlo void como proyecto a futuro
-			expansor(sh);
-			print_expansor(sh);
+			//expansor(sh);
+			//print_expansor(sh);
 			executor(sh);
 			signal(SIGINT, sigint_handler);
-			clear_line(&line);
 			clear_lexer(&lex);
 			clear_parser(&sh->parser);
+			clear_line(&line);
 		}
 	}
 }
