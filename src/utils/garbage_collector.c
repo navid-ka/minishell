@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 17:47:49 by bifrost           #+#    #+#             */
-/*   Updated: 2023/10/14 18:52:51 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/15 00:18:47 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,43 +33,57 @@ void	free_tab(char **args)
 			i++;
 		}
 		free(args);
+		args = NULL;
 	}
 }
 
 void	clear_lexer(t_lexer **lexer_list)
 {
-	t_lexer	*current;
+	t_lexer	*middleman;
+	t_lexer	*node;
 
-	current = *lexer_list;
-	if (lexer_list == NULL || current == NULL)
-		return ;
-	if (lexer_list)
+	node = *lexer_list;
+	while (node)
 	{
-		while (current->next != NULL)
-		{
-			current = (*lexer_list)->next;
-			free((*lexer_list)->str);
-			(*lexer_list)->str = NULL;
-			free(*lexer_list);
-			*lexer_list = current;
-		}
-		free((*lexer_list)->str);
-		(*lexer_list)->str = NULL;
-		free(*lexer_list);
+		middleman = node->next;
+		free(node->str);
+		free(node);
+		node = middleman;
 	}
-    *lexer_list = NULL;
+	*lexer_list = NULL;
 }
 
 void	clear_parser(t_parser **lst)
 {
 	t_parser	*middleman;
 	t_parser	*node;
+	int			i;
 
+	i = 0;
 	node = *lst;
 	while (node)
 	{
 		middleman = node->next;
-		free_tab(node->args);
+		free(node->args[i++]);
+		free(node);
 		node = middleman;
 	}
+	*lst = NULL;
+}
+
+void	free_env(t_env **env)
+{
+	t_env	*current;
+	t_env	*tmp;
+
+	current = *env;
+	while (current != NULL)
+	{
+		tmp = current->next;
+		free(current->name);
+		free(current->value);
+		free(current);
+		current = tmp;
+	}
+	*env = NULL;
 }
