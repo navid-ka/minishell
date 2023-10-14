@@ -153,6 +153,7 @@ char	*shell_prompt(int i);
 void	clear_parser(t_parser **lst);
 void	clear_lexer(t_lexer **lexer_list);
 void	free_tab(char **args);
+void	clear_line(char **line);
 
 // builtins env
 bool	bt_is_builtin(char **argv);

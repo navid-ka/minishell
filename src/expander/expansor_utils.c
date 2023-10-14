@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 16:59:10 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/13 15:54:26 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/14 18:59:25 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,8 @@ void print_expansor(t_mch *sh)
 	ptr = sh->parser;
 	while (ptr)
 	{
-		while (ptr->args[i])
-
-			printf("EXPANDER: %s", ptr->args[i++]);
+		ft_printf(1, "EXPANDER: %s\n", ptr->args[i]);
+		i++;
 		ptr = ptr->next;
 	}
 }
