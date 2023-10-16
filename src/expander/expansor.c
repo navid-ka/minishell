@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:04:43 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/15 00:49:02 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/16 12:01:46 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,39 +23,6 @@ int	iterate_env_var(char *arg)
 		i++;
 	return (i);
 }
-
-/*(char	*env_value(t_mch *sh, int env_index)
-{
-	int		c;
-	char	*env_value;
-
-	c = 0;
-	env_value = NULL;
-	while (sh->env[env_index][c] != '=')
-		c++;
-	while (sh->env[env_index][c++])
-		env_value = charjoin(env_value, sh->env[env_index][c]);
-	return (env_value);
-}
-
-int	env_index(t_mch *sh, char *env_name)
-{
-	int		i;
-	char	*tmp;
-
-	tmp = ft_strjoin(env_name, "=");
-	if (!tmp)
-		return (-1);
-	i = 0;
-	while (sh->env[i])
-	{
-		if (ft_strncmp(tmp, sh->env[i], ft_strlen(tmp)) == 0)
-			return (i);
-		i++;
-	}
-
-	return (-1);
-}*/
 
 char	*find_in_env_variables(t_mch *sh, char *variable_name)
 {
@@ -98,10 +65,8 @@ void	expand_env(t_mch *sh, char *exp, char **new_exp)
 	int		i;
 	char	*expand;
 	char	*env_name;
-	int		env_i;
 
 	i = 0;
-	env_i = 0;
 	if (exp[1] == '?')
 		expand = ft_itoa(sh->exit);
 	else
