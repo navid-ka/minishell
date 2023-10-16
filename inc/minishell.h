@@ -165,6 +165,7 @@ void	bt_export(t_mch *sh, char **args);
 void	bt_exit(char *argv);
 void	bt_echo(t_mch *sh);
 int		bt_pwd(void);
+void	bt_cd(t_mch *sh, char **arg);
 void    bt_unset(t_mch *sh, char **args);
 
 // parser
@@ -193,6 +194,7 @@ char	*ft_strndup(const char *src, size_t len);
 int		ft_isquote(int c);
 int		ft_is_escape(int c);
 int		ft_is_shellsymbol(int c);
+void	add_or_update_env(t_mch *sh, char *name, char *value);
 
 void	print_lexers(t_lexer *lex, char *str);
 
