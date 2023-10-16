@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:19:59 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/16 14:43:41 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/16 18:00:02 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,21 +63,17 @@ char	*find_path(char **envp, int *found)
 	*found = 1;
 	return (envp[i] + 5);
 }
-
-int	find_route(t_pipe *pipex, char **envp)
+*/
+/*nt	find_route(t_pipe *pipex, char *envp)
 {
-	int	found;
-
-	pipex->routes = ft_split(find_path(envp, &found), ':');
-	if (!found)
-		return (1);
+	pipex->routes = ft_split(envp, ':');
 	if (!pipex->routes)
 		return (ft_error(1, ERR_MC, NULL));
 	return (0);
 }
 
 
-void	init_pipex(t_pipe *pipex, char **envp)
+void	init_pipex(t_pipe *pipex, char *envp)
 {
 	if (find_route(pipex, envp) == 1)
 		exit(1);
@@ -91,14 +87,14 @@ void	close_pipes(t_pipe *pipex)
 	close(pipex->tube[1]);
 }
 
-char	*find_cmd(char *routes, char *cmd)
+char	*find_cmd(char **routes, char *cmd)
 {
 	char	*tmp;
 	char	*cmdroute;
 
 	while (*routes)
 	{
-		tmp = ft_strjoin(routes, "/");
+		tmp = ft_strjoin(*routes, "/");
 		cmdroute = ft_strjoin(tmp, cmd);
 		if (!cmdroute)
 		{
@@ -156,7 +152,7 @@ static void	open_outfile(t_pipe *pipex, t_parser *pars)
 	close_pipes(pipex);
 }
 
-static void	child(t_pipe pipex, t_parser *pars, char *envp)
+static void	child(t_pipe pipex, t_parser *pars, char **envp)
 {
 	if (pars->red.input == INPUT)
 		open_infile(&pipex, pars);
@@ -199,24 +195,32 @@ int	wait_forks(t_pipe *pipex)
 
 int pipex(t_mch *all) 
 {
-	t_parser *pars;
-	t_pipe *pipex;
-	char	*path_env;
+	t_parser	*pars;
+	t_pipe		*pipex;
+	char		**routes;
+	char		*path_env;
+
 	pars = all->parser;
 	pipex = all->pipex;
-	int exit_code;
-
-	//init_pipex(all->pipex, all->env);
+	pipex = malloc(sizeof(t_pipe));
+	pipex->j = 2;
+	//ft_memset(&pipex, 0, sizeof (t_pipe));
 	path_env = get_path_env_value(all);
+	ft_printf(1, "%s\n", path_env);
+	//init_pipex(all->pipex, path_env);
+	routes = ft_calloc(sizeof(char *), ft_strlen(path_env));
+	routes = ft_split(path_env, ':');
+	free(path_env);
+	ft_printf(1, "%s\n", *routes);
 	while (pars) {
 		if (pars->next && pipe(pipex->tube))
 			return (1);
 		pipex->proc = fork();
 		if (pipex->proc == 0)
-			child(*pipex, pars, path_env);
+			child(*pipex, pars, routes);
 		all->exit = wait_forks(pipex);
-		if (WIFEXITED(exit_code))
-			all->exit = WEXITSTATUS(exit_code);
+		if (WIFEXITED(all->exit))
+			all->exit = WEXITSTATUS(all->exit);
 	}
 	return (ft_error(1, ERR_ARG, NULL)); //no tiene que hacer exit creo
 }
@@ -224,10 +228,11 @@ int pipex(t_mch *all)
 void	executor(t_mch *sh)
 {
 	t_parser *cmd = sh->parser;
-
+	
+	//
 	if (bt_is_builtin(cmd->args))
 		bt_check_builtin(sh);
-	/*else {
+	else {
 		pipex(sh);
-	}*/
+	}
 }
