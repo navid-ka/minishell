@@ -195,6 +195,7 @@ int		ft_isquote(int c);
 int		ft_is_escape(int c);
 int		ft_is_shellsymbol(int c);
 void	add_or_update_env(t_mch *sh, char *name, char *value);
+char	*get_env_value(t_mch *sh, char *arg);
 
 void	print_lexers(t_lexer *lex, char *str);
 
@@ -229,7 +230,7 @@ void	executor(t_mch *sh);
 void	init_pipex(t_pipe *pipex, char **envp);
 int		find_route(t_pipe *pipex, char **envp);
 char	*find_path(char **envp, int *found);
-char	*find_cmd(char **routes, char *cmd);
+char	*find_cmd(char *routes, char *cmd);
 int		wait_forks(t_pipe *pipex);
 void	last_pipe(t_pipe *pipex, int argc);
 int		ft_error(int ext, int err, char *cmd);

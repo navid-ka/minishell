@@ -47,7 +47,7 @@ SRCS 					:= src/main.c  \
 						src/parser/parser_javi.c
 
 OBJS = $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRCS))
-CFLAGS 				:= -g #-Wall -Wextra -Werror -g
+CFLAGS 				:= -g #-Wall -Wextra -Werror
 
 LINUX_DISTRIBUTION := $(shell lsb_release -si)
 ifeq ($(LINUX_DISTRIBUTION),EndeavourOS)

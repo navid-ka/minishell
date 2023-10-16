@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:19:59 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/14 15:14:24 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/16 14:43:41 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,23 @@ int	ft_error(int ext, int err, char *cmd)
 	return (ext);
 }
 
+
+char	*get_path_env_value(t_mch *sh)
+{
+	char	*path_env_value;
+
+	path_env_value = get_env_value(sh, "PATH");
+	if (path_env_value == NULL)
+	{
+		sh->exit = 1;
+		ft_printf(2, "No such file or directory\n");
+		return (NULL);
+	}
+	sh->exit = 0;
+	return (path_env_value);
+}
+
+/*
 char	*find_path(char **envp, int *found)
 {
 	int	i;
@@ -59,13 +76,14 @@ int	find_route(t_pipe *pipex, char **envp)
 	return (0);
 }
 
+
 void	init_pipex(t_pipe *pipex, char **envp)
 {
 	if (find_route(pipex, envp) == 1)
 		exit(1);
-	pipex->j = 2; /*+ pipex->here_doc;*/
+	pipex->j = 2; //pipex->here_doc;
 	//heredoc?
-}
+}*/
 
 void	close_pipes(t_pipe *pipex)
 {
@@ -73,14 +91,14 @@ void	close_pipes(t_pipe *pipex)
 	close(pipex->tube[1]);
 }
 
-char	*find_cmd(char **routes, char *cmd)
+char	*find_cmd(char *routes, char *cmd)
 {
 	char	*tmp;
 	char	*cmdroute;
 
 	while (*routes)
 	{
-		tmp = ft_strjoin(*routes, "/");
+		tmp = ft_strjoin(routes, "/");
 		cmdroute = ft_strjoin(tmp, cmd);
 		if (!cmdroute)
 		{
@@ -138,21 +156,21 @@ static void	open_outfile(t_pipe *pipex, t_parser *pars)
 	close_pipes(pipex);
 }
 
-static void	child(t_pipe pipex, t_parser *pars, char **envp)
+static void	child(t_pipe pipex, t_parser *pars, char *envp)
 {
-	if (pars->red.input = INPUT)
+	if (pars->red.input == INPUT)
 		open_infile(&pipex, pars);
-	if (pars->red.output = TRUNC)
+	if (pars->red.output == TRUNC)
 		open_outfile(&pipex, pars);
-	if (pars->red.input = PIPE)
+	if (pars->red.input == PIPE)
 		dup2(pipex.tube[1], STDOUT_FILENO);
-	if (pars->red.output = PIPE)
+	if (pars->red.output == PIPE)
 		dup2(pipex.tube[1], STDOUT_FILENO);
 	close_pipes(&pipex);
 	pars->args[0] = find_cmd(envp, pars->args[0]);
 	if (!pars->args[0])
 		exit(127);
-	execve(pars->args[0], pars->args, envp);
+	execve(pars->args[0], pars->args, NULL);
 	exit (1);
 }
 
@@ -179,23 +197,26 @@ int	wait_forks(t_pipe *pipex)
 	return (exit_code);
 }
 
-int pipex(t_mch *all) {
+int pipex(t_mch *all) 
+{
 	t_parser *pars;
 	t_pipe *pipex;
+	char	*path_env;
 	pars = all->parser;
 	pipex = all->pipex;
 	int exit_code;
 
-	init_pipex(all->pipex, all->env);
+	//init_pipex(all->pipex, all->env);
+	path_env = get_path_env_value(all);
 	while (pars) {
 		if (pars->next && pipe(pipex->tube))
 			return (1);
 		pipex->proc = fork();
 		if (pipex->proc == 0)
-			child(*pipex, pars, all->env);
-		exit_code = wait_forks(&pipex);
+			child(*pipex, pars, path_env);
+		all->exit = wait_forks(pipex);
 		if (WIFEXITED(exit_code))
-			exit(WEXITSTATUS(exit_code));
+			all->exit = WEXITSTATUS(exit_code);
 	}
 	return (ft_error(1, ERR_ARG, NULL)); //no tiene que hacer exit creo
 }
