@@ -227,10 +227,10 @@ void	print_expansor(t_mch *sh);
 void	executor(t_mch *sh);
 
 // pipes
-void	init_pipex(t_pipe *pipex, char **envp);
-int		find_route(t_pipe *pipex, char **envp);
-char	*find_path(char **envp, int *found);
-char	*find_cmd(char *routes, char *cmd);
+void	init_pipex(t_pipe *pipex, char *envp);
+int		find_route(t_pipe *pipex, char *envp);
+char	*find_path(char *envp, int *found);
+char	*find_cmd(char **routes, char *cmd);
 int		wait_forks(t_pipe *pipex);
 void	last_pipe(t_pipe *pipex, int argc);
 int		ft_error(int ext, int err, char *cmd);
