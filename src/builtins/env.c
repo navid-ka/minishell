@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 11:50:02 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/13 18:09:51 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/17 19:14:13 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,6 @@ void	bt_env(t_mch *sh)
 		}
 		env = env->next;
 	}
+	ft_printf(STDOUT_FILENO, "\n");
 	sh->exit = EXIT_SUCCESS;
 }
