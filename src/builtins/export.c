@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 11:53:36 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/14 19:19:29 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/17 19:14:44 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	print_env(t_mch *sh)
 		ft_printf(STDOUT_FILENO, "declare -x %s=%s\n", env->name, env->value);
 		env = env->next;
 	}
+	ft_printf(STDOUT_FILENO, "\n");
 }
 
 void	bt_export(t_mch *sh, char **args)

@@ -6,7 +6,7 @@
 /*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:19:59 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/18 10:02:53 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/10/17 18:56:45 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,7 +237,7 @@ void	executor(t_mch *sh)
 	//
 	if (bt_is_builtin(cmd->args))
 		bt_check_builtin(sh);
-	else {
+	/*else {
 		pipex(sh);
-	}
+	}*/
 }
