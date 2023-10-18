@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_javi.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 19:16:14 by fcosta-f          #+#    #+#             */
-/*   Updated: 2023/10/15 00:00:38 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/18 13:27:11 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ t_redir createRedirNode(int input, int output, char *infile, char *outfile) {
     return (node);
 }
 
-int count_words(t_lexer *tok) {
+int count_words(t_lexer *tok) 
+{
 	t_lexer *first = tok;
 	int words = 0;
 	while (first && first->type == CMD)
@@ -64,11 +65,14 @@ t_parser *convertLexerToParser(t_lexer *lexerList) {
             char **args = NULL;
 			
             // Agregar argumentos a args hasta encontrar un tipo de redirección
-            if ((currentLexer->next != NULL && (currentLexer->next->type != INPUT || currentLexer->next->type != TRUNC) || currentLexer->next == NULL) /*ORAPPEND*/) {
+            if ((currentLexer->next != NULL \
+                && (currentLexer->next->type != INPUT || currentLexer->next->type != TRUNC)) \
+                || currentLexer->next == NULL) /*ORAPPEND*/
+            {
 				//printf("se mete en if, siguiente no es símbolo\n");
 				int argCount = 0;
 				//printf("tiene tantas palabras %d\n", count_words(currentLexer));
-				args = (char **)malloc(count_words(currentLexer) * sizeof(char *));
+				args = (char **)ft_calloc((count_words(currentLexer) + 1), sizeof(char *));
                 while (currentLexer && currentLexer->type == CMD) {
 					//printf("se mete en while de comandos\n");
 					//printf("vuelta %d de cmd %s\n", argCount, currentLexer->str);

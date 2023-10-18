@@ -6,7 +6,7 @@
 /*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:19:59 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/17 18:56:45 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/18 13:13:43 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,7 +234,9 @@ void	executor(t_mch *sh)
 {
 	t_parser *cmd = sh->parser;
 	
-	//
+	if (!cmd || cmd->args[0] == NULL)
+		return ;
+	//ft_printf(1, "\n");
 	if (bt_is_builtin(cmd->args))
 		bt_check_builtin(sh);
 	/*else {
