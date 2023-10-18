@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 16:59:10 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/15 00:32:39 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/18 13:00:04 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ void	quote_updater(t_clean *quotes, char e)
 		quotes->dcuote = true;
 	else if (e == '"' && quotes->dcuote == true)
 		quotes->dcuote = false;
-	if (e == '"' && quotes->scuote == false && quotes->dcuote != true)
+	if (e == '\'' && quotes->scuote == false && quotes->dcuote != true)
 		quotes->scuote = true;
-	else if (e == '"' && quotes->dcuote == true)
+	else if (e == '\'' && quotes->scuote == true)
 		quotes->scuote = false;
 }
 

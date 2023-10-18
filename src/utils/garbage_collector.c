@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   garbage_collector.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 17:47:49 by bifrost           #+#    #+#             */
-/*   Updated: 2023/10/15 01:25:44 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/18 13:29:28 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void	clear_parser(t_parser **lst)
 	{
 		middleman = node->next;
 		free(node->args[i++]);
+		free(node->args);
 		free(node);
 		node = middleman;
 	}

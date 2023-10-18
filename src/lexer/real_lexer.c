@@ -5,27 +5,21 @@
 void	arg_type(char *str, int *i, t_lexer **lexer)
 {
 	if (str[*i] == '|')
-	{	
 		(*lexer)->type = PIPE;
-	}
 	else if (str[*i] == '<' && str[*i + 1] == '<')
 	{
 		(*lexer)->type = HERE_DOC;
 		(*i)++;
 	}
 	else if (str[*i] == '<')
-	{
 		(*lexer)->type = INPUT;
-	}
 	else if (str[*i] == '>' && str[*i + 1] == '>')
 	{
 		(*lexer)->type = APPEND;
 		(*i)++;
 	}
 	else if (str[*i] == '>')
-	{
 		(*lexer)->type = TRUNC;
-	}
 	(*i)++;
 }
 
@@ -56,7 +50,8 @@ int cmd_type(char *str, int *i, t_lexer **new) {
 	return (0);
 }
 
-int	inicialize_lex(t_lexer **new, char *str, int *i) {
+int	inicialize_lex(t_lexer **new, char *str, int *i) 
+{
 	if (str[*i] == '|' || str[*i] == '<' || str[*i] == '>')
 		arg_type(str, i, new);
 	else
@@ -64,19 +59,26 @@ int	inicialize_lex(t_lexer **new, char *str, int *i) {
 	return (0);
 }
 
-int	main_lexer(char *str, t_lexer **lex) {
+int	main_lexer(char *str, t_lexer **lex) 
+{
 	t_lexer *new;
-	int i = 0;
-	while (str[i]) {
-		if (str[i] != ' ') {
+	int i;
+
+	new = NULL;
+	i = 0;
+	while (str[i]) 
+	{
+		if (str[i] != ' ') 
+		{
 			new = lexer_lstnew();
-			if (!new) return (-1);
+			if (!new) 
+				return (-1);
 			if (inicialize_lex(&new, str, &i) == -1) 
 				return (-1);
-			// dprintf(1, "%s, %d\n", new->str, new->type);
 			lexer_lstadd_back(lex, new);
 		}
-		else i++;
+		else 
+			i++;
 	}
 	return (0);
 }
