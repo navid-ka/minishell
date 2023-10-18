@@ -6,7 +6,7 @@
 /*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:19:59 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/18 14:27:30 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/10/18 14:30:21 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,7 +221,6 @@ int pipex(t_mch *all)
 		else
 		{
 			waitpid(-1, &status, 0);
-			ft_printf(1, "%d\n", all->exit);
 			pars = pars->next;
 		}
 		if (WIFEXITED(all->exit))
