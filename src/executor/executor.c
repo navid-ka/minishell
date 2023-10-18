@@ -6,7 +6,7 @@
 /*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:19:59 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/18 14:30:21 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/10/18 18:24:01 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,34 +44,6 @@ char	*get_path_env_value(t_mch *sh)
 	sh->exit = 0;
 	return (path_env_value);
 }
-
-/*
-char	*find_path(char **envp, int *found)
-{
-	int	i;
-
-	i = 0;
-	if (!envp)
-		return (NULL);
-	while (envp[i] && ft_strncmp(envp[i], "PATH=", 5))
-		i++;
-	if (!envp[i])
-	{
-		*found = 0;
-		return (NULL);
-	}
-	*found = 1;
-	return (envp[i] + 5);
-}
-*/
-/*nt	find_route(t_pipe *pipex, char *envp)
-{
-	pipex->routes = ft_split(envp, ':');
-	if (!pipex->routes)
-		return (ft_error(1, ERR_MC, NULL));
-	return (0);
-}
-
 
 void	init_pipex(t_pipe *pipex, char *envp)
 {
