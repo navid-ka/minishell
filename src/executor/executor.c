@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:19:59 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/16 18:00:02 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/18 10:02:53 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,19 +179,20 @@ void	last_pipe(t_pipe *pipex, int argc)
 	}
 }
 
-int	wait_forks(t_pipe *pipex)
+/*int	wait_forks(t_pipe *pipex)
 {
 	int	status;
 	int	exit_code;
 
-	while (pipex->j > 2 + pipex->here_doc)
-	{
-		if (wait(&status) == pipex->proc)
-			exit_code = status;
-		pipex->j--;
-	}
+	//while (pipex->j > 2 + pipex->here_doc)
+	//{
+	waitpid(-1, &status, 0);
+		//if (wait(&status) == pipex->proc)
+		//	exit_code = status;
+		//pipex->j--;
+	//}
 	return (exit_code);
-}
+}*/
 
 int pipex(t_mch *all) 
 {
@@ -199,6 +200,7 @@ int pipex(t_mch *all)
 	t_pipe		*pipex;
 	char		**routes;
 	char		*path_env;
+	int			status;
 
 	pars = all->parser;
 	pipex = all->pipex;
@@ -206,19 +208,22 @@ int pipex(t_mch *all)
 	pipex->j = 2;
 	//ft_memset(&pipex, 0, sizeof (t_pipe));
 	path_env = get_path_env_value(all);
-	ft_printf(1, "%s\n", path_env);
 	//init_pipex(all->pipex, path_env);
 	routes = ft_calloc(sizeof(char *), ft_strlen(path_env));
 	routes = ft_split(path_env, ':');
 	free(path_env);
-	ft_printf(1, "%s\n", *routes);
 	while (pars) {
 		if (pars->next && pipe(pipex->tube))
 			return (1);
 		pipex->proc = fork();
 		if (pipex->proc == 0)
 			child(*pipex, pars, routes);
-		all->exit = wait_forks(pipex);
+		else
+		{
+			waitpid(-1, &status, 0);
+			ft_printf(1, "%d\n", all->exit);
+			pars = pars->next;
+		}
 		if (WIFEXITED(all->exit))
 			all->exit = WEXITSTATUS(all->exit);
 	}
