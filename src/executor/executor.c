@@ -6,7 +6,7 @@
 /*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:19:59 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/18 13:13:43 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/10/18 14:27:30 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,7 +204,7 @@ int pipex(t_mch *all)
 
 	pars = all->parser;
 	pipex = all->pipex;
-	pipex = malloc(sizeof(t_pipe));
+	pipex = ft_calloc(sizeof(t_pipe), 1);
 	pipex->j = 2;
 	//ft_memset(&pipex, 0, sizeof (t_pipe));
 	path_env = get_path_env_value(all);
@@ -227,6 +227,7 @@ int pipex(t_mch *all)
 		if (WIFEXITED(all->exit))
 			all->exit = WEXITSTATUS(all->exit);
 	}
+	free(pipex);
 	return (ft_error(1, ERR_ARG, NULL)); //no tiene que hacer exit creo
 }
 
@@ -239,7 +240,7 @@ void	executor(t_mch *sh)
 	//ft_printf(1, "\n");
 	if (bt_is_builtin(cmd->args))
 		bt_check_builtin(sh);
-	/*else {
+	else {
 		pipex(sh);
-	}*/
+	}
 }
