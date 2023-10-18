@@ -6,11 +6,85 @@
 /*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:19:59 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/18 16:08:07 by fcosta-f         ###   ########.fr       */
+/*   Updated: 2023/10/18 18:24:01 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+int	ft_error(int ext, int err, char *cmd)
+{
+	if (err == ERR_ARG)
+		ft_printf(2, "bash: Invalid number of arguments\n");
+	else if (err == ERR_MC)
+		ft_printf(2, "bash: error trying to allocate memory\n");
+	else if (err == ERR_CNF)
+		ft_printf(2, "bash: %s: command not found\n", cmd);
+	else if (err == ERR_NFD)
+		ft_printf(2, "bash: %s: No such file or directory\n");
+	else if (err == ERR_PERM)
+		ft_printf(2, "bash: %s: permission denied\n");
+	else if (err == ERR_PERR)
+		perror("bash: ");
+	return (ext);
+}
+
+
+char	*get_path_env_value(t_mch *sh)
+{
+	char	*path_env_value;
+
+	path_env_value = get_env_value(sh, "PATH");
+	if (path_env_value == NULL)
+	{
+		sh->exit = 1;
+		ft_printf(2, "No such file or directory\n");
+		return (NULL);
+	}
+	sh->exit = 0;
+	return (path_env_value);
+}
+
+void	init_pipex(t_pipe *pipex, char *envp)
+{
+	if (find_route(pipex, envp) == 1)
+		exit(1);
+	pipex->j = 2; //pipex->here_doc;
+	//heredoc?
+}*/
+
+void	close_pipes(t_pipe *pipex)
+{
+	close(pipex->tube[0]);
+	close(pipex->tube[1]);
+}
+
+char	*find_cmd(char **routes, char *cmd)
+{
+	char	*tmp;
+	char	*cmdroute;
+
+	while (*routes)
+	{
+		tmp = ft_strjoin(*routes, "/");
+		cmdroute = ft_strjoin(tmp, cmd);
+		if (!cmdroute)
+		{
+			ft_error(1, ERR_MC, NULL);
+			return (NULL);
+		}
+		free(tmp);
+		if (access(cmdroute, F_OK | X_OK) == 0)
+			return (cmdroute);
+		free(cmdroute);
+		++routes;
+	}
+	if (access(cmd, F_OK | X_OK) == 0 && ft_strchr(cmd, '/'))
+		return (cmd);
+	else
+		ft_error(127, ERR_CNF, cmd);
+	return (NULL);
+}
 
 static void	open_infile(t_pipe *pipex, t_parser *pars)
 {
@@ -56,9 +130,9 @@ static void	child(t_pipe pipex, t_parser *pars, char **envp)
 		open_infile(&pipex, pars);
 	if (pars->red.output == TRUNC)
 		open_outfile(&pipex, pars);
-	if (pars->red.input = PIPE)
+	if (pars->red.input == PIPE)
 		dup2(pipex.tube[1], STDOUT_FILENO);
-	if (pars->red.output = PIPE)
+	if (pars->red.output == PIPE)
 		dup2(pipex.tube[1], STDOUT_FILENO);
 	close_pipes(&pipex);
 	pars->args[0] = find_cmd(envp, pars->args[0]);
@@ -77,10 +151,28 @@ void	last_pipe(t_pipe *pipex, int argc)
 	}
 }
 
+/*int	wait_forks(t_pipe *pipex)
+{
+	int	status;
+	int	exit_code;
+
+	//while (pipex->j > 2 + pipex->here_doc)
+	//{
+	waitpid(-1, &status, 0);
+		//if (wait(&status) == pipex->proc)
+		//	exit_code = status;
+		//pipex->j--;
+	//}
+	return (exit_code);
+}*/
+
 int pipex(t_mch *all) 
 {
-	t_parser *pars;
-	t_pipe *pipex;
+	t_parser	*pars;
+	t_pipe		*pipex;
+	char		**routes;
+	char		*path_env;
+	int			status;
 
 	pars = all->parser;
 	pipex = all->pipex;
@@ -120,7 +212,6 @@ void	executor(t_mch *sh)
 	if (bt_is_builtin(cmd->args))
 		bt_check_builtin(sh);
 	else {
-		dprintf(1, "entra pipex\n");
 		pipex(sh);
 	}
 }
