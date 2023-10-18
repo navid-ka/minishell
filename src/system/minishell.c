@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fcosta-f <fcosta-f@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:39:00 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/13 23:20:50 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/18 15:58:09 by fcosta-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,9 +87,9 @@ void	minishell(t_mch *sh, char **env)
 			add_history(line);
 			line = clean_input(line);
 			main_lexer(line, &lex);
-			// print_lex_list(lex);
+			print_lex_list(lex);
 			sh->parser = convertLexerToParser(lex); //se mueve lex?
-			printParserList(sh->parser); //hacerlo void como proyecto a futuro
+			//printParserList(sh->parser); //hacerlo void como proyecto a futuro
 			//expansor(sh);
 			//print_expansor(sh);
 			executor(sh);
