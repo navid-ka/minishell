@@ -37,14 +37,20 @@ SRCS 					:= src/main.c  \
 						src/lexer/lexer_utils.c \
 						src/lexer/lexer_list.c \
 						src/lexer/cleaner.c \
+						src/parser/parser_javi.c \
+						src/parser/parse_list.c \
+						src/parser/redir_list.c \
 						src/builtins/bt_init.c \
 						src/utils/cmd_split.c \
 						src/parser/parse_env.c \
 						src/expander/expansor_utils.c \
 						src/expander/expansor.c \
 						src/executor/executor.c \
+						src/executor/exec_utils.c \
+						src/executor/exec_find.c \
 						src/utils/garbage_collector.c \
 						src/parser/parser_javi.c
+
 
 OBJS = $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRCS))
 CFLAGS 				:= -g -Wall -Wextra -Werror
