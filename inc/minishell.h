@@ -149,6 +149,14 @@ void 	sigint_handler(int sig);
 void	prompter(void);
 char	*shell_prompt(int i);
 
+// Garbage collection 
+void	clear_parser(t_parser **lst);
+void	clear_lexer(t_lexer **lexer_list);
+void	free_tab(char **args);
+void	clear_line(char **line);
+void	free_env(t_env **env);
+void	unset_free(t_env *env);
+
 // builtins env
 bool	bt_is_builtin(char **argv);
 void	bt_check_builtin(t_mch *sh);
@@ -157,6 +165,9 @@ void	bt_export(t_mch *sh, char **args);
 void	bt_exit(char *argv);
 void	bt_echo(t_mch *sh);
 int		bt_pwd(void);
+void	bt_cd(t_mch *sh, char **arg);
+void    bt_unset(t_mch *sh, char **args);
+
 // parser
 void	get_env(t_mch *sh, char **env);
 void	symbol_sorter(t_lexer *lex);
@@ -183,6 +194,8 @@ char	*ft_strndup(const char *src, size_t len);
 int		ft_isquote(int c);
 int		ft_is_escape(int c);
 int		ft_is_shellsymbol(int c);
+void	add_or_update_env(t_mch *sh, char *name, char *value);
+char	*get_env_value(t_mch *sh, char *arg);
 
 void	print_lexers(t_lexer *lex, char *str);
 
@@ -214,9 +227,9 @@ void	print_expansor(t_mch *sh);
 void	executor(t_mch *sh);
 
 // pipes
-void	init_pipex(t_pipe *pipex, char **envp);
-int		find_route(t_pipe *pipex, char **envp);
-char	*find_path(char **envp, int *found);
+void	init_pipex(t_pipe *pipex, char *envp);
+int		find_route(t_pipe *pipex, char *envp);
+char	*find_path(char *envp, int *found);
 char	*find_cmd(char **routes, char *cmd);
 int		wait_forks(t_pipe *pipex);
 void	last_pipe(t_pipe *pipex, int argc);

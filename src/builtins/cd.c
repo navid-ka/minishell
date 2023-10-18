@@ -1,45 +1,64 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cd.c                                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/10/15 23:35:34 by bifrost           #+#    #+#             */
+/*   Updated: 2023/10/16 11:38:21 by bifrost          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 
-/*int	bt_get_dirs(char **env, t_env *env_routes)
+static void	update_old_pwd(t_mch *sh, char *old_pwd, char *new_pwd)
 {
-	int	i;
+	t_env	*env;
 
-	i = 0;
-	while (env[i] != NULL)
+	env = sh->env;
+	if (old_pwd == NULL)
 	{
-		if (ft_strncmp(env[i], "HOME=/", 6) == 0)
-			env_routes->home = env[i] + 5;
-		else if (ft_strncmp(env[i], "OLDPWD=", 7) == 0)
-			env_routes->oldpwd = env[i] + 7;
-		i++;
+		add_or_update_env(sh, "OLDPWD", new_pwd);
+		return ;
 	}
-	if (env_routes->home && env_routes->oldpwd)
-		return (1);
-	else if (env_routes->oldpwd)
-		return (0);
+	while (env != NULL)
+	{
+		if (ft_strncmp(env->name, "OLDPWD", 6) == 0)
+		{
+			free(env->value);
+			env->value = ft_strdup(new_pwd);
+			return ;
+		}
+		env = env->next;
+	}
+}
+
+void	bt_cd(t_mch *sh, char **arg)
+{
+	char	*pwd;
+
+	pwd = getcwd(NULL, 0);
+	if (arg[1] == NULL)
+	{
+		update_old_pwd(sh, find_in_env_variables(sh, "OLDPWD"), pwd);
+		chdir(find_in_env_variables(sh, "HOME"));
+	}
+	else if (ft_strncmp("-", arg[1], 2) == 0)
+	{
+		if (chdir(find_in_env_variables(sh, "OLDPWD")) == -1)
+			ft_printf(STDERR_FILENO, "%s", "cd: OLDPWD not set\n");
+		update_old_pwd(sh, find_in_env_variables(sh, "OLDPWD"), pwd);
+	}
 	else
-		return (-1);
-}*/
-
-// int	bt_cd(char *input, t_env env_routes) //o hacer const char *
-// {
-// 	//env_routes se asigna en función init
-// 	int		i;
-// 	char	*pwd = NULL;
-
-// 	pwd = getcwd(pwd, 0);
-// 	i = ~0;
-// 	while (input[++i])
-// 	{
-// 		if (!env_routes.oldpwd)
-// 			perror("cd: OLDPWD not set");
-// 		if (chdir(pwd) == ~0)
-// 			perror("Error");
-// 		else if (ft_strcmp(&input[i], "cd -") == 0)
-// 			chdir(env_routes.oldpwd);
-// 		else if (ft_strcmp(&input[i], "cd"))
-// 			chdir(env_routes.home);
-// 	}
-// 	return (1);
-// }
-//REVISAR LUEGO DE PARSEAR, OLDPWD SOLO VA CON CD ORIGINAL NO BUILTIN POR LO TANTO TIRAR DE VARIABLE STATIC
+	{
+		update_old_pwd(sh, find_in_env_variables(sh, "OLDPWD"), pwd);
+		if (chdir(arg[1]) == -1)
+		{
+			ft_printf(STDERR_FILENO,
+				"cd: %s: No such file or directory\n", arg[1]);
+			sh->exit = 1;
+		}
+	}
+	free(pwd);
+}

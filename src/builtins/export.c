@@ -6,29 +6,11 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 11:53:36 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/13 23:11:33 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/17 19:14:44 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-
-void	free_tab(char **args)
-{
-	int	i;
-
-	i = 0;
-	if (!args)
-		return ;
-	if (args)
-	{
-		while (args[i] != NULL)
-		{
-			free(args[i]);
-			i++;
-		}
-		free(args);
-	}
-}
 
 void	add_or_update_env(t_mch *sh, char *name, char *value)
 {
@@ -64,6 +46,7 @@ void	print_env(t_mch *sh)
 		ft_printf(STDOUT_FILENO, "declare -x %s=%s\n", env->name, env->value);
 		env = env->next;
 	}
+	ft_printf(STDOUT_FILENO, "\n");
 }
 
 void	bt_export(t_mch *sh, char **args)
@@ -80,7 +63,7 @@ void	bt_export(t_mch *sh, char **args)
 		while (args[i] != NULL)
 		{
 			vars = ft_split(args[i], '=');
-			if (ft_isdigit(vars[0][0]))
+			if (ft_isdigit(vars[0][0]) || vars[0][0] == '_')
 				ft_printf(2,"export: `%s=%s': not a valid identifier\n",vars[0], vars[1]);
 			else
 				add_or_update_env(sh, vars[0], vars[1]);

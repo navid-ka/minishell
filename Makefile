@@ -28,6 +28,7 @@ SRCS 					:= src/main.c  \
 						src/builtins/echo.c \
 						src/builtins/exit.c \
 						src/builtins/export.c \
+						src/builtins/unset.c \
 						src/utils/utils.c \
 						src/system/signals.c \
 						src/system/prompter.c \
@@ -47,9 +48,12 @@ SRCS 					:= src/main.c  \
 						src/executor/executor.c \
 						src/executor/exec_utils.c \
 						src/executor/exec_find.c \
+						src/utils/garbage_collector.c \
+						src/parser/parser_javi.c
+
 
 OBJS = $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRCS))
-CFLAGS 				:= -g #-Wall -Wextra -Werror -g
+CFLAGS 				:= -g -Wall -Wextra -Werror
 
 LINUX_DISTRIBUTION := $(shell lsb_release -si)
 ifeq ($(LINUX_DISTRIBUTION),EndeavourOS)
