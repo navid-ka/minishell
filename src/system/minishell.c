@@ -37,7 +37,8 @@ void	minishell(t_mch *sh, char **env)
 	while (1)
 	{
 		line = readline("> "); // liberar el prompt
-		bt_exit(line);
+		if (!line)
+			bt_exit(sh, line);
 		if (*line)
 		{
 			add_history(line);
