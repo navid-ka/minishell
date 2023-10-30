@@ -6,7 +6,7 @@
 /*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:19:59 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/18 18:24:01 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/10/30 11:13:28 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char	*get_path_env_value(t_mch *sh)
 	return (path_env_value);
 }
 
-void	init_pipex(t_pipe *pipex, char *envp)
+/*void	init_pipex(t_pipe *pipex, char *envp)
 {
 	if (find_route(pipex, envp) == 1)
 		exit(1);
@@ -199,7 +199,7 @@ int pipex(t_mch *all)
 			all->exit = WEXITSTATUS(all->exit);
 	}
 	free(pipex);
-	return (ft_error(1, ERR_ARG, NULL)); //no tiene que hacer exit creo
+	return (all->exit);
 }
 
 void	executor(t_mch *sh)

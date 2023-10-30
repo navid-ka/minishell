@@ -46,10 +46,7 @@ SRCS 					:= src/main.c  \
 						src/expander/expansor_utils.c \
 						src/expander/expansor.c \
 						src/executor/executor.c \
-						src/executor/exec_utils.c \
-						src/executor/exec_find.c \
-						src/utils/garbage_collector.c \
-						src/parser/parser_javi.c
+						src/utils/garbage_collector.c 
 
 
 OBJS = $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRCS))
