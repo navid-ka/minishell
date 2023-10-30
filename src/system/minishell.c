@@ -27,16 +27,16 @@ void	minishell(t_mch *sh, char **env)
 	char		*line;
 	t_lexer		*lex;
 	t_env		*envi;
-	//char		*prompt;
+	char		*prompt;
 
 	lex = NULL;
 	line = NULL;
 	envi = NULL;
-	//prompt = shell_prompt(0);
+	prompt = shell_prompt(0);
 	sh_init(sh, env);
 	while (1)
 	{
-		line = readline("> "); // liberar el prompt
+		line = readline(prompt);
 		if (!line)
 			bt_exit(sh, line);
 		if (*line)
@@ -48,19 +48,15 @@ void	minishell(t_mch *sh, char **env)
 			{
 				line = clean_input(line);
 				main_lexer(line, &lex);
-				// print_lex_list(lex);
-				sh->parser = convertLexerToParser(lex); //se mueve lex?
-				//printParserList(sh->parser); //hacerlo void como proyecto a futuro
+				sh->parser = convertLexerToParser(lex);
 				expansor(sh);
-				//print_expansor(sh);
 				executor(sh);
 				clear_lexer(&lex);
 				clear_parser(&sh->parser);
 			}
-			signal(SIGINT, sigint_handler);
 			free_env(&envi);
-			clear_line(&line);
 			//free(prompt);
 		}
+		clear_line(&line);
 	}
 }
