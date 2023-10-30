@@ -6,7 +6,7 @@
 /*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:04:43 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/18 13:13:09 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/10/30 18:46:58 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ char	*get_env_name(char *arg)
 		env_name = charjoin(env_name, arg[i]);
 		i++;
 	}
+	if (!env_name)
+		return (NULL);
 	return (env_name);
 }
 
@@ -78,6 +80,8 @@ void	expand_env(t_mch *sh, char *exp, char **new_exp)
 			return ;
 		}
 		expand = ft_strdup(find_in_env_variables(sh, env_name));
+		if (!expand)
+			return ;
 		free(env_name);
 	}
 	while (expand[i])
@@ -111,9 +115,7 @@ void	expand(t_mch *sh, char **exp, int i)
 			exp_arg = charjoin(exp_arg, exp[i][j++]);
 	}
 	free(exp[i]);
-	exp[i] = NULL;
 	exp[i] = exp_arg;
-
 }
 
 void	expansor(t_mch *sh)

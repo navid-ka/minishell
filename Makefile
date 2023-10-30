@@ -76,7 +76,7 @@ clean:
 
 fclean: clean
 	@$(MAKE) -C $(LIBFT) fclean
-	@rm -f $(NAME) minishell.dSYM/
+	@rm -rf $(NAME) minishell.dSYM/
 
 re: fclean all
 
