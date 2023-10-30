@@ -228,7 +228,7 @@ void	executor(t_mch *sh);
 
 // pipes
 void	init_pipex(t_pipe *pipex, char *envp);
-int		find_route(t_pipe *pipex, char *envp);
+//int		find_route(t_pipe *pipex, char *envp);
 char	*find_path(char *envp, int *found);
 char	*find_cmd(char **routes, char *cmd);
 int		wait_forks(t_pipe *pipex);
