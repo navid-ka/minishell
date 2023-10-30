@@ -58,6 +58,7 @@ void	clean_spaces(char **line, t_clean *cleaner)
 char	*clean_input(char *line)
 {
 	t_clean	cleaner;
+	char	*output;
 
 	clean_init(&cleaner);
 	while (*line)
@@ -67,5 +68,9 @@ char	*clean_input(char *line)
 		else
 			clean_quotes(&line, &cleaner);
 	}
-	return (cleaner.str);
+	output = ft_strdup(cleaner.str);
+	free(cleaner.str);
+	//free(&cleaner);
+	cleaner.str = NULL;
+	return (output);
 }
