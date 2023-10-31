@@ -68,9 +68,7 @@ char	*clean_input(char *line)
 		else
 			clean_quotes(&line, &cleaner);
 	}
-	output = ft_strdup(cleaner.str);
-	free(cleaner.str);
-	//free(&cleaner);
-	cleaner.str = NULL;
+	output = cleaner.str;
+	clear_line(&cleaner.str);
 	return (output);
 }

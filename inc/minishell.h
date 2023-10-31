@@ -163,7 +163,7 @@ void	bt_check_builtin(t_mch *sh);
 void	bt_env(t_mch *sh);
 void	bt_export(t_mch *sh, char **args);
 void	bt_exit(t_mch *sh, char *argv);
-void	bt_echo(t_mch *sh);
+void	bt_echo(t_mch *sh, char **str);
 int		bt_pwd(void);
 void	bt_cd(t_mch *sh, char **arg);
 void    bt_unset(t_mch *sh, char **args);

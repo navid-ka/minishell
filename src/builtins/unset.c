@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 01:03:04 by bifrost           #+#    #+#             */
-/*   Updated: 2023/10/15 01:38:51 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/31 11:33:03 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ char	*get_env_value(t_mch *sh, char *arg)
 		if (i > 0)
 			name = ft_substr(arg, 0, i);
 		value = find_in_env_variables(sh, name);
+		free(name);
 		return (ft_strdup(value));
 }
 

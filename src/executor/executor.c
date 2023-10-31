@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:19:59 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/31 11:00:19 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/31 11:38:19 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,6 +200,7 @@ int pipex(t_mch *all)
 			all->exit = WEXITSTATUS(all->exit);
 	}
 	free(pipex);
+	free_tab(routes);
 	return (all->exit);
 }
 
