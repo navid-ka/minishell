@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:39:00 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/31 11:27:39 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/10/31 12:48:11 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,6 @@ static void command_handler(t_mch *sh, char *line)
 
 	lex = NULL;
 	cmd = clean_input(line);
-	cmd = ft_strtrim(line, " \t");
-	if (*cmd == '\0')
-		clear_line(&cmd);
 	main_lexer(cmd, &lex);
 	sh->parser = convertLexerToParser(lex);
 	expansor(sh);
@@ -60,7 +57,6 @@ void	minishell(t_mch *sh, char **env)
 	while (1)
 	{
 		line = readline(prompt);
-
 		if (!line)
 			bt_exit(sh, line);
 		if (*line)
