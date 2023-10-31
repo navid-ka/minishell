@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
+/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 11:54:38 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/03 18:24:20 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/10/31 09:48:22 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	main(int argc, char **argv, char **env)
 	(void)argv;
 	sh.exit = 0;
 	minishell(&sh, env);
-	return (sh.exit);
+	exit (sh.exit);
 }
 
 //hacer echo y exit

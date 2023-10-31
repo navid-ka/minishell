@@ -3,16 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-
-/*   By: fcosta-f <fcosta-f@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:39:00 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/18 15:58:09 by fcosta-f         ###   ########.fr       */
+/*   Updated: 2023/10/31 11:27:39 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+static void	clear_console(void)
+{
+	ft_printf(STDOUT_FILENO, "\033[2J");
+	ft_printf(STDOUT_FILENO, "\033[1;1H");
+}
 
 static void	sh_init(t_mch *sh, char **env)
 {
@@ -22,14 +26,33 @@ static void	sh_init(t_mch *sh, char **env)
 	signals();
 }
 
+static void command_handler(t_mch *sh, char *line)
+{
+	t_lexer *lex;
+	char	*cmd;
+
+	lex = NULL;
+	cmd = clean_input(line);
+	cmd = ft_strtrim(line, " \t");
+	if (*cmd == '\0')
+		clear_line(&cmd);
+	main_lexer(cmd, &lex);
+	sh->parser = convertLexerToParser(lex);
+	expansor(sh);
+	if (ft_strcmp(cmd, ""))
+		add_history(cmd);
+	executor(sh);
+	clear_line(&cmd);
+	clear_lexer(&lex);
+	clear_parser(&sh->parser);
+}
+
 void	minishell(t_mch *sh, char **env)
 {
 	char		*line;
-	t_lexer		*lex;
 	t_env		*envi;
 	char		*prompt;
 
-	lex = NULL;
 	line = NULL;
 	envi = NULL;
 	prompt = shell_prompt(0);
@@ -37,26 +60,19 @@ void	minishell(t_mch *sh, char **env)
 	while (1)
 	{
 		line = readline(prompt);
+
 		if (!line)
 			bt_exit(sh, line);
 		if (*line)
 		{
-			add_history(line);
+			if (ft_strncmp(line, "clear", 6) == 0)
+				clear_console();
 			if (!syntax_checker(line))
 				syntax_error();
 			else
-			{
-				line = clean_input(line);
-				main_lexer(line, &lex);
-				sh->parser = convertLexerToParser(lex);
-				expansor(sh);
-				executor(sh);
-				clear_lexer(&lex);
-				clear_parser(&sh->parser);
-			}
+				command_handler(sh, line);
 			free_env(&envi);
-			//free(prompt);
+			clear_line(&line);
 		}
-		clear_line(&line);
 	}
 }

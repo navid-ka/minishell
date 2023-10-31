@@ -100,11 +100,13 @@ t_parser *convertLexerToParser(t_lexer *lexerList) {
 				parserList->num_cmds++;
 				// if (currentLexer->prev && currentLexer->prev->prev != NULL) currentParser->red.input = currentLexer->prev->type;
             }
-			if (currentLexer) currentParser->red.output = currentLexer->type;
+			if (currentLexer) 
+                currentParser->red.output = currentLexer->type;
         } 
 		else {
             currentLexer = currentLexer->next;
         }
+
     }
     return (parserList);
 }

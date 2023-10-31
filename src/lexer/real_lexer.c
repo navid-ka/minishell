@@ -47,6 +47,7 @@ int cmd_type(char *str, int *i, t_lexer **new) {
 	(*new)->str = cmd;
 	(*new)->type = CMD;
 	*i += j;
+	//clear_line(&cmd); cmd tiene un malloc pero no logro hacer free???
 	return (0);
 }
 
@@ -55,7 +56,8 @@ int	inicialize_lex(t_lexer **new, char *str, int *i)
 	if (str[*i] == '|' || str[*i] == '<' || str[*i] == '>')
 		arg_type(str, i, new);
 	else
-		if (cmd_type(str, i, new) == -1) return (-1);
+		if (cmd_type(str, i, new) == -1) 
+			return (-1);
 	return (0);
 }
 
