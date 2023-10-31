@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:19:59 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/30 11:13:28 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/10/31 11:00:19 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,9 +181,10 @@ int pipex(t_mch *all)
 	//ft_memset(&pipex, 0, sizeof (t_pipe));
 	path_env = get_path_env_value(all);
 	//init_pipex(all->pipex, path_env);
-	routes = ft_calloc(sizeof(char *), ft_strlen(path_env));
+	//routes = ft_calloc(sizeof(char *), ft_strlen(path_env));
 	routes = ft_split(path_env, ':');
 	free(path_env);
+	path_env = NULL;
 	while (pars) {
 		if (pars->next && pipe(pipex->tube))
 			return (1);
