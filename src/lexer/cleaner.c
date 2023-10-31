@@ -69,6 +69,6 @@ char	*clean_input(char *line)
 			clean_quotes(&line, &cleaner);
 	}
 	output = cleaner.str;
-	clear_line(&cleaner.str);
+	//clear_line(&cleaner.str);
 	return (output);
 }
