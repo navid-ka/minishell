@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 11:53:36 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/17 19:14:44 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/01 16:31:49 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,26 +51,30 @@ void	print_env(t_mch *sh)
 
 void	bt_export(t_mch *sh, char **args)
 {
-	int	i;
-	char **vars;
+	int		i;
+	int		j;
+	char	**vars;
 
-	i = 0;
- 	if (args[1] == NULL)
+	i = 1;
+ 	if (args[i] == NULL)
 		print_env(sh);
 	else
 	{
-		i = 1;
+		j = -1;
 		while (args[i] != NULL)
 		{
 			vars = ft_split(args[i], '=');
+			while (vars[++j] != NULL)
+				if (ft_strchr(vars[j], '+') != NULL)
+					return((void)ft_printf(2, "%s=%s: not a valid identifier\n",\
+						vars[j], vars[1]), free_tab(vars));
 			if (ft_isdigit(vars[0][0]) || vars[0][0] == '_')
-				ft_printf(2,"export: `%s=%s': not a valid identifier\n",vars[0], vars[1]);
+				ft_printf(2,"export: %s=%s: not a valid identifier\n",vars[0], vars[1]);
 			else
 				add_or_update_env(sh, vars[0], vars[1]);
 			free_tab(vars);
 			i++;
 		}
-       
     }
 }
 	
