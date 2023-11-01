@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expansor_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 16:59:10 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/18 13:00:04 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/11/01 00:49:27 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,9 @@
 
 int	is_expandable(char e)
 {
-	return ((e == '\'' || e == '"' || e == '$'));
+	if (e == '\'' || e == '"' || e == '$')
+		return (1);
+	return (0);
 }
 
 void	init_quotes(t_clean *quotes)
@@ -25,11 +27,11 @@ void	init_quotes(t_clean *quotes)
 
 void	quote_updater(t_clean *quotes, char e)
 {
-	if (e == '"' && quotes->dcuote == false && quotes->scuote != true)
+	if (e == '"' && !quotes->dcuote && quotes->scuote != true)
 		quotes->dcuote = true;
 	else if (e == '"' && quotes->dcuote == true)
 		quotes->dcuote = false;
-	if (e == '\'' && quotes->scuote == false && quotes->dcuote != true)
+	if (e == '\'' && !quotes->scuote && quotes->dcuote != true)
 		quotes->scuote = true;
 	else if (e == '\'' && quotes->scuote == true)
 		quotes->scuote = false;
