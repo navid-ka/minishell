@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompter.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkeyani- < nkeyani-@student.42barcelona    +#+  +:+       +#+        */
+/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 11:35:01 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/09/27 10:46:33 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/10/31 15:41:40 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 void	pr(char *s)
 {
 	while (*s)
-		write(1, s++, 1);
-	write(1, "\n", 1);
+		write(2, s++, 1);
+	write(2, "\n", 1);
 }
 
 void	prompter(void)
