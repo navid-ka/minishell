@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcosta-f <fcosta-f@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:39:00 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/11/05 12:09:45 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/11/05 13:36:21 by fcosta-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void command_handler(t_mch *sh, char *line)
 	lex = NULL;
 	cmd = clean_input(line);
 	main_lexer(cmd, &lex);
-	sh->parser = convertLexerToParser(lex);
+	sh->parser = convert_lexer_parser(lex);
 	expansor(sh);
 	if (ft_strcmp(cmd, ""))
 		add_history(cmd);

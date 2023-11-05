@@ -18,7 +18,8 @@
 // }
 
 // Función para crear un nuevo nodo de t_parser
-t_parser *createParserNode(char **args, t_redir red) {
+t_parser *create_parser_node(char **args, t_redir red)
+{
     t_parser *node = (t_parser *)malloc(sizeof(t_parser));
     node->args = args;
     node->red = red;
@@ -27,7 +28,8 @@ t_parser *createParserNode(char **args, t_redir red) {
 }
 
 // Función para crear un nuevo nodo de t_redir
-t_redir createRedirNode(int input, int output, char *infile, char *outfile) {
+t_redir create_redir_node(int input, int output, char *infile, char *outfile)
+{
     t_redir node;
     node.input = input;
     node.output = output;
@@ -49,83 +51,91 @@ int count_words(t_lexer *tok)
 }
 
 // Función para convertir la lista de t_lexer en la lista de t_parser
-t_parser *convertLexerToParser(t_lexer *lexerList) {
-    t_parser *parserList = NULL;
-    t_parser *currentParser = NULL;
-    t_redir currentRedir;
-    t_lexer *currentLexer = lexerList;
-    while (currentLexer != NULL) {
-        if (currentLexer->type == CMD) {
+t_parser *convert_lexer_parser(t_lexer *lexerList)
+{
+    t_parser *parser_list = NULL;
+    t_parser *current_parser = NULL;
+    t_redir current_redir;
+    t_lexer *current_lexer = lexerList;
+    while (current_lexer != NULL) {
+        if (current_lexer->type == CMD)
+		{
             char **args = NULL;
-            if ((currentLexer->next != NULL \
-                && (currentLexer->next->type != INPUT || currentLexer->next->type != TRUNC)) \
-                || currentLexer->next == NULL) /*ORAPPEND*/
+            if ((current_lexer->next != NULL \
+                && (current_lexer->next->type != INPUT || current_lexer->next->type != TRUNC)) \
+                || current_lexer->next == NULL) /*ORAPPEND*/
             {
 
-				int argCount = 0;
+				int idxarg = 0;
 
-				args = (char **)ft_calloc((count_words(currentLexer) + 1), sizeof(char *));
-                while (currentLexer && currentLexer->type == CMD) {
+				args = (char **)ft_calloc((count_words(current_lexer) + 1), sizeof(char *));
+                while (current_lexer && current_lexer->type == CMD)
+				{
                     // Agregar argumento a args
-                    args[argCount] = ft_strdup(currentLexer->str);
-                    args[argCount + 1] = NULL;
-					argCount++;
-					currentLexer = currentLexer->next;
+                    args[idxarg] = ft_strdup(current_lexer->str);
+                    args[idxarg + 1] = NULL;
+					idxarg++;
+					current_lexer = current_lexer->next;
                 }
-				currentRedir.infile = NULL;
-				currentRedir.outfile = NULL;
-				currentRedir.input = 0;
-				currentRedir.output = 0;
-				if (currentLexer && currentLexer->type == INPUT) {
+				current_redir.infile = NULL;
+				current_redir.outfile = NULL;
+				current_redir.input = 0;
+				current_redir.output = 0;
+				if (current_lexer && current_lexer->type == INPUT)
+				{
                     // Iniciar redirección de entrada
 					//posiblemente crear type output para ir viendo si siguiente es NULL o hay pipe o similar; en output similar para obtener la entrada
-                    currentRedir = createRedirNode(INPUT, 0, currentLexer->next->str, NULL);
-                    currentLexer = currentLexer->next->next; // Saltar el nombre del archivo de entrada
-                } else if (currentLexer && currentLexer->type == TRUNC) {
+                    current_redir = create_redir_node(INPUT, 0, current_lexer->next->str, NULL);
+                    current_lexer = current_lexer->next->next; // Saltar el nombre del archivo de entrada
+                } else if (current_lexer && current_lexer->type == TRUNC) {
                     // Iniciar redirección de salida
-                    currentRedir = createRedirNode(0, TRUNC, NULL, currentLexer->next->str);
-                    currentLexer = currentLexer->next->next; // Saltar el nombre del archivo de salida
+                    current_redir = create_redir_node(0, TRUNC, NULL, current_lexer->next->str);
+                    current_lexer = current_lexer->next->next; // Saltar el nombre del archivo de salida
                 }
-                //currentLexer = currentLexer->next;
+                //current_lexer = current_lexer->next;
             }
-            t_parser *newParserNode = createParserNode(args, currentRedir);
-            if (parserList == NULL) {
-                parserList = newParserNode;
-                currentParser = parserList;
-				        parserList->num_cmds = 1;
+            t_parser *new_parser_node = create_parser_node(args, current_redir);
+            if (parser_list == NULL) {
+                parser_list = new_parser_node;
+                current_parser = parser_list;
+				        parser_list->num_cmds = 1;
             }
 			else {
-                currentParser->next = newParserNode;
-                currentParser = newParserNode;
-				parserList->num_cmds++;
-				// if (currentLexer->prev && currentLexer->prev->prev != NULL) currentParser->red.input = currentLexer->prev->type;
+                current_parser->next = new_parser_node;
+                current_parser = new_parser_node;
+				parser_list->num_cmds++;
+				// if (current_lexer->prev && current_lexer->prev->prev != NULL) current_parser->red.input = current_lexer->prev->type;
             }
-			if (currentLexer) 
-                currentParser->red.output = currentLexer->type;
+			if (current_lexer) 
+                current_parser->red.output = current_lexer->type;
         } 
 		else {
-            currentLexer = currentLexer->next;
+            current_lexer = current_lexer->next;
         }
 
     }
-    return (parserList);
+    return (parser_list);
 }
 
 // Función para imprimir la lista de t_parser (para fines de depuración)
-void printParserList(t_parser *parserList) {
-    t_parser *current = parserList;
-	// printf("primer comadno %s, segundo comando %s", parserList->args[0], parserList->next->args[0]);
+void printparser_list(t_parser *parser_list)
+{
+    t_parser *current = parser_list;
+	// printf("primer comadno %s, segundo comando %s", parser_list->args[0], parser_list->next->args[0]);
     while (current != NULL) {
         // printf("Command: %s\n", current->args[0]);
         // printf("Arguments:\n");
-        for (int i = 0; current->args != NULL && current->args[i] != NULL; i++) {
+        for (int i = 0; current->args != NULL && current->args[i] != NULL; i++)
+		{
             printf("  %s\n", current->args[i]);
         }
         // printf("Redirection:\n");
-		if (current->red.input != -1) {
+		if (current->red.input != -1)
+		{
 			// printf("Input: %d\nInfile: %s\n", current->red.input, current->red.infile);
 		}
-		if (current->red.output != -1) {
+		if (current->red.output != -1)
+		{
 			// printf("Output: %d\nOutfile: %s\n", current->red.output, current->red.outfile);
 		}
         // printf("\n");

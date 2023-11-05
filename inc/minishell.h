@@ -172,8 +172,8 @@ void    bt_unset(t_mch *sh, char **args);
 void	get_env(t_mch *sh, char **env);
 void	symbol_sorter(t_lexer *lex);
 void	parser(t_mch *sh, t_lexer *lex);
-t_parser *convertLexerToParser(t_lexer *lexerList);
-void printParserList(t_parser *parserList);
+t_parser *convert_lexer_parser(t_lexer *lexerList);
+void printparser_list(t_parser *parser_list);
 
 int		syntax_checker(char *line);
 void	syntax_error(void);
