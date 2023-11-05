@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:19:59 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/31 11:38:19 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/05 12:12:09 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,6 @@ char	*get_path_env_value(t_mch *sh)
 	sh->exit = 0;
 	return (path_env_value);
 }
-
-/*void	init_pipex(t_pipe *pipex, char *envp)
-{
-	if (find_route(pipex, envp) == 1)
-		exit(1);
-	pipex->j = 2; //pipex->here_doc;
-	//heredoc?
-}*/
 
 void	close_pipes(t_pipe *pipex)
 {
@@ -151,21 +143,6 @@ void	last_pipe(t_pipe *pipex, int argc)
 	}
 }
 
-/*int	wait_forks(t_pipe *pipex)
-{
-	int	status;
-	int	exit_code;
-
-	//while (pipex->j > 2 + pipex->here_doc)
-	//{
-	waitpid(-1, &status, 0);
-		//if (wait(&status) == pipex->proc)
-		//	exit_code = status;
-		//pipex->j--;
-	//}
-	return (exit_code);
-}*/
-
 int pipex(t_mch *all) 
 {
 	t_parser	*pars;
@@ -178,10 +155,7 @@ int pipex(t_mch *all)
 	pipex = all->pipex;
 	pipex = ft_calloc(sizeof(t_pipe), 1);
 	pipex->j = 2;
-	//ft_memset(&pipex, 0, sizeof (t_pipe));
 	path_env = get_path_env_value(all);
-	//init_pipex(all->pipex, path_env);
-	//routes = ft_calloc(sizeof(char *), ft_strlen(path_env));
 	routes = ft_split(path_env, ':');
 	free(path_env);
 	path_env = NULL;
@@ -210,10 +184,8 @@ void	executor(t_mch *sh)
 	
 	if (!cmd || cmd->args[0] == NULL)
 		return ;
-	//ft_printf(1, "\n");
 	if (bt_is_builtin(cmd->args))
 		bt_check_builtin(sh);
-	else {
+	else
 		pipex(sh);
-	}
 }

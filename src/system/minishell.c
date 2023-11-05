@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:39:00 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/11/01 09:52:06 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/05 12:09:45 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	minishell(t_mch *sh, char **env)
 	envi = NULL;
 	prompt = shell_prompt(0);
 	sh_init(sh, env);
-	while (1)
+	while (42)
 	{
 		line = readline(prompt);
 		if (!line)
