@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcosta-f <fcosta-f@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:19:59 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/11/05 12:12:09 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/11/05 13:59:55 by fcosta-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,8 @@ int pipex(t_mch *all)
 			child(*pipex, pars, routes);
 		else
 		{
-			waitpid(-1, &status, 0);
+			int pid = waitpid(-1, &status, 0); //esto caca
+			if (pid == pipex->proc) all->exit = status;
 			pars = pars->next;
 		}
 		if (WIFEXITED(all->exit))
