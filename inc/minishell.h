@@ -175,8 +175,10 @@ void	parser(t_mch *sh, t_lexer *lex);
 t_parser *convert_lexer_parser(t_lexer *lexerList);
 void printparser_list(t_parser *parser_list);
 
-int		syntax_checker(char *line);
-void	syntax_error(void);
+int		quote_checker(char *line); // old
+void	syntax_error(void); // old
+
+int check_syntax(t_lexer *tok); // new
 
 
 //int		bt_get_dirs(char **env, t_env *env_routes);
