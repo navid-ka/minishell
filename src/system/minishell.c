@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcosta-f <fcosta-f@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:39:00 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/11/05 13:36:21 by fcosta-f         ###   ########.fr       */
+/*   Updated: 2023/11/06 11:36:10 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,13 @@ static void command_handler(t_mch *sh, char *line)
 	lex = NULL;
 	cmd = clean_input(line);
 	main_lexer(cmd, &lex);
+	if (check_syntax(lex) != 0)
+	{
+		add_history(cmd);
+		clear_line(&cmd);
+		clear_lexer(&lex);
+		return ;
+	}
 	sh->parser = convert_lexer_parser(lex);
 	expansor(sh);
 	if (ft_strcmp(cmd, ""))
@@ -63,7 +70,7 @@ void	minishell(t_mch *sh, char **env)
 		{
 			if (ft_strncmp(line, "clear", 6) == 0)
 				clear_console();
-			if (!syntax_checker(line))
+			if (!quote_checker(line))
 				syntax_error();
 			else
 				command_handler(sh, line);

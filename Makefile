@@ -46,7 +46,8 @@ SRCS 					:= src/main.c  \
 						src/expander/expansor_utils.c \
 						src/expander/expansor.c \
 						src/executor/executor.c \
-						src/utils/garbage_collector.c 
+						src/utils/garbage_collector.c  \
+						src/lexer/syntax_errors.c
 
 
 OBJS = $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRCS))
