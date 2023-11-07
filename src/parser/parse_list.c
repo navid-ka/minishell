@@ -1,73 +1,49 @@
-//#include "../../inc/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_list.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/07 12:21:12 by bifrost           #+#    #+#             */
+/*   Updated: 2023/11/07 12:22:05 by bifrost          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-// t_parser	*parse_new(char **content)
-// {
-// 	t_parser	*node;
+#include "../../inc/minishell.h"
 
-// 	node = (t_parser *)malloc(sizeof (*node));
-// 	if (!node)
-// 		return (NULL);
-// 	node->args = content;
-// 	node->next = NULL;
-// 	return (node);
-// }
+t_parser	*create_parser_node(char **args, t_redir red)
+{
+	t_parser *node;
 
-// void	parse_back(t_parser **lst, t_parser *new)
-// {
-// 	t_parser	*curr;
+	node = (t_parser *)malloc(sizeof(t_parser));
+	node->args = args;
+	node->red = red;
+	node->next = NULL;
+	return (node);
+}
 
-// 	if (!lst || !new)
-// 		return ;
-// 	if (*lst == NULL)
-// 	{
-// 		*lst = new;
-// 		return ;
-// 	}
-// 	curr = parse_last(*lst);
-// 	curr->next = new;
-// }
-
-// t_parser	*parse_last(t_parser *lst)
-// {
-// 	if (!lst)
-// 		return (NULL);
-// 	while (lst != NULL)
-// 	{
-// 		if (lst->next == NULL)
-// 			return (lst);
-// 		lst = lst->next;
-// 	}
-// 	return (lst);
-// }
-
-// int	parse_size(t_parser *lst)
-// {
-// 	int	c;
-
-// 	c = 0;
-// 	while (lst != NULL)
-// 	{
-// 		c++;
-// 		lst = lst->next;
-// 	}
-// 	return (c);
-// }
-
-// void	parse_front(t_parser **lst, t_parser *new)
-// {
-// 	if (lst)
-// 	{
-// 		if (!lst || !new)
-// 			return ;
-// 		if (*lst == NULL)
-// 		{
-// 			*lst = new;
-// 			new->next = NULL;
-// 		}
-// 		else
-// 		{
-// 			new->next = *lst;
-// 			*lst = new;
-// 		}
-// 	}
-// }
+void printparser_list(t_parser *parser_list)
+{
+	t_parser *current = parser_list;
+	// printf("primer comadno %s, segundo comando %s", parser_list->args[0], parser_list->next->args[0]);
+	while (current != NULL) {
+		// printf("Command: %s\n", current->args[0]);
+		// printf("Arguments:\n");
+		for (int i = 0; current->args != NULL && current->args[i] != NULL; i++)
+		{
+			printf("  %s\n", current->args[i]);
+		}
+		// printf("Redirection:\n");
+		if (current->red.input != -1)
+		{
+			// printf("Input: %d\nInfile: %s\n", current->red.input, current->red.infile);
+		}
+		if (current->red.output != -1)
+		{
+			// printf("Output: %d\nOutfile: %s\n", current->red.output, current->red.outfile);
+		}
+		// printf("\n");
+		current = current->next;
+	}
+}
