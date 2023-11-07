@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 10:59:34 by bifrost           #+#    #+#             */
-/*   Updated: 2023/11/07 11:05:49 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/07 12:35:00 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,12 +157,17 @@ void		bt_unset(t_mch *sh, char **args);
 
 // parser
 void		get_env(t_mch *sh, char **env);
-t_parser	*convert_lexer_parser(t_lexer *lexerList);
+t_parser	*convert_lexer_parser(t_lexer *lexer);
+t_parser	*create_parser_node(char **args, t_redir red);
 void		printparser_list(t_parser *parser_list);
 int			quote_checker(char *line);
 void		syntax_error(void);
 
-int			check_syntax(t_lexer *tok); // new
+//redir
+t_redir		create_redir_node(int input, int output, char *infile, char *outfile);
+void    	redir_init(t_redir *current_redir);
+
+int			check_syntax(t_lexer *tok);
 
 // Utils.c
 char		*charjoin(char *s1, char c);
@@ -172,7 +177,6 @@ int			ft_is_escape(int c);
 int			ft_is_shellsymbol(int c);
 void		add_or_update_env(t_mch *sh, char *name, char *value);
 char		*get_env_value(t_mch *sh, char *arg);
-
 void		print_lexers(t_lexer *lex, char *str);
 int			count_quotes(char *cmd);
 char		*find_in_env_variables(t_mch *sh, char *variable_name);

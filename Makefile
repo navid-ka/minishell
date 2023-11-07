@@ -37,7 +37,7 @@ SRCS 					:= src/main.c  \
 						src/lexer/lexer_utils.c \
 						src/lexer/lexer_list.c \
 						src/lexer/cleaner.c \
-						src/parser/parser_javi.c \
+						src/parser/parser.c \
 						src/parser/parse_list.c \
 						src/parser/redir_list.c \
 						src/builtins/bt_init.c \
