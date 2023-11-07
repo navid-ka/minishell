@@ -1,5 +1,28 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/07 10:59:34 by bifrost           #+#    #+#             */
+/*   Updated: 2023/11/07 11:05:49 by bifrost          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
+#ifndef __linux__
+# include "tcl/tcl.h"
+#endif
+
+#if defined(__APPLE__) || defined(__MACH__)
+# include <tcl.h>
+#endif
+
+#ifdef ARCHBTW
+# include <tcl.h>
+#endif
 
 # include <limits.h>
 # include <errno.h>
@@ -18,18 +41,6 @@
 # include "../libs/libft/include/libft.h"
 # include <sys/stat.h>
 # include <fcntl.h>
-
-#ifndef __linux__
-# include "tcl/tcl.h"
-#endif
-
-#if defined(__APPLE__) || defined(__MACH__)
-# include <tcl.h>
-#endif
-
-#ifdef ARCHBTW
-# include <tcl.h>
-#endif
 
 //PIPEX
 # define ERR_ARG	1
@@ -62,8 +73,8 @@ typedef struct s_env
 
 typedef struct s_redir
 {
-    int   	input;
-    int		output;
+	int		input;
+	int		output;
 	char	*infile;
 	char	*outfile;
 }	t_redir;
@@ -86,10 +97,10 @@ typedef struct s_lexer
 
 typedef struct s_parser
 {
-	char	**args;
-	t_redir	red;
-	int num_cmds;
-	struct s_parser *next;
+	char			**args;
+	t_redir			red;
+	int				num_cmds;
+	struct s_parser	*next;
 }	t_parser;
 
 typedef struct s_pipe
@@ -107,13 +118,13 @@ typedef struct s_pipe
 
 typedef struct s_mch
 {
-	t_parser *parser;
-	t_lexer	*lex;
-	t_pipe	*pipex;
-	t_env	*env;
-	char	*old_pwd;
-	char	*pwd;
-	int		exit;
+	t_parser	*parser;
+	t_lexer		*lex;
+	t_pipe		*pipex;
+	t_env		*env;
+	char		*old_pwd;
+	char		*pwd;
+	int			exit;
 }	t_mch;
 
 // system/minishell.c
@@ -121,7 +132,7 @@ void		minishell(t_mch *sh, char **env);
 
 // system
 void		signals(void);
-void 		sigint_handler(int sig);
+void		sigint_handler(int sig);
 void		prompter(void);
 char		*shell_prompt(int i);
 
@@ -142,7 +153,7 @@ void		bt_exit(t_mch *sh, char *argv);
 void		bt_echo(t_mch *sh, char **str);
 int			bt_pwd(void);
 void		bt_cd(t_mch *sh, char **arg);
-void 		bt_unset(t_mch *sh, char **args);
+void		bt_unset(t_mch *sh, char **args);
 
 // parser
 void		get_env(t_mch *sh, char **env);
@@ -151,7 +162,7 @@ void		printparser_list(t_parser *parser_list);
 int			quote_checker(char *line);
 void		syntax_error(void);
 
-int check_syntax(t_lexer *tok); // new
+int			check_syntax(t_lexer *tok); // new
 
 // Utils.c
 char		*charjoin(char *s1, char c);
