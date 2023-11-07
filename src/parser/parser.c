@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 19:16:14 by fcosta-f          #+#    #+#             */
-/*   Updated: 2023/11/07 12:52:16 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/07 16:03:19 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	count_words(t_lexer *tok)
 // Function to handle command
 void	handle_command(t_lexer **current_lexer, char ***args, int *idxarg)
 {
-	*args = (char **)ft_calloc((count_words(*current_lexer) + 1), \
+	*args = (char **)ft_calloc((count_words(*current_lexer) + 2), \
 			sizeof(char *));
 	while (*current_lexer && (*current_lexer)->type == CMD)
 	{
@@ -93,12 +93,15 @@ t_parser	*convert_lexer_parser(t_lexer *lexer, int idxarg)
 	curr_parser = NULL;
 	curr_lex = lexer;
 	args = NULL;
-	redir_init(&curr_red);
 	while (curr_lex != NULL)
 	{
 		if (curr_lex->type == CMD)
 		{
-			handle_command(&curr_lex, &args, &idxarg);
+			if ((curr_lex->next != NULL \
+                && (curr_lex->next->type != INPUT || curr_lex->next->type != TRUNC)) \
+                || curr_lex->next == NULL)
+				handle_command(&curr_lex, &args, &idxarg);
+			redir_init(&curr_red);
 			handle_redirection(&curr_lex, &curr_red);
 			create_new_parser_node(&parser_ls, &curr_parser, args, curr_red);
 			if (curr_lex)
