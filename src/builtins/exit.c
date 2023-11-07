@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 11:49:50 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/31 15:51:19 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/07 09:58:57 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	bt_exit(t_mch *sh, char *argv)
 		if (isatty(STDIN_FILENO))
 			ft_putstr_fd("exit\n", STDERR_FILENO);
 		exit(EXIT_SUCCESS);
-	} else
+	}
+	else
 		exit(sh->exit);
 }

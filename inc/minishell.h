@@ -67,6 +67,7 @@ typedef struct s_pipe
 # define CMD 10
 # define SCUOTE 39
 # define DCUOTE 34
+# define EXPORT "export %s=%s: not a valid identifier\n"
 
 typedef struct s_env
 {

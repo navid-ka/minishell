@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:39:00 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/11/06 12:08:07 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/07 10:19:31 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ static void	sh_init(t_mch *sh, char **env)
 	signals();
 }
 
-static void command_handler(t_mch *sh, char *line)
+static void	command_handler(t_mch *sh, char *line)
 {
-	t_lexer *lex;
+	t_lexer	*lex;
 	char	*cmd;
 
 	lex = NULL;

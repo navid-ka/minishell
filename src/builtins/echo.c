@@ -6,12 +6,11 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 11:52:43 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/31 11:20:32 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/07 09:56:58 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-
 
 static void	echo_without_option(t_mch *sh, char **str)
 {

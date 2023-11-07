@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 16:59:10 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/11/01 00:49:27 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/07 09:55:51 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,12 @@ void	quote_updater(t_clean *quotes, char e)
 		quotes->scuote = false;
 }
 
-void print_expansor(t_mch *sh)
+void	print_expansor(t_mch *sh)
 {
-	t_parser *ptr;
-	
-	int i = 0;
+	t_parser	*ptr;
+	int			i;
+
+	i = 0;
 	ptr = sh->parser;
 	while (ptr)
 	{
@@ -49,4 +50,25 @@ void print_expansor(t_mch *sh)
 			ft_printf(1, "EXPANDER: %s\n", ptr->args[i++]);
 		ptr = ptr->next;
 	}
+}
+
+char	*find_in_env_variables(t_mch *sh, char *variable_name)
+{
+	t_env	*env;
+	int		env_name_len;
+	int		var_name_len;
+
+	if (variable_name == NULL)
+		return (NULL);
+	env = sh->env;
+	var_name_len = ft_strlen(variable_name);
+	while (env != NULL)
+	{
+		env_name_len = ft_strlen(env->name);
+		if (ft_strncmp(env->name, variable_name, env_name_len) == 0
+			&& (env_name_len == var_name_len))
+			return (env->value);
+		env = env->next;
+	}
+	return (NULL);
 }
