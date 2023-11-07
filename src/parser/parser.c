@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 19:16:14 by fcosta-f          #+#    #+#             */
-/*   Updated: 2023/11/07 16:03:19 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/07 16:10:57 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,18 @@ int	count_words(t_lexer *tok)
 }
 
 // Function to handle command
-void	handle_command(t_lexer **current_lexer, char ***args, int *idxarg)
+void	handle_command(t_lexer **current_lexer, char ***args)
 {
+	int	i;
+
+	i = 0;
 	*args = (char **)ft_calloc((count_words(*current_lexer) + 2), \
 			sizeof(char *));
 	while (*current_lexer && (*current_lexer)->type == CMD)
 	{
-		(*args)[*idxarg] = ft_strdup((*current_lexer)->str);
-		(*args)[*idxarg + 1] = NULL;
-		(*idxarg)++;
+		(*args)[i] = ft_strdup((*current_lexer)->str);
+		(*args)[i + 1] = NULL;
+		i++;
 		*current_lexer = (*current_lexer)->next;
 	}
 }
@@ -81,7 +84,7 @@ t_parser	*create_new_parser_node(t_parser **p_ls, t_parser **curr_p, \
 }
 
 // Function to convert the list of t_lexer into the list of t_parser
-t_parser	*convert_lexer_parser(t_lexer *lexer, int idxarg)
+t_parser	*convert_lexer_parser(t_lexer *lexer)
 {
 	t_parser	*parser_ls;
 	t_parser	*curr_parser;
@@ -100,7 +103,7 @@ t_parser	*convert_lexer_parser(t_lexer *lexer, int idxarg)
 			if ((curr_lex->next != NULL \
                 && (curr_lex->next->type != INPUT || curr_lex->next->type != TRUNC)) \
                 || curr_lex->next == NULL)
-				handle_command(&curr_lex, &args, &idxarg);
+				handle_command(&curr_lex, &args);
 			redir_init(&curr_red);
 			handle_redirection(&curr_lex, &curr_red);
 			create_new_parser_node(&parser_ls, &curr_parser, args, curr_red);
