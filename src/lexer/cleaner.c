@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cleaner.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/07 10:34:55 by bifrost           #+#    #+#             */
+/*   Updated: 2023/11/07 10:35:37 by bifrost          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 
-void	clean_init(t_clean *cleaner) //pasarlo otro archivo de inits
+void	clean_init(t_clean *cleaner)
 {
 	cleaner->dcuote = false;
 	cleaner->scuote = false;
@@ -34,10 +46,10 @@ void	clean_quotes(char **line, t_clean *cleaner)
 	}
 }
 
+//mirar c == ' ' || c == '\n' || c == '\t' || c == '\v' 
+//|| c == '\f' || c == '\r')
 void	clean_spaces(char **line, t_clean *cleaner)
 {
-	//mirar c == ' ' || c == '\n' || c == '\t' || c == '\v' 
-	//|| c == '\f' || c == '\r')
 	if (ft_is_escape(**line) && !(cleaner->space))
 	{
 		cleaner->space = true;
@@ -69,6 +81,5 @@ char	*clean_input(char *line)
 			clean_quotes(&line, &cleaner);
 	}
 	output = cleaner.str;
-	//clear_line(&cleaner.str);
 	return (output);
 }

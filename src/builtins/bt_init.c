@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 11:13:51 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/31 11:18:10 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/07 09:57:51 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ bool	bt_is_builtin(char **argv)
 	return (false);
 }
 
-void  bt_check_builtin(t_mch *sh)
+void	bt_check_builtin(t_mch *sh)
 {
-	t_parser *cmd;
+	t_parser	*cmd;
 
 	cmd = sh->parser;
 	if (ft_strcmp(cmd->args[0], "cd") == 0)

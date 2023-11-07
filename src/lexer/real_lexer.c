@@ -1,6 +1,16 @@
-#include "../../inc/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   real_lexer.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/07 10:36:03 by bifrost           #+#    #+#             */
+/*   Updated: 2023/11/07 10:38:13 by bifrost          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-//si falla llamar a función de liberar xd
+#include "../../inc/minishell.h"
 
 void	arg_type(char *str, int *i, t_lexer **lexer)
 {
@@ -23,7 +33,8 @@ void	arg_type(char *str, int *i, t_lexer **lexer)
 	(*i)++;
 }
 
-int cmd_type(char *str, int *i, t_lexer **new) {
+int	cmd_type(char *str, int *i, t_lexer **new)
+{
 	int		quoted;
 	char	*cmd;
 	int		j;
@@ -47,49 +58,39 @@ int cmd_type(char *str, int *i, t_lexer **new) {
 	(*new)->str = cmd;
 	(*new)->type = CMD;
 	*i += j;
-	//clear_line(&cmd); cmd tiene un malloc pero no logro hacer free???
 	return (0);
 }
 
-int	inicialize_lex(t_lexer **new, char *str, int *i) 
+int	inicialize_lex(t_lexer **new, char *str, int *i)
 {
 	if (str[*i] == '|' || str[*i] == '<' || str[*i] == '>')
 		arg_type(str, i, new);
 	else
-		if (cmd_type(str, i, new) == -1) 
+		if (cmd_type(str, i, new) == -1)
 			return (-1);
 	return (0);
 }
 
-int	main_lexer(char *str, t_lexer **lex) 
+int	main_lexer(char *str, t_lexer **lex)
 {
-	t_lexer *new;
-	int i;
+	t_lexer	*new;
+	int		i;
 
 	new = NULL;
 	i = 0;
-	while (str[i]) 
+	while (str[i])
 	{
-		if (str[i] != ' ') 
+		if (str[i] != ' ')
 		{
 			new = lexer_lstnew();
-			if (!new) 
+			if (!new)
 				return (-1);
-			if (inicialize_lex(&new, str, &i) == -1) 
+			if (inicialize_lex(&new, str, &i) == -1)
 				return (-1);
 			lexer_lstadd_back(lex, new);
 		}
-		else 
+		else
 			i++;
 	}
 	return (0);
 }
-
-//hacer split de argumentos para el execve --> parser
-
-//si es <infile no funciona porque no lo separa
-//infile outfile los detecta como comandos
-
-
-//FOTO JARESTE MEJOR CARGARME SIMBOLOS Y NOMBRAR COSAS COMO LA REDIRECCIÓN A LA QUE PERTENECEN 
-//ARGUMENTOS SON TIPO 0 COMO COMANDOS Y >| ME CARGO PIPES PORQUE ESTÁN DEBAJO EN JERARQUIA

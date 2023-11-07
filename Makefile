@@ -41,7 +41,6 @@ SRCS 					:= src/main.c  \
 						src/parser/parse_list.c \
 						src/parser/redir_list.c \
 						src/builtins/bt_init.c \
-						src/utils/cmd_split.c \
 						src/parser/parse_env.c \
 						src/expander/expansor_utils.c \
 						src/expander/expansor.c \

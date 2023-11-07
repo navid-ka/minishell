@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/07 10:32:49 by bifrost           #+#    #+#             */
+/*   Updated: 2023/11/07 10:34:41 by bifrost          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 
 int	ft_is_escape(int c)
@@ -21,14 +33,13 @@ int	ft_is_shellsymbol(int c)
 	return (0);
 }
 
-void 	print_lex_list(t_lexer *lex)
+void	print_lex_list(t_lexer *lex)
 {
 	t_lexer	*ptr;
 
 	ptr = lex;
-	while(ptr)
+	while (ptr)
 	{
-		//printf("%s\n", ptr->str);
 		printf("type %d:\n", ptr->type);
 		ptr = ptr->next;
 	}
@@ -36,9 +47,9 @@ void 	print_lex_list(t_lexer *lex)
 
 void	print_lexers(t_lexer *lex, char *str)
 {
-	printf("input: %s\n", str);
 	t_lexer	*ptr;
 
+	printf("input: %s\n", str);
 	ptr = lex;
 	while (ptr)
 	{

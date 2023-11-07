@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:04:43 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/11/01 10:20:09 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/07 09:54:46 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,27 +22,6 @@ int	iterate_env_var(char *arg)
 	while (arg[i] && arg[i] != '"' && arg[i] != '\'' && arg[i] != '$')
 		i++;
 	return (i);
-}
-
-char	*find_in_env_variables(t_mch *sh, char *variable_name)
-{
-	t_env	*env;
-	int		env_name_len;
-	int		var_name_len;
-
-	if (variable_name == NULL)
-		return (NULL);
-	env = sh->env;
-	var_name_len = ft_strlen(variable_name);
-	while (env != NULL)
-	{
-		env_name_len = ft_strlen(env->name);
-		if (ft_strncmp(env->name, variable_name, env_name_len) == 0
-			&& (env_name_len == var_name_len))
-			return (env->value);
-		env = env->next;
-	}
-	return (NULL);
 }
 
 char	*get_env_name(char *arg)
@@ -120,9 +99,9 @@ void	expand(t_mch *sh, char **exp, int i)
 
 void	expansor(t_mch *sh)
 {
-	int	j;
-	int	i;
-	t_parser *exp;
+	int			j;
+	int			i;
+	t_parser	*exp;
 
 	i = ~0;
 	exp = sh->parser;

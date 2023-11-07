@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 01:03:04 by bifrost           #+#    #+#             */
-/*   Updated: 2023/10/31 11:33:03 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/07 09:57:18 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,26 @@
 
 char	*get_env_value(t_mch *sh, char *arg)
 {
-		char	*value;
-		char	*name;
-		int		i;
+	char	*value;
+	char	*name;
+	int		i;
 
-		i = 0;
-		name = NULL;
-		while (!ft_strchr("|<> \"\'$?=", arg[i]))
-			i++;
-		if (i > 0)
-			name = ft_substr(arg, 0, i);
-		value = find_in_env_variables(sh, name);
-		free(name);
-		return (ft_strdup(value));
+	i = 0;
+	name = NULL;
+	while (!ft_strchr("|<> \"\'$?=", arg[i]))
+		i++;
+	if (i > 0)
+		name = ft_substr(arg, 0, i);
+	value = find_in_env_variables(sh, name);
+	free(name);
+	return (ft_strdup(value));
 }
 
 void	unset_var(t_mch *sh, char *var)
 {
 	t_env	*node;
 	t_env	*tmp;
-	
+
 	node = sh->env;
 	tmp = NULL;
 	if (ft_strcmp(node->name, var) == 0)

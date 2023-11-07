@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/29 14:21:30 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/13 23:17:33 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/07 10:40:12 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,19 +48,3 @@ void	get_env(t_mch *sh, char **env)
 		add_env_to_list(&sh->env, sh_env);
 	}
 }
-
-/*
-void	load_env(t_mch *sh, char **env)
-{
-	int	i;
-	int	j;
-
-	i = ~0;
-	j = ~0;
-	while (env[++j])
-		;
-	sh->env = ft_calloc(sizeof(char *), (j + 1));
-	while (env[++i])
-		sh->env[i] = ft_strdup(env[i]);
-	sh->env[i] = NULL;
-}*/

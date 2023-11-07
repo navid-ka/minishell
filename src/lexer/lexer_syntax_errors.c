@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer_syntax_errors.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/07 10:20:55 by bifrost           #+#    #+#             */
+/*   Updated: 2023/11/07 10:31:45 by bifrost          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 
 void	syntax_error(void)
@@ -27,29 +39,21 @@ char	*lexer_end_subshell(char *line)
 int	quote_checker(char *line)
 {
 	char	*end_subshell;
-	bool		dcuotes;
-	bool		scuotes;
-	int		parenthesis;
+	bool	dcuotes;
+	bool	scuotes;
 
-	parenthesis = 0;
 	dcuotes = false;
 	scuotes = false;
 	end_subshell = lexer_end_subshell(line);
 	while (line != end_subshell)
 	{
-		if (*line == '(')
-			parenthesis++;
-		else if (*line == ')')
-			parenthesis--;
-		else if (*line == '"' && !scuotes)
+		if (*line == '"' && !scuotes)
 			dcuotes = !dcuotes;
 		else if (*line == '\'' && !dcuotes)
 			scuotes = !scuotes;
-		if (parenthesis < 0)
-			return (0);
 		++line;
-		}
-		if (parenthesis != 0 || dcuotes || scuotes)
-			return (0);
+	}
+	if (dcuotes || scuotes)
+		return (0);
 	return (1);
 }

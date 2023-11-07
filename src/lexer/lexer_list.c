@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lexer_list.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/07 10:20:17 by bifrost           #+#    #+#             */
+/*   Updated: 2023/11/07 10:20:42 by bifrost          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 
 t_lexer	*lexer_lstnew(void)
@@ -38,7 +50,6 @@ void	lexer_lstadd_back(t_lexer **lst, t_lexer *new)
 	}
 	else
 		(*lst) = new;
-	// printf("new: %s, %d\n uwu: %s, %d", new->str, new->type, last->next->str, last->next->type);
 }
 
 void	lexer_lstclear(t_lexer **lst)
