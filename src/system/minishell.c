@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:39:00 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/11/07 10:19:31 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/07 12:52:48 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	command_handler(t_mch *sh, char *line)
 		clear_lexer(&lex);
 		return ;
 	}
-	sh->parser = convert_lexer_parser(lex);
+	sh->parser = convert_lexer_parser(lex, 0);
 	expansor(sh);
 	if (ft_strcmp(cmd, ""))
 		add_history(cmd);

@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 19:16:14 by fcosta-f          #+#    #+#             */
-/*   Updated: 2023/11/07 12:38:16 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/07 12:52:16 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,20 +81,18 @@ t_parser	*create_new_parser_node(t_parser **p_ls, t_parser **curr_p, \
 }
 
 // Function to convert the list of t_lexer into the list of t_parser
-t_parser	*convert_lexer_parser(t_lexer *lexer)
+t_parser	*convert_lexer_parser(t_lexer *lexer, int idxarg)
 {
 	t_parser	*parser_ls;
 	t_parser	*curr_parser;
 	t_redir		curr_red;
 	t_lexer		*curr_lex;
 	char		**args;
-	int			idxarg;
 
 	parser_ls = NULL;
 	curr_parser = NULL;
 	curr_lex = lexer;
 	args = NULL;
-	idxarg = 0;
 	redir_init(&curr_red);
 	while (curr_lex != NULL)
 	{
