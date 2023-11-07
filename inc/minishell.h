@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 10:59:34 by bifrost           #+#    #+#             */
-/*   Updated: 2023/11/07 12:35:00 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/07 12:52:24 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,7 @@ void		bt_unset(t_mch *sh, char **args);
 
 // parser
 void		get_env(t_mch *sh, char **env);
-t_parser	*convert_lexer_parser(t_lexer *lexer);
+t_parser	*convert_lexer_parser(t_lexer *lexer, int idxarg);
 t_parser	*create_parser_node(char **args, t_redir red);
 void		printparser_list(t_parser *parser_list);
 int			quote_checker(char *line);
