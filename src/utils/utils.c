@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:35:01 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/14 18:55:45 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/09 11:59:56 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,26 +76,26 @@ int	count_quotes(char *cmd)
 
 void	*ft_realloc(void *ptr, size_t newsize, size_t oldsize)
 {
-    size_t	copy_size;
-    void	*newptr;
+	size_t	copy_size;
+	void	*newptr;
 
-    if (!ptr)
-        return (malloc(newsize));
-    if (newsize == 0)
+	if (!ptr)
+		return (malloc(newsize));
+	if (newsize == 0)
 	{
-        free(ptr);
-        return (NULL);
+		free(ptr);
+		return (NULL);
 	}
-    if (newsize == oldsize)
-        return (ptr);
-    newptr = malloc(newsize);
-    if (!newptr)
-        return (NULL);
-    if (newsize < oldsize)
-        copy_size = newsize;
-    else
-        copy_size = oldsize;
-    ft_memcpy(newptr, ptr, copy_size);
-    free(ptr);
-    return (newptr);
+	if (newsize == oldsize)
+		return (ptr);
+	newptr = malloc(newsize);
+	if (!newptr)
+		return (NULL);
+	if (newsize < oldsize)
+		copy_size = newsize;
+	else
+		copy_size = oldsize;
+	ft_memcpy(newptr, ptr, copy_size);
+	free(ptr);
+	return (newptr);
 }

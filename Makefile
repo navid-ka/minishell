@@ -46,6 +46,7 @@ SRCS 					:= src/main.c  \
 						src/expander/expansor.c \
 						src/executor/executor.c \
 						src/utils/garbage_collector.c  \
+						src/utils/garbage_collector2.c  \
 						src/lexer/syntax_errors.c
 
 
