@@ -50,7 +50,7 @@ int	count_words(t_lexer *tok)
 
 // 	i = 0;
 // 	args = (char **)ft_calloc((count_words(current_lexer) + 2), \
-// 			sizeof(char *)); //revisar +2
+// 			sizeof(char *)); revisar +2
 // 	while (current_lexer && current_lexer->type != PIPE)
 // 	{
 //         while (current_lexer && is_redir(current_lexer))
