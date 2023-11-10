@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fcosta-f <fcosta-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:39:00 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/11/07 16:11:03 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/10 21:01:28 by fcosta-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,11 @@ static void	clear_console(void)
 static void	sh_init(t_mch *sh, char **env)
 {
 	sh->env = NULL;
+	ft_memset(&sh->parser, 0, sizeof(t_parser));
+	ft_memset(&sh->lex, 0, sizeof(t_env));
+	ft_memset(&sh->red, 0, sizeof(t_redir));
+	ft_memset(&sh->pipex, 0, sizeof(t_pipe));
+	ft_memset(&sh->env, 0, sizeof(t_env));
 	get_env(sh, env);
 	prompter();
 	signals();
@@ -42,7 +47,7 @@ static void	command_handler(t_mch *sh, char *line)
 		clear_lexer(&lex);
 		return ;
 	}
-	sh->parser = convert_lexer_parser(lex);
+	parser(sh, lex);
 	expansor(sh);
 	if (ft_strcmp(cmd, ""))
 		add_history(cmd);

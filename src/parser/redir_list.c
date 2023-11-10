@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   redir_list.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fcosta-f <fcosta-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 12:19:18 by bifrost           #+#    #+#             */
-/*   Updated: 2023/11/07 12:30:46 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/10 23:17:22 by fcosta-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void    redir_init(t_redir *current_redir)
+/*void    redir_init(t_redir *current_redir)
 {
     current_redir->infile = NULL;
 	current_redir->outfile = NULL;
@@ -27,5 +27,44 @@ t_redir create_redir_node(int input, int output, char *infile, char *outfile)
 	node.output = output;
 	node.infile = ft_strdup(infile);
 	node.outfile = ft_strdup(outfile);
+	return (node);
+}*/
+
+t_redir	*redir_lstlast(t_redir *lst)
+{
+	t_redir	*node;
+
+	if (!lst)
+		return (NULL);
+	node = lst;
+	while ((node->next))
+		node = node->next;
+	return (node);
+}
+
+
+void	redir_lstadd_back(t_redir **lst, t_redir *new)
+{
+	t_redir	*last;
+
+	if ((*lst))
+	{
+		last = redir_lstlast(*lst);
+		last->next = new;
+	}
+	else
+		(*lst) = new;
+}
+
+t_redir	*create_redir_node(char *args, int type)
+{
+	t_redir *node;
+
+	node = (t_redir *)malloc(sizeof(t_redir));
+	if (!node)
+		return (NULL);
+	node->file = args;
+	node->type = type;
+	node->next = NULL;
 	return (node);
 }

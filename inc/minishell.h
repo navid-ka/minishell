@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fcosta-f <fcosta-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 10:59:34 by bifrost           #+#    #+#             */
-/*   Updated: 2023/11/07 16:10:39 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/10 20:52:58 by fcosta-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,10 +73,9 @@ typedef struct s_env
 
 typedef struct s_redir
 {
-	int		input;
-	int		output;
-	char	*infile;
-	char	*outfile;
+	char *file;
+	int type;
+	struct s_redir *next;
 }	t_redir;
 
 typedef struct s_clean
@@ -97,9 +96,8 @@ typedef struct s_lexer
 
 typedef struct s_parser
 {
-	char			**args;
-	t_redir			red;
 	int				num_cmds;
+	char			**args;
 	struct s_parser	*next;
 }	t_parser;
 
@@ -111,7 +109,7 @@ typedef struct s_pipe
 	char	**routes;
 	pid_t	proc;
 	int		tube[2];
-	int		j;
+	int		npipes;
 	int		here_doc;
 	char	*limiter;
 }	t_pipe;
@@ -122,6 +120,7 @@ typedef struct s_mch
 	t_lexer		*lex;
 	t_pipe		*pipex;
 	t_env		*env;
+	t_redir		*red;
 	char		*old_pwd;
 	char		*pwd;
 	int			exit;
@@ -159,15 +158,22 @@ void		bt_unset(t_mch *sh, char **args);
 void		get_env(t_mch *sh, char **env);
 t_parser	*convert_lexer_parser(t_lexer *lexer);
 t_parser	*create_parser_node(char **args, t_redir red);
-void		printparser_list(t_parser *parser_list);
+void printparser_list(t_mch *sh);
 int			quote_checker(char *line);
 void		syntax_error(void);
+void		parser(t_mch *sh, t_lexer *lex);
+
+
 
 //redir
-t_redir		create_redir_node(int input, int output, char *infile, char *outfile);
 void    	redir_init(t_redir *current_redir);
 
 int			check_syntax(t_lexer *tok);
+
+t_redir		*redir_lstlast(t_redir *lst);
+t_redir		*create_redir_node(char *args, int type);
+void		redir_lstadd_back(t_redir **lst, t_redir *new);
+
 
 // Utils.c
 char		*charjoin(char *s1, char c);
