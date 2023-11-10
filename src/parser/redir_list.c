@@ -6,7 +6,7 @@
 /*   By: fcosta-f <fcosta-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 12:19:18 by bifrost           #+#    #+#             */
-/*   Updated: 2023/11/09 20:46:41 by fcosta-f         ###   ########.fr       */
+/*   Updated: 2023/11/10 23:17:22 by fcosta-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ t_redir	*redir_lstlast(t_redir *lst)
 	t_redir	*node;
 
 	if (!lst)
-		return (0);
+		return (NULL);
 	node = lst;
 	while ((node->next))
 		node = node->next;
@@ -54,4 +54,17 @@ void	redir_lstadd_back(t_redir **lst, t_redir *new)
 	}
 	else
 		(*lst) = new;
+}
+
+t_redir	*create_redir_node(char *args, int type)
+{
+	t_redir *node;
+
+	node = (t_redir *)malloc(sizeof(t_redir));
+	if (!node)
+		return (NULL);
+	node->file = args;
+	node->type = type;
+	node->next = NULL;
+	return (node);
 }
