@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcosta-f <fcosta-f@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: fcosta-f <fcosta-f@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:19:59 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/11/06 22:25:59 by fcosta-f         ###   ########.fr       */
+/*   Updated: 2023/11/09 20:47:35 by fcosta-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+/*
 int	ft_error(int ext, int err, char *cmd)
 {
 	if (err == ERR_ARG)
@@ -184,7 +185,7 @@ int pipex(t_mch *all)
 	free(pipex);
 	free_tab(routes);
 	return (all->exit);
-}
+}*/
 
 void	executor(t_mch *sh)
 {
@@ -194,6 +195,6 @@ void	executor(t_mch *sh)
 		return ;
 	if (bt_is_builtin(cmd->args))
 		bt_check_builtin(sh);
-	else
-		pipex(sh);
+	//else
+		//pipex(sh);
 }

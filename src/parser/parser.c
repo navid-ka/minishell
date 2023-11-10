@@ -1,16 +1,28 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/05 19:16:14 by fcosta-f          #+#    #+#             */
-/*   Updated: 2023/11/07 16:10:57 by bifrost          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
+#include "minishell.h"
 
-#include "../../inc/minishell.h"
+int	is_redir(t_lexer *tok)
+{
+	if (tok && (tok->type == TRUNC || tok->type == APPEND \
+		|| tok->type == HERE_DOC || tok->type == INPUT))
+        return (1);
+	return (0);
+}
+
+int count_pipes(t_lexer *lex)
+{
+    int n;
+    t_lexer *tmp;
+
+    tmp = lex;
+    n  = 1;
+    while (tmp)
+    {
+        if (tmp->type == PIPE)
+            n++;
+        tmp = tmp->next;
+    } 
+    return (n);
+}
 
 int	count_words(t_lexer *tok)
 {
@@ -19,7 +31,7 @@ int	count_words(t_lexer *tok)
 
 	first = tok;
 	words = 0;
-	while (first && first->type == CMD)
+	while (first && first->type != PIPE)
 	{
 		words++;
 		first = first->next;
@@ -27,91 +39,72 @@ int	count_words(t_lexer *tok)
 	return (words);
 }
 
-// Function to handle command
-void	handle_command(t_lexer **current_lexer, char ***args)
+char	**handle_command(t_lexer *lex)
 {
+    char **args;
 	int	i;
+    t_lexer *current_lexer = lex;
 
 	i = 0;
-	*args = (char **)ft_calloc((count_words(*current_lexer) + 2), \
-			sizeof(char *));
-	while (*current_lexer && (*current_lexer)->type == CMD)
+	args = (char **)ft_calloc((count_words(current_lexer) + 2), \
+			sizeof(char *)); //revisar +2
+	while (current_lexer && current_lexer->type != PIPE)
 	{
-		(*args)[i] = ft_strdup((*current_lexer)->str);
-		(*args)[i + 1] = NULL;
+        if (is_redir(current_lexer))
+            current_lexer = current_lexer->next;
+		args[i] = ft_strdup(current_lexer->str);
 		i++;
-		*current_lexer = (*current_lexer)->next;
+		current_lexer = current_lexer->next;
 	}
+	args[i] = NULL;
+    return (args);
 }
 
-// Function to handle redirection
-void	handle_redirection(t_lexer **current_lexer, t_redir *current_redir)
+t_redir    *handle_redirs(t_lexer *current_lexer)
 {
-	if (*current_lexer && (*current_lexer)->type == INPUT)
-	{
-		*current_redir = create_redir_node(INPUT, 0, \
-			(*current_lexer)->next->str, NULL);
-		*current_lexer = (*current_lexer)->next->next;
-	}
-	else if (*current_lexer && (*current_lexer)->type == TRUNC)
-	{
-		*current_redir = create_redir_node(0, TRUNC, NULL, \
-			(*current_lexer)->next->str);
-		*current_lexer = (*current_lexer)->next->next;
-	}
+    t_redir *act;
+
+    act = NULL;
+    while (current_lexer && current_lexer->type != PIPE)
+    {
+        if (is_redir(current_lexer)) {
+            act->file = current_lexer->next->str;
+            act->type = current_lexer ->type;  
+            current_lexer = current_lexer->next;      
+        }
+        current_lexer = current_lexer->next;      
+    }
+    return (act);
 }
 
-// Function to create new parser node
-t_parser	*create_new_parser_node(t_parser **p_ls, t_parser **curr_p, \
-	char **args, t_redir current_redir)
+
+void parser(t_mch *sh, t_lexer *lex)
 {
-	t_parser	*new_parser_node;
+    t_parser *pars;
+    t_parser *p_tmp;
+    t_redir *redir;
+    int i;
 
-	new_parser_node = create_parser_node(args, current_redir);
-	if (*p_ls == NULL)
-	{
-		*p_ls = new_parser_node;
-		*curr_p = *p_ls;
-		(*p_ls)->num_cmds = 1;
-	}
-	else
-	{
-		(*curr_p)->next = new_parser_node;
-		*curr_p = new_parser_node;
-		(*p_ls)->num_cmds++;
-	}
-	return (new_parser_node);
+    i = 0;
+    pars = malloc(sizeof(t_parser) * 5);
+    p_tmp = pars;
+    p_tmp->args = (char **)ft_calloc((count_words(lex) + 2), \
+			sizeof(char *));
+    int pipes = count_pipes(lex);
+    while (i < pipes && lex)
+    {
+        p_tmp->args = handle_command(lex);
+        p_tmp = p_tmp->next;
+        redir = handle_redirs(lex);
+        i++;
+    }
+    p_tmp = NULL;
+    sh->parser = pars;
+    //redir[i] = NULL;
 }
 
-// Function to convert the list of t_lexer into the list of t_parser
-t_parser	*convert_lexer_parser(t_lexer *lexer)
-{
-	t_parser	*parser_ls;
-	t_parser	*curr_parser;
-	t_redir		curr_red;
-	t_lexer		*curr_lex;
-	char		**args;
-
-	parser_ls = NULL;
-	curr_parser = NULL;
-	curr_lex = lexer;
-	args = NULL;
-	while (curr_lex != NULL)
-	{
-		if (curr_lex->type == CMD)
-		{
-			if ((curr_lex->next != NULL \
-                && (curr_lex->next->type != INPUT || curr_lex->next->type != TRUNC)) \
-                || curr_lex->next == NULL)
-				handle_command(&curr_lex, &args);
-			redir_init(&curr_red);
-			handle_redirection(&curr_lex, &curr_red);
-			create_new_parser_node(&parser_ls, &curr_parser, args, curr_red);
-			if (curr_lex)
-				curr_parser->red.output = curr_lex->type;
-		}
-		else
-			curr_lex = curr_lex->next;
-	}
-	return (parser_ls);
-}
+// while tok
+// if tok && tok->type != 
+//     handle
+// else 
+//     addback(reder, handle_redirs(lex))
