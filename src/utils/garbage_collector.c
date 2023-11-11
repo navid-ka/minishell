@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   garbage_collector.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 17:47:49 by bifrost           #+#    #+#             */
-/*   Updated: 2023/11/09 12:01:08 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/11/11 01:43:37 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,16 @@ void	clear_parser(t_parser **lst)
 	t_parser	*node;
 	int			i;
 
-	i = 0;
 	node = *lst;
 	while (node)
 	{
 		middleman = node->next;
-		free(node->args[i++]);
+		i = 0;
+		while (node->args[i])
+		{
+			free(node->args[i]);
+			i++;
+		}
 		free(node->args);
 		free(node);
 		node = middleman;
