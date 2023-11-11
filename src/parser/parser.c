@@ -39,21 +39,26 @@ int	count_words(t_lexer *tok)
 	return (words);
 }
 
-char **cmd(t_lexer **lexer)
+char **cmd(t_lexer *lex)
 {
     char **args;
-    t_lexer *lex;
     int i;
 
     i = 0;
-    lex = *lexer;
     args = (char **)ft_calloc((count_words(lex) + 2), sizeof(char *));
     while (lex)
     {
-        if (lex->type == CMD) //&& !is_redir(lex->next->type) maybe something like this
+        if (lex->type == CMD)
+        {
             args[i++] = ft_strdup(lex->str);
+        }
+        else if (is_redir(lex->type))
+        {
+            lex = lex->next; // Skip the next node of the redirection
+        }
         lex = lex->next;
     }
+    args[i] = NULL;
     return (args);
 }
 
@@ -68,15 +73,24 @@ void handler_things(t_parser *p, t_lexer **lex, t_redir *r)
     {
         if ((*lex)->type == CMD)
         {
-            parser_lstadd_back(&pars, new_parser_node(cmd(lex)));
-            //pars = pars->next;
-            *lex = (*lex)->next;
+            parser_lstadd_back(&pars, new_parser_node(cmd(*lex)));
+            pars = pars->next;
+            while (*lex && (*lex)->type != PIPE && !is_redir((*lex)->type))
+            {
+                (*lex) = (*lex)->next;
+            }
         }
         else if (is_redir((*lex)->type))
         {
             redir_lstadd_back(&red, create_redir_node((*lex)->next->str, (*lex)->type));
             red = red->next;
+            if ((*lex)->next)
+                (*lex)->next->type = (*lex)->type; // change the type of the next token
             *lex = (*lex)->next->next;
+        }
+        else
+        {
+            (*lex) = (*lex)->next;
         }
     }
     if ((*lex) && (*lex)->type == PIPE)
@@ -101,7 +115,7 @@ void parser(t_mch *sh, t_lexer *lex)
     pipes = count_pipes(lex);
     p_tmp = NULL;
     p_tmp = ft_calloc(sizeof(t_parser),  pipes + 2);
-    //p_tmp->args = (char **)ft_calloc((count_words(lex) + 2), sizeof(char *));
+    p_tmp->args = (char **)ft_calloc((count_words(lex) + 2), sizeof(char *));
     while (i < pipes)
     {
         handler_things(p_tmp, &lex, redir);
