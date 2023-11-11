@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_list.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcosta-f <fcosta-f@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 12:21:12 by bifrost           #+#    #+#             */
-/*   Updated: 2023/11/10 19:24:01 by fcosta-f         ###   ########.fr       */
+/*   Updated: 2023/11/11 02:58:59 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,22 +22,61 @@
 	return (node);
 }*/
 
+t_parser	*parser_lstlast(t_parser *lst)
+{
+	t_parser	*node;
+
+	if (!lst)
+		return (NULL);
+	node = lst;
+	while ((node->next))
+		node = node->next;
+	return (node);
+}
+
+
+void	parser_lstadd_back(t_parser **lst, t_parser *new)
+{
+	t_parser	*last;
+
+	if ((*lst))
+	{
+		last = parser_lstlast(*lst);
+		last->next = new;
+	}
+	else
+		(*lst) = new;
+}
+
+t_parser	*new_parser_node(char **args)
+{
+	t_parser	*node;
+
+	node = (t_parser *)malloc(sizeof(t_parser));
+	if (!node)
+		return (NULL);
+	node->args = args;
+	node->next = NULL;
+	return (node);
+}
+
+
 void printparser_list(t_mch *sh)
 {
 	t_parser *current = sh->parser;
-	t_redir *redir = sh->red;	
+	t_redir *redir = sh->red;
 	while (current) {
-		printf("command: ");
 		int i = 0;
-		while (current->args[i]) {
-			printf("%s\n", current->args[i]);
+		while (current->args && current->args[i]) {
+			printf("words :%s\n", current->args[i]);
 			i++;
 		}
 		current = current->next;
 	}
-	printf("redirs: ");
 	while (redir) {
-		printf("%s with type %d\n", redir->file, redir->type);
-		redir = redir->next;
+		if (redir->file) {
+			printf("redirs :%s with type %d\n", redir->file, redir->type);
+    }
+    redir = redir->next;
 	}
 }

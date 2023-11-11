@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcosta-f <fcosta-f@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 10:59:34 by bifrost           #+#    #+#             */
-/*   Updated: 2023/11/10 20:52:58 by fcosta-f         ###   ########.fr       */
+/*   Updated: 2023/11/11 02:59:07 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,19 +157,16 @@ void		bt_unset(t_mch *sh, char **args);
 // parser
 void		get_env(t_mch *sh, char **env);
 t_parser	*convert_lexer_parser(t_lexer *lexer);
-t_parser	*create_parser_node(char **args, t_redir red);
-void printparser_list(t_mch *sh);
-int			quote_checker(char *line);
-void		syntax_error(void);
+void		parser_lstadd_back(t_parser **lst, t_parser *new);
+t_parser	*new_parser_node(char **args);
+void		printparser_list(t_mch *sh);
 void		parser(t_mch *sh, t_lexer *lex);
 
 
 
 //redir
 void    	redir_init(t_redir *current_redir);
-
 int			check_syntax(t_lexer *tok);
-
 t_redir		*redir_lstlast(t_redir *lst);
 t_redir		*create_redir_node(char *args, int type);
 void		redir_lstadd_back(t_redir **lst, t_redir *new);
@@ -187,13 +184,17 @@ void		print_lexers(t_lexer *lex, char *str);
 int			count_quotes(char *cmd);
 char		*find_in_env_variables(t_mch *sh, char *variable_name);
 
+// Lexer 
+int			main_lexer(char *str, t_lexer **lex);
+int			quote_checker(char *line);
+void		syntax_error(void);
+
 //utils list
 
 t_lexer		*lexer_lstnew(void);
 void		lexer_lstadd_back(t_lexer **lst, t_lexer *new);
 char		*clean_input(char *line);
 void		free_tab(char **args);
-int			main_lexer(char *str, t_lexer **lex);
 void		add_env_to_list(t_env **env, t_env *new_env);
 void		print_lex_list(t_lexer *lex);
 

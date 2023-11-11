@@ -31,7 +31,7 @@ int	count_words(t_lexer *tok)
 
 	first = tok;
 	words = 0;
-	while (first && first->type != PIPE)
+	while (first)
 	{
 		words++;
 		first = first->next;
@@ -39,72 +39,45 @@ int	count_words(t_lexer *tok)
 	return (words);
 }
 
-// char	**handle_command(t_lexer *lex, t_redir *red)
-// {
-//     char **args;
-// 	int	i;
-//     t_lexer *current_lexer;
-//     t_redir *act;
-//     current_lexer = lex;
-//     act = red;
+char **cmd(t_lexer **lexer)
+{
+    char **args;
+    t_lexer *lex;
+    int i;
 
-// 	i = 0;
-// 	args = (char **)ft_calloc((count_words(current_lexer) + 2),
-// 			sizeof(char *)); revisar +2
-// 	while (current_lexer && current_lexer->type != PIPE)
-// 	{
-//         while (current_lexer && is_redir(current_lexer))
-//         {
-//             handle_redirs(current_lexer);
-//             current_lexer = current_lexer->next->next;
-//         }
-// 		args[i] = ft_strdup(current_lexer->str);
-// 		i++;
-// 		current_lexer = current_lexer->next;
-// 	}
-// 	args[i] = NULL;
+    i = 0;
+    lex = *lexer;
+    args = (char **)ft_calloc((count_words(lex) + 2), sizeof(char *));
+    while (lex)
+    {
+        if (lex->type == CMD) //&& !is_redir(lex->next->type) maybe something like this
+            args[i++] = ft_strdup(lex->str);
+        lex = lex->next;
+    }
+    return (args);
+}
 
-//     return (args);
-// }
-
-// t_redir    *handle_redirs(char *file, int type)
-// {
-//     t_redir *act;
-
-//     act = create_redir_node(file, type);
-//     return (act);
-// }
-
-// char *cmd(char *str)
-// {
-//     char *arg;
-
-//     arg = ft_strdup(str);
-//     return (arg);
-// }
-
-void handler_things(t_parser *p, t_lexer **lex, t_redir *r) //p y r tienen malloc!
+void handler_things(t_parser *p, t_lexer **lex, t_redir *r)
 {
     t_parser *pars;
     t_redir *red;
-    int i;
-    
-    i = 0;
+
     pars = p;
     red = r;
-    while (*lex && (*lex)->type != PIPE)
+    while (*lex)
     {
         if ((*lex)->type == CMD)
-           pars->args[i++] = ft_strdup((*lex)->str);
-        else if (is_redir((*lex)->type))
         {
-            printf("type: %d\n", (*lex)->type);
-            printf("out: %s\n", (*lex)->next->str);
-            redir_lstadd_back(&red, create_redir_node((*lex)->next->str, (*lex)->type));
-            red = red->next;
+            parser_lstadd_back(&pars, new_parser_node(cmd(lex)));
+            //pars = pars->next;
             *lex = (*lex)->next;
         }
-        *lex = (*lex)->next;
+        else if (is_redir((*lex)->type))
+        {
+            redir_lstadd_back(&red, create_redir_node((*lex)->next->str, (*lex)->type));
+            red = red->next;
+            *lex = (*lex)->next->next;
+        }
     }
     if ((*lex) && (*lex)->type == PIPE)
     {
@@ -113,7 +86,7 @@ void handler_things(t_parser *p, t_lexer **lex, t_redir *r) //p y r tienen mallo
         (*lex) = (*lex)->next;
     }
     red = NULL;
-    pars->args[i] = NULL;
+    pars = NULL;
 }
 
 void parser(t_mch *sh, t_lexer *lex)
@@ -126,27 +99,16 @@ void parser(t_mch *sh, t_lexer *lex)
     i = 0;
     redir = ft_calloc(sizeof(t_redir) + 1, 1);
     pipes = count_pipes(lex);
-    sh->parser = ft_calloc(sizeof(t_parser),  pipes + 2); //esto seria 1 segun javi
-    p_tmp = sh->parser;
-    p_tmp->args = (char **)ft_calloc((count_words(lex) + 2), \
-			sizeof(char *));
-    while (lex && i < pipes)
+    p_tmp = NULL;
+    p_tmp = ft_calloc(sizeof(t_parser),  pipes + 2);
+    //p_tmp->args = (char **)ft_calloc((count_words(lex) + 2), sizeof(char *));
+    while (i < pipes)
     {
-        printf("hay pipe\n");
         handler_things(p_tmp, &lex, redir);
-         printf("seguro?\n");
-        p_tmp = p_tmp->next;
-        printf("muy seguro?\n");
         i++;
     }
-    p_tmp = NULL;
     sh->red = redir;
-    printparser_list(sh);
-    //redir[i] = NULL;
+    sh->parser = p_tmp;
+    //mafree(p_tmp);
+    //free_tab(p_tmp->args);
 }
-
-// while tok
-// if tok && tok->type != 
-//     handle
-// else 
-//     addback(reder, handle_redirs(lex))
