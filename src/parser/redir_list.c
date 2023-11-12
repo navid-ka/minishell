@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_list.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcosta-f <fcosta-f@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 12:19:18 by bifrost           #+#    #+#             */
-/*   Updated: 2023/11/10 23:17:22 by fcosta-f         ###   ########.fr       */
+/*   Updated: 2023/11/12 17:36:58 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ t_redir	*redir_lstlast(t_redir *lst)
 	if (!lst)
 		return (NULL);
 	node = lst;
-	while ((node->next))
+	while (node && node->next)
 		node = node->next;
 	return (node);
 }

@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:39:00 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/11/11 02:25:03 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/12 20:45:10 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static void	clear_console(void)
 static void	sh_init(t_mch *sh, char **env)
 {
 	sh->env = NULL;
+	sh->parser = NULL;
 	//ft_memset(&sh->parser, 0, sizeof(t_parser));
 	//ft_memset(&sh->lex, 0, sizeof(t_env));
 	//ft_memset(&sh->red, 0, sizeof(t_redir));
@@ -55,7 +56,7 @@ static void	command_handler(t_mch *sh, char *line)
 	executor(sh);
 	clear_line(&cmd);
 	clear_lexer(&lex);
-	clear_parser(&sh->parser);
+	//clear_parser(&sh->parser);
 }
 
 void	minishell(t_mch *sh, char **env)

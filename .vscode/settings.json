@@ -1,6 +1,7 @@
 {
     "C_Cpp.errorSquiggles": "disabled",
     "files.associations": {
-        "iterator": "c"
+        "iterator": "c",
+        "random": "c"
     }
 }
