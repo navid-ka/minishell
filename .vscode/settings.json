@@ -2,6 +2,7 @@
     "C_Cpp.errorSquiggles": "disabled",
     "files.associations": {
         "iterator": "c",
-        "random": "c"
+        "random": "c",
+        "minishell.h": "c"
     }
 }
