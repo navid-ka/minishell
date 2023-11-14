@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 10:59:34 by bifrost           #+#    #+#             */
-/*   Updated: 2023/11/11 02:59:07 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/14 17:26:46 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,6 +142,7 @@ void		free_tab(char **args);
 void		clear_line(char **line);
 void		free_env(t_env **env);
 void		unset_free(t_env *env);
+void		clear_redir(t_redir **redir_list);
 
 // builtins env
 bool		bt_is_builtin(char **argv);

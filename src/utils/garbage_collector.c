@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   garbage_collector.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 17:47:49 by bifrost           #+#    #+#             */
-/*   Updated: 2023/11/11 01:43:37 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/14 17:27:16 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,21 @@ void	clear_lexer(t_lexer **lexer_list)
 		node = middleman;
 	}
 	*lexer_list = NULL;
+}
+void	clear_redir(t_redir **redir_list)
+{
+	t_redir	*middleman;
+	t_redir	*node;
+
+	node = *redir_list;
+	while (node)
+	{
+		middleman = node->next;
+		free(node->file);
+		free(node);
+		node = middleman;
+	}
+	*redir_list = NULL;
 }
 
 void	clear_parser(t_parser **lst)
