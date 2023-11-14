@@ -122,6 +122,8 @@ void process_tokens(t_mch *sh, t_lexer *tmp, t_parser *parser, t_redir *red)
 			start = tmp;
 			continue;
 		}
+		free_tab(parser->args);
+		parser->args = (char **)ft_calloc((count_words(start) + 1), sizeof(char *));
 		process_cmd_args(start, parser);
 		if (is_redir(tmp->type))
 			process_redirections(tmp, &red);
