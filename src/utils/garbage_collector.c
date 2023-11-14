@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   garbage_collector.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/14 17:47:49 by bifrost           #+#    #+#             */
-/*   Updated: 2023/11/14 17:27:16 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/11/14 22:29:06 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,28 +42,31 @@ void	clear_redir(t_redir **redir_list)
 	}
 	*redir_list = NULL;
 }
-
-void	clear_parser(t_parser **lst)
+void clear_parser(t_parser **lst)
 {
-	t_parser	*middleman;
-	t_parser	*node;
-	int			i;
+    t_parser *middleman;
+    t_parser *node;
+    int i;
 
-	node = *lst;
-	while (node)
-	{
-		middleman = node->next;
-		i = 0;
-		while (node->args[i])
-		{
-			free(node->args[i]);
-			i++;
-		}
-		free(node->args);
-		free(node);
-		node = middleman;
-	}
-	*lst = NULL;
+    node = *lst;
+    while (node)
+    {
+        middleman = node->next;
+        i = 0;
+        while (node->args[i])
+        {
+            free(node->args[i]);
+            i++;
+        }
+        if (node->args != NULL) // Add a check before freeing node->args
+        {
+            free(node->args);
+        }
+        clear_redir(&node->redir_list);
+        free(node);
+        node = middleman;
+    }
+    *lst = NULL;
 }
 
 void	free_env(t_env **env)

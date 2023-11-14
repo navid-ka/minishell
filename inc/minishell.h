@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 10:59:34 by bifrost           #+#    #+#             */
-/*   Updated: 2023/11/14 17:26:46 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/11/14 22:09:48 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ typedef struct s_parser
 {
 	int				num_cmds;
 	char			**args;
+	t_redir         *redir_list;
 	struct s_parser	*next;
 }	t_parser;
 

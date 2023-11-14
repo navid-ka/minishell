@@ -63,7 +63,7 @@ t_parser *create_parser(void)
 {
 	t_parser *parser;
 
-	parser = ft_calloc(sizeof(t_parser) + 1, 1);
+	parser = ft_calloc(sizeof(t_parser), 1);
 	parser->args = NULL;
 	parser->next = NULL;
 	return (parser);
@@ -75,7 +75,7 @@ void process_cmd_args(t_lexer *tmp, t_parser *parser)
 	int i = 0;
 
 	lex = tmp;
-	parser->args = (char **)ft_calloc((count_words(tmp) + 1), sizeof(char *));
+	//parser->args = (char **)ft_calloc((count_words(tmp) + 1), sizeof(char *));
 	if (!parser->args)
 		return;
 	while (lex && lex->type != PIPE)
@@ -107,14 +107,16 @@ void process_redirections(t_lexer *tmp, t_redir **red)
 		}
 	}
 }
-void process_tokens(t_mch *sh, t_lexer *tmp, t_parser *parser, t_redir *red)
+void process_tokens(t_lexer *tmp, t_parser *parser, t_redir *red)
 {
-	t_lexer *start = tmp;
+	t_lexer *start;
+
+	start = tmp;
 	while (tmp != NULL)
 	{
 		if (tmp && tmp->type == PIPE)
 		{
-			parser_lstadd_back(&(sh->parser), parser);
+			parser_lstadd_back(&(parser), parser);
 			parser = create_parser();
 			tmp = tmp->next;
 			start = tmp;
@@ -125,8 +127,9 @@ void process_tokens(t_mch *sh, t_lexer *tmp, t_parser *parser, t_redir *red)
 			process_redirections(tmp, &red);
 		tmp = tmp->next;
 	}
-	parser_lstadd_back(&(sh->parser), parser);
+	parser_lstadd_back(&(parser), parser);
 	red = NULL;
+	parser->redir_list = red;
 }
 
 void parser(t_mch *sh, t_lexer *lex)
@@ -136,14 +139,14 @@ void parser(t_mch *sh, t_lexer *lex)
 	t_parser *parser;
 
 	sh->lex = lex;
+	parser = NULL;
 	tmp = sh->lex;
 	tmp = tok_type_changer(tmp);
 	red = NULL;
 	red = ft_calloc(sizeof(t_redir) + 1, 1);
-	//red->next = NULL;
 	sh->red = red;
-	//sh->parser = ft_calloc(sizeof(t_parser) + count_pipes(tmp), 1);
 	parser = create_parser();
-	process_tokens(sh, tmp, parser, red);
-	//sh->parser = parser;
+	parser->args = (char **)ft_calloc((count_words(tmp) + 1), sizeof(char *));
+	process_tokens(tmp, parser, red);
+	sh->parser = parser;
 }
