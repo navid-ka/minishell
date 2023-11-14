@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redir_list.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 12:19:18 by bifrost           #+#    #+#             */
-/*   Updated: 2023/11/12 17:36:58 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/14 17:57:27 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ t_redir	*create_redir_node(char *args, int type)
 	node = (t_redir *)malloc(sizeof(t_redir));
 	if (!node)
 		return (NULL);
-	node->file = args;
+	node->file = ft_strdup(args);
 	node->type = type;
 	node->next = NULL;
 	return (node);

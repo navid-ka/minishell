@@ -39,7 +39,6 @@ int	count_words(t_lexer *tok)
 	return (words);
 }
 
-
 t_lexer	*tok_type_changer(t_lexer *tmp)
 {
 	t_lexer	*lex;
@@ -49,101 +48,102 @@ t_lexer	*tok_type_changer(t_lexer *tmp)
 	{
 		if (lex && is_redir(lex->type))
 		{
-			if (lex->next)
+			if (lex && !is_redir(lex->next->type))
 			{
 				lex->next->type = lex->type; // change the type of the next token
-				lex = lex->next->next;
+				lex  = lex->next;
 			}
 		}
-		if (lex)
-			lex  = lex->next;
+		lex  = lex->next;
 	}
-	return (lex);
+	return (tmp);
 }
 
 t_parser *create_parser(void)
 {
-    t_parser *parser = ft_calloc(sizeof(t_parser) + 1, 1);
-    parser->args = NULL;
-    parser->next = NULL;
-    return parser;
+	t_parser *parser;
+
+	parser = ft_calloc(sizeof(t_parser) + 1, 1);
+	parser->args = NULL;
+	parser->next = NULL;
+	return (parser);
 }
 
 void process_cmd_args(t_lexer *tmp, t_parser *parser)
 {
-    t_lexer *lex;
-    int i = 0;
+	t_lexer *lex;
+	int i = 0;
 
-    lex = tmp;
-    parser->args = (char **)ft_calloc((count_words(tmp) + 1), sizeof(char *));
-    if (!parser->args)
-        return;
-    while (lex && lex->type != PIPE)
-    {
-        if (lex->type == CMD)
-        {
-            parser->args[i] = ft_strdup(lex->str);
-            i++;
-        }
-        lex = lex->next;
-    }
-    parser->args[i] = NULL;
-    lex = tmp; // Reset lex to the start of the tokens list
+	lex = tmp;
+	parser->args = (char **)ft_calloc((count_words(tmp) + 1), sizeof(char *));
+	if (!parser->args)
+		return;
+	while (lex && lex->type != PIPE)
+	{
+		if (lex->type == CMD)
+		{
+			parser->args[i] = ft_strdup(lex->str);
+			i++;
+		}
+		lex = lex->next;
+	}
+	parser->args[i] = NULL;
+	lex = tmp; // Reset lex to the start of the tokens list
 }
-
-
 
 void process_redirections(t_lexer *tmp, t_redir **red)
 {
-    if (is_redir(tmp->type))
-    {
-        if (tmp->next != NULL) 
-        {
-            t_redir *new_redir = create_redir_node(tmp->next->str, tmp->type);
-            if (new_redir != NULL)
-            {
-                redir_lstadd_back(red, new_redir);
-            }
-		}
-    }
-}
+	t_redir *new_redir;
 
+	if (is_redir(tmp->type))
+	{
+		if (tmp->next != NULL) 
+		{
+			new_redir = create_redir_node(tmp->next->str, tmp->type);
+			if (new_redir != NULL)
+			{
+				redir_lstadd_back(red, new_redir);
+			}
+		}
+	}
+}
 void process_tokens(t_mch *sh, t_lexer *tmp, t_parser *parser, t_redir *red)
 {
-    t_lexer *start = tmp;
-    while (tmp != NULL)
-    {
-        if (tmp && tmp->type == PIPE)
-        {
-            parser_lstadd_back(&(sh->parser), parser);
-            parser = create_parser();
-            tmp = tmp->next;
-            start = tmp;
-            continue;
-        }
-        process_cmd_args(start, parser);
-        if (is_redir(tmp->type))
-            process_redirections(tmp, &red);
-        tmp = tmp->next;
-    }
-    parser_lstadd_back(&(sh->parser), parser);
-    red = NULL;
+	t_lexer *start = tmp;
+	while (tmp != NULL)
+	{
+		if (tmp && tmp->type == PIPE)
+		{
+			parser_lstadd_back(&(sh->parser), parser);
+			parser = create_parser();
+			tmp = tmp->next;
+			start = tmp;
+			continue;
+		}
+		process_cmd_args(start, parser);
+		if (is_redir(tmp->type))
+			process_redirections(tmp, &red);
+		tmp = tmp->next;
+	}
+	parser_lstadd_back(&(sh->parser), parser);
+	red = NULL;
 }
 
 void parser(t_mch *sh, t_lexer *lex)
 {
-    t_lexer *tmp;
-    t_redir *red;
-    t_parser *parser;
+	t_lexer *tmp;
+	t_redir *red;
+	t_parser *parser;
 
-    sh->lex = lex;
-    tmp = sh->lex;
-    tok_type_changer(tmp);
-    red = ft_calloc(sizeof(t_redir) + 1, 1);
-    red->next = NULL;
-    sh->red = red;
-    sh->parser = ft_calloc(sizeof(t_parser) + count_pipes(tmp), 1);
-    parser = create_parser();
-    process_tokens(sh, tmp, parser, red);
-    sh->parser = parser;
+	sh->lex = lex;
+	tmp = sh->lex;
+	tmp = tok_type_changer(tmp);
+	red = NULL;
+	red = ft_calloc(sizeof(t_redir) + 1, 1);
+	//red->next = NULL;
+	sh->red = red;
+	//sh->parser = ft_calloc(sizeof(t_parser) + count_pipes(tmp), 1);
+	parser = create_parser();
+	process_tokens(sh, tmp, parser, red);
+	//sh->parser = parser;
 }
