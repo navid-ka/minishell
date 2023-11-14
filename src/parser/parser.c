@@ -122,7 +122,8 @@ void process_tokens(t_mch *sh, t_lexer *tmp, t_parser *parser, t_redir *red)
 			start = tmp;
 			continue;
 		}
-		free_tab(parser->args);
+		if (parser->args)
+			free_tab(parser->args);
 		parser->args = (char **)ft_calloc((count_words(start) + 1), sizeof(char *));
 		process_cmd_args(start, parser);
 		if (is_redir(tmp->type))
@@ -150,5 +151,4 @@ void parser(t_mch *sh, t_lexer *lex)
 	parser = create_parser();
 	parser->args = (char **)ft_calloc((count_words(tmp) + 1), sizeof(char *));
 	process_tokens(sh, tmp, parser, red);
-	//sh->parser = parser;
 }
