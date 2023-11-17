@@ -6,7 +6,7 @@
 /*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 12:19:18 by bifrost           #+#    #+#             */
-/*   Updated: 2023/11/14 17:57:27 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/11/17 21:40:25 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ t_redir	*redir_lstlast(t_redir *lst)
 	return (node);
 }
 
-
 void	redir_lstadd_back(t_redir **lst, t_redir *new)
 {
 	t_redir	*last;
@@ -58,7 +57,7 @@ void	redir_lstadd_back(t_redir **lst, t_redir *new)
 
 t_redir	*create_redir_node(char *args, int type)
 {
-	t_redir *node;
+	t_redir	*node;
 
 	node = (t_redir *)malloc(sizeof(t_redir));
 	if (!node)

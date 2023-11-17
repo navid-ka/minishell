@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/05 19:16:14 by fcosta-f          #+#    #+#             */
-/*   Updated: 2023/11/17 01:40:39 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/17 21:41:17 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,19 +20,19 @@ int	is_redir(int type)
 	return (0);
 }
 
-int count_pipes(t_lexer *lex)
+int	count_pipes(t_lexer *lex)
 {
-	int n;
-	t_lexer *tmp;
+	int		n;
+	t_lexer	*tmp;
 
 	tmp = lex;
-	n  = 1;
+	n = 1;
 	while (tmp)
 	{
 		if (tmp->type == PIPE)
 			n++;
 		tmp = tmp->next;
-	} 
+	}
 	return (n);
 }
 
