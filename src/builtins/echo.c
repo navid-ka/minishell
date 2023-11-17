@@ -6,7 +6,7 @@
 /*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 11:52:43 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/11/17 21:30:39 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/11/17 21:33:08 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,10 @@ static void	echo_with_option(t_mch *sh, char **str, int i)
 	sh->exit = EXIT_SUCCESS;
 }
 
-int is_n(char **str, int *i)
+int	is_n(char **str, int *i)
 {
-	int j;
-	int flag;
+	int	j;
+	int	flag;
 
 	flag = 0;
 	while (str[*i][0] == '-')
@@ -57,10 +57,12 @@ int is_n(char **str, int *i)
 	}
 	return (flag);
 }
+
 void	bt_echo(t_mch *sh, char **str)
 {
-	int i = 1;
+	int	i;
 
+	i = 1;
 	if (str[i] != NULL && is_n(str, &i))
 	{
 		echo_with_option(sh, str, i);
