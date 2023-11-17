@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 10:59:34 by bifrost           #+#    #+#             */
-/*   Updated: 2023/11/14 23:25:25 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/17 01:42:39 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,13 +158,13 @@ void		bt_unset(t_mch *sh, char **args);
 
 // parser
 void		get_env(t_mch *sh, char **env);
-t_parser	*convert_lexer_parser(t_lexer *lexer);
+t_parser	*create_parser(void);
 void		parser_lstadd_back(t_parser **lst, t_parser *new);
 t_parser	*new_parser_node(char **args);
 void		printparser_list(t_mch *sh);
 void		parser(t_mch *sh, t_lexer *lex);
-
-
+int			count_pipes(t_lexer *lex);
+int			count_words(t_lexer *tok);
 
 //redir
 void    	redir_init(t_redir *current_redir);
@@ -172,6 +172,7 @@ int			check_syntax(t_lexer *tok);
 t_redir		*redir_lstlast(t_redir *lst);
 t_redir		*create_redir_node(char *args, int type);
 void		redir_lstadd_back(t_redir **lst, t_redir *new);
+int			is_redir(int type);
 
 
 // Utils.c

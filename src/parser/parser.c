@@ -1,72 +1,40 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/17 01:39:58 by bifrost           #+#    #+#             */
+/*   Updated: 2023/11/17 01:53:50 by bifrost          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-int	is_redir(int type)
+t_lexer *tok_type_changer(t_lexer *tmp)
 {
-	if (type == TRUNC || type == APPEND \
-		|| type == HERE_DOC || type == INPUT)
-		return (1);
-	return (0);
-}
+    t_lexer *lex = tmp;
+    int flag = 0;
 
-int count_pipes(t_lexer *lex)
-{
-	int n;
-	t_lexer *tmp;
+    while (lex)
+    {
+        if (is_redir(lex->type))
+        {
+            if (lex->next && !flag)
+            {
+                lex->next->type = lex->type;
+                flag = 1;
+            }
+            else if (lex->next && flag)
+            {
+                flag = 0;
+            }
+        }
+        lex = lex->next;
+    }
 
-	tmp = lex;
-	n  = 1;
-	while (tmp)
-	{
-		if (tmp->type == PIPE)
-			n++;
-		tmp = tmp->next;
-	} 
-	return (n);
-}
-
-int	count_words(t_lexer *tok)
-{
-	t_lexer	*first;
-	int		words;
-
-	first = tok;
-	words = 0;
-	while (first)
-	{
-		words++;
-		first = first->next;
-	}
-	return (words);
-}
-
-t_lexer	*tok_type_changer(t_lexer *tmp)
-{
-	t_lexer	*lex;
-
-	lex = tmp;
-	while (lex)
-	{
-		if (lex && is_redir(lex->type))
-		{
-			if (lex && !is_redir(lex->next->type))
-			{
-				lex->next->type = lex->type; // change the type of the next token
-				lex  = lex->next;
-			}
-		}
-		lex  = lex->next;
-	}
-	return (tmp);
-}
-
-t_parser *create_parser(void)
-{
-	t_parser *parser;
-
-	parser = ft_calloc(sizeof(t_parser), 1);
-	parser->args = NULL;
-	parser->next = NULL;
-	return (parser);
+    return tmp;
 }
 
 void process_cmd_args(t_lexer *tmp, t_parser *parser)
@@ -75,12 +43,11 @@ void process_cmd_args(t_lexer *tmp, t_parser *parser)
 	int i = 0;
 
 	lex = tmp;
-	//parser->args = (char **)ft_calloc((count_words(tmp) + 1), sizeof(char *));
 	if (!parser->args)
 		return;
 	while (lex && lex->type != PIPE)
 	{
-		if (lex->type == CMD)
+		if (lex->type == CMD && !is_redir(lex->type))
 		{
 			parser->args[i] = ft_strdup(lex->str);
 			i++;
@@ -88,26 +55,33 @@ void process_cmd_args(t_lexer *tmp, t_parser *parser)
 		lex = lex->next;
 	}
 	parser->args[i] = NULL;
-	lex = tmp; // Reset lex to the start of the tokens list
+	lex = tmp; 
 }
 
-void process_redirections(t_lexer *tmp, t_redir **red)
+void process_redirections(t_lexer *tmp, t_parser *parser)
 {
-	t_redir *new_redir;
+    t_redir *new_redir;
 
-	if (is_redir(tmp->type))
-	{
-		if (tmp->next != NULL) 
-		{
-			new_redir = create_redir_node(tmp->next->str, tmp->type);
-			if (new_redir != NULL)
-			{
-				redir_lstadd_back(red, new_redir);
-			}
-		}
-	}
+    while (tmp && is_redir(tmp->type))
+    {
+        if (tmp->next != NULL && tmp->next->type != CMD)
+        {
+            new_redir = create_redir_node(tmp->next->str, tmp->type);
+            //if (new_redir != NULL)
+                redir_lstadd_back(&(parser->redir_list), new_redir);
+            tmp = tmp->next->next;
+            
+            while (tmp && is_redir(tmp->type))
+                tmp = tmp->next;
+        }
+        else
+        {
+            tmp = tmp->next;
+        }
+    }
 }
-void process_tokens(t_mch *sh, t_lexer *tmp, t_parser *parser, t_redir *red)
+
+void process_tokens(t_mch *sh, t_lexer *tmp, t_parser *parser)
 {
 	t_lexer *start;
 
@@ -125,30 +99,25 @@ void process_tokens(t_mch *sh, t_lexer *tmp, t_parser *parser, t_redir *red)
 		if (parser->args)
 			free_tab(parser->args);
 		parser->args = (char **)ft_calloc((count_words(start) + 1), sizeof(char *));
-		process_cmd_args(start, parser);
-		if (is_redir(tmp->type))
-			process_redirections(tmp, &red);
+		if (!is_redir(tmp->type))
+			process_cmd_args(start, parser);
+		else if (is_redir(tmp->type))
+			process_redirections(tmp, parser);
 		tmp = tmp->next;
 	}
 	parser_lstadd_back(&(sh->parser), parser);
-	red = NULL;
-	parser->redir_list = red;
 }
 
 void parser(t_mch *sh, t_lexer *lex)
 {
 	t_lexer *tmp;
-	t_redir *red;
 	t_parser *parser;
 
 	sh->lex = lex;
 	parser = NULL;
 	tmp = sh->lex;
 	tmp = tok_type_changer(tmp);
-	red = NULL;
-	red = ft_calloc(sizeof(t_redir) + 1, 1);
-	sh->red = red;
 	parser = create_parser();
 	parser->args = (char **)ft_calloc((count_words(tmp) + 1), sizeof(char *));
-	process_tokens(sh, tmp, parser, red);
+	process_tokens(sh, tmp, parser);
 }

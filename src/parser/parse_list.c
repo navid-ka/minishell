@@ -6,21 +6,22 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 12:21:12 by bifrost           #+#    #+#             */
-/*   Updated: 2023/11/12 20:20:05 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/17 01:41:23 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-/*t_parser	*create_parser_node(char **args, t_redir red)
+t_parser *create_parser(void)
 {
-	t_parser *node;
+	t_parser *parser;
 
-	node = (t_parser *)malloc(sizeof(t_parser));
-	node->args = args;
-	node->next = NULL;
-	return (node);
-}*/
+	parser = ft_calloc(sizeof(t_parser), 1);
+	parser->redir_list = NULL;
+	parser->args = NULL;
+	parser->next = NULL;
+	return (parser);
+}
 
 t_parser	*parser_lstlast(t_parser *lst)
 {
@@ -64,12 +65,6 @@ t_parser	*new_parser_node(char **args)
 void printparser_list(t_mch *sh)
 {
     t_parser *current = sh->parser;
-    t_redir *redir = sh->red;
-
-    if (sh->red == NULL) {
-        printf("Redirection list is not initialized.\n");
-        return;
-    }
 
     while (current) {
         int i = 0;
@@ -77,13 +72,13 @@ void printparser_list(t_mch *sh)
             printf("words: %s\n", current->args[i]);
             i++;
         }
-        current = current->next;
-    }
-
-    while (redir) {
-        if (redir->file) {
-            printf("redirs: %s with type %d\n", redir->file, redir->type);
+        t_redir *redir = current->redir_list;
+        if (redir) {
+            while (redir) {
+                printf("redirs: %s with type %d \n", redir->file, redir->type);
+                redir = redir->next;
+            }
         }
-        redir = redir->next; // Move to the next redirection
+        current = current->next;
     }
 }
