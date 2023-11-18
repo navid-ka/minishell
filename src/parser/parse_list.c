@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   parse_list.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 12:21:12 by bifrost           #+#    #+#             */
-/*   Updated: 2023/11/17 01:41:23 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/17 21:39:54 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-t_parser *create_parser(void)
+t_parser	*create_parser(void)
 {
-	t_parser *parser;
+	t_parser	*parser;
 
 	parser = ft_calloc(sizeof(t_parser), 1);
 	parser->redir_list = NULL;
@@ -30,11 +30,10 @@ t_parser	*parser_lstlast(t_parser *lst)
 	if (!lst)
 		return (NULL);
 	node = lst;
-	while (node && node->next) // Add this check
+	while (node && node->next)
 		node = node->next;
 	return (node);
 }
-
 
 void	parser_lstadd_back(t_parser **lst, t_parser *new)
 {
@@ -61,24 +60,31 @@ t_parser	*new_parser_node(char **args)
 	return (node);
 }
 
-
-void printparser_list(t_mch *sh)
+void	printparser_list(t_mch *sh)
 {
-    t_parser *current = sh->parser;
+	t_parser	*current;
+	t_redir		*redir;
+	int			i;
 
-    while (current) {
-        int i = 0;
-        while (current->args && current->args[i]) {
-            printf("words: %s\n", current->args[i]);
-            i++;
-        }
-        t_redir *redir = current->redir_list;
-        if (redir) {
-            while (redir) {
-                printf("redirs: %s with type %d \n", redir->file, redir->type);
-                redir = redir->next;
-            }
-        }
-        current = current->next;
-    }
+	current = sh->parser;
+	while (current)
+	{
+		i = 0;
+		while (current->args && current->args[i])
+		{
+			printf("words: %s\n", current->args[i]);
+			i++;
+		}
+		redir = current->redir_list;
+		if (redir)
+		{
+			while (redir)
+			{
+				printf("redirs: %s with type %d \n", \
+					redir->file, redir->type);
+				redir = redir->next;
+			}
+		}
+		current = current->next;
+	}
 }
