@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fcosta-f <fcosta-f@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 10:59:34 by bifrost           #+#    #+#             */
-/*   Updated: 2023/11/17 01:42:39 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/18 00:28:44 by fcosta-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,7 +209,7 @@ void		expansor(t_mch *sh);
 void		print_expansor(t_mch *sh);
 
 // executor
-void		executor(t_mch *sh);
+int			executor(t_mch *sh);
 char		*find_cmd(char **routes, char *cmd);
 void		last_pipe(t_pipe *pipex, int argc);
 int			ft_error(int ext, int err, char *cmd);

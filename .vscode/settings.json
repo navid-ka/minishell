@@ -1,8 +1,11 @@
 {
-    "C_Cpp.errorSquiggles": "disabled",
+    "C_Cpp.errorSquiggles": "enabled",
     "files.associations": {
-        "iterator": "c",
-        "random": "c",
-        "minishell.h": "c"
-    }
+		"iterator": "c",
+		"random": "c",
+		"minishell.h": "c",
+		"atomic": "c",
+		"type_traits": "c"
+	},
+	"C_Cpp.default.compilerPath": "/usr/bin/gcc"
 }

@@ -1,0 +1,16 @@
+Makefile
+a
+b
+c
+d
+dsa
+dsads
+git_branch.sh
+inc
+libs
+minishell
+objs
+ouds
+oufs
+out
+src
