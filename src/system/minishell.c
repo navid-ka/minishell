@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fcosta-f <fcosta-f@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:39:00 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/11/16 23:23:09 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/18 01:20:49 by fcosta-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,12 @@ static void	command_handler(t_mch *sh, char *line)
 		return ;
 	}
 	parser(sh, lex);
-	printparser_list(sh);
+	// printparser_list(sh);
 	expansor(sh);
 	if (ft_strcmp(cmd, ""))
 		add_history(cmd);
 	executor(sh);
+	//dprintf(2, "AJJAJAJAJJAADJDJWDJAODJDWAOJDWAOW");
 	clear_line(&cmd);
 	clear_lexer(&lex);
 	clear_parser(&sh->parser);
@@ -73,7 +74,9 @@ void	minishell(t_mch *sh, char **env)
 	{
 		line = readline(prompt);
 		if (!line)
+		{
 			bt_exit(sh, line);
+		}
 		if (*line)
 		{
 			if (ft_strncmp(line, "clear", 6) == 0)
@@ -81,7 +84,9 @@ void	minishell(t_mch *sh, char **env)
 			if (!quote_checker(line))
 				syntax_error();
 			else
+			{
 				command_handler(sh, line);
+			}
 			free_env(&envi);
 			clear_line(&line);
 		}
