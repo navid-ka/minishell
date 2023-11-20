@@ -6,7 +6,7 @@
 /*   By: fcosta-f <fcosta-f@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 01:20:57 by fcosta-f          #+#    #+#             */
-/*   Updated: 2023/11/18 01:21:07 by fcosta-f         ###   ########.fr       */
+/*   Updated: 2023/11/20 22:30:25 by fcosta-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,10 @@ void open_infile(t_redir *top, t_pipe *pipex) {
 }
 
 void open_outfile(t_redir *top, t_pipe *pipex) {
-	
-	pipex->fd_outfile = open(top->file, O_WRONLY | O_TRUNC | O_CREAT, 0666);
+	if (top->type == TRUNC)
+		pipex->fd_outfile = open(top->file, O_WRONLY | O_TRUNC | O_CREAT, 0666);
+	else
+		pipex->fd_outfile = open(top->file, O_WRONLY | O_APPEND | O_CREAT, 0666);
 	if (pipex->fd_outfile == -1)
 	{
 		close_pipes(pipex);
@@ -121,10 +123,10 @@ void 	open_redirs(t_pipe *pipex, t_redir *top) {
 	
 	while (top)
 	{
-		if (top->type == INPUT) {
+		if (top->type == INPUT || top->type == HERE_DOC) {
 			open_infile(top, pipex);
 		}
-		if (top->type == TRUNC) {
+		if (top->type == TRUNC|| top->type == APPEND) {
 			open_outfile(top, pipex);
 		}
 		top = top->next;
@@ -152,6 +154,37 @@ void child(t_parser *top, t_pipe *ptop, int first, char **routes) {
 	exit (1);
 }
 
+int	wait_childs(t_pipe *pipe/*, int *exit_s*/)
+{
+	int	i;
+	int	status;
+	pid_t pid;
+	int real_status;
+
+	i = 0;
+	while (i < pipe->npipes)
+	{
+		pid = waitpid(-1, &status, 0);
+		i++;
+		if (pid == pipe->proc) real_status = status;
+	}
+	// dup2(pipe->std_in, STDIN_FILENO);
+	// dup2(pipe->std_out, STDOUT_FILENO);
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	else if (WIFSIGNALED(status))
+	{
+		if (WTERMSIG(status) == SIGINT)
+			real_status = 130;
+		else if (WTERMSIG(status) == SIGQUIT)
+		{
+			ft_printf(3, "Quit: 3\n");
+			real_status = 131;
+		}
+	}
+	return (real_status);
+}
+
 int executor(t_mch *all) {
 	t_parser *pars;
 	t_pipe *pipex;
@@ -161,6 +194,8 @@ int executor(t_mch *all) {
 	
 	pipex = all->pipex;
 	pars = all->parser;
+	// pipex->std_in = dup(STDIN_FILENO);
+	// pipex->std_out = dup(STDOUT_FILENO);
 	first = 1;
 	pipex = ft_calloc(sizeof(t_pipe), 1);
 	path_env = get_path_env_value(all);
@@ -176,7 +211,7 @@ int executor(t_mch *all) {
 			child(pars, pipex, first, routes);
 		}
 		// close_pipes(pipex);
-		waitpid(pipex->proc, NULL, 0);
+	all->exit = wait_childs(pipex);
 		first = 0;
 		pars = pars->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: fcosta-f <fcosta-f@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 10:59:34 by bifrost           #+#    #+#             */
-/*   Updated: 2023/11/18 00:28:44 by fcosta-f         ###   ########.fr       */
+/*   Updated: 2023/11/20 22:24:29 by fcosta-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,8 @@ typedef struct s_pipe
 {
 	int		fd_infile;
 	int		fd_outfile;
+	int		std_in;
+	int		std_out;
 	int		permission;
 	char	**routes;
 	pid_t	proc;
