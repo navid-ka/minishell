@@ -6,7 +6,7 @@
 /*   By: fcosta-f <fcosta-f@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 01:20:57 by fcosta-f          #+#    #+#             */
-/*   Updated: 2023/11/20 22:30:25 by fcosta-f         ###   ########.fr       */
+/*   Updated: 2023/11/20 22:44:27 by fcosta-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	*get_path_env_value(t_mch *sh)
 		ft_printf(2, "No such file or directory\n");
 		return (NULL);
 	}
-	sh->exit = 0;
+	sh->exit = 0; //esto se conserva?
 	return (path_env_value);
 }
 
@@ -73,7 +73,7 @@ char	*find_cmd(char **routes, char *cmd)
 	if (access(cmd, F_OK | X_OK) == 0 && ft_strchr(cmd, '/'))
 		return (cmd);
 	else
-		ft_error(127, ERR_CNF, cmd);
+		ft_error(127, ERR_CNF, cmd); //este exit_code dónde queda?
 	return (NULL);
 }
  //cosas antiguas arriba
@@ -83,7 +83,7 @@ void open_infile(t_redir *top, t_pipe *pipex) {
 	if (access(top->file, F_OK) == -1)
 	{
 		close_pipes(pipex);
-		exit(ft_error(1, ERR_NFD, top->file));
+		ft_error(1, ERR_NFD, top->file);
 	}
 	pipex->fd_infile = open(top->file, O_RDONLY);
 	pipex->permission = access(top->file, R_OK);
@@ -198,7 +198,8 @@ int executor(t_mch *all) {
 	// pipex->std_out = dup(STDOUT_FILENO);
 	first = 1;
 	pipex = ft_calloc(sizeof(t_pipe), 1);
-	path_env = get_path_env_value(all);
+	if ((path_env = get_path_env_value(all)) == NULL)
+		return (127);
 	routes = ft_split(path_env, ':');
 	free(path_env);
 	path_env = NULL;
@@ -211,9 +212,8 @@ int executor(t_mch *all) {
 			child(pars, pipex, first, routes);
 		}
 		// close_pipes(pipex);
-	all->exit = wait_childs(pipex);
 		first = 0;
 		pars = pars->next;
 	}
-	return(0);
+	return(wait_childs(pipex));
 }
