@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 11:53:36 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/11/07 10:08:12 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/21 16:46:14 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	print_env(t_mch *sh)
 	env = sh->env;
 	while (env != NULL)
 	{
-		ft_printf(STDOUT_FILENO, "declare -x %s=%s\n", env->name, env->value);
+		ft_printf(STDOUT_FILENO, "declare -x %s=\"%s\"\n", env->name, env->value);
 		env = env->next;
 	}
 	ft_printf(STDOUT_FILENO, "\n");
@@ -52,7 +52,6 @@ void	print_env(t_mch *sh)
 void	bt_export(t_mch *sh, char **args)
 {
 	int		i;
-	int		j;
 	char	**v;
 
 	i = 1;
@@ -60,13 +59,11 @@ void	bt_export(t_mch *sh, char **args)
 		print_env(sh);
 	else
 	{
-		j = -1;
 		while (args[i] != NULL)
 		{
 			v = ft_split(args[i], '=');
-			while (v[++j] != NULL)
-				if (ft_strchr(v[j], '+') != NULL)
-					return ((void)ft_printf(2, EXPORT, v[j], v[1]),
+			if (ft_strchr(v[0], '+') != NULL)
+					return ((void)ft_printf(2, EXPORT, v[0], v[1]),
 						free_tab(v));
 			if (ft_isdigit(v[0][0]) || v[0][0] == '_')
 				ft_printf(2, EXPORT, v[0], v[1]);
