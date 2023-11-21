@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:04:43 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/11/12 20:22:53 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/21 13:50:31 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,23 +22,6 @@ int	iterate_env_var(char *arg)
 	while (arg[i] && arg[i] != '"' && arg[i] != '\'' && arg[i] != '$')
 		i++;
 	return (i);
-}
-
-char	*get_env_name(char *arg)
-{
-	int		i;
-	char	*env_name;
-
-	i = 1;
-	env_name = NULL;
-	while (arg[i] && arg[i] != '"' && arg[i] != '\'' && arg[i] != '$')
-	{
-		env_name = charjoin(env_name, arg[i]);
-		i++;
-	}
-	if (!env_name)
-		return (NULL);
-	return (env_name);
 }
 
 void	expand_env(t_mch *sh, char *exp, char **new_exp)
@@ -59,42 +42,50 @@ void	expand_env(t_mch *sh, char *exp, char **new_exp)
 			return ;
 		}
 		expand = ft_strdup(find_in_env_variables(sh, env_name));
+		free(env_name);
 		if (!expand)
 			return ;
-		free(env_name);
 	}
 	while (expand[i])
 		*new_exp = charjoin(*new_exp, expand[i++]);
 	free(expand);
 }
 
-void	expand(t_mch *sh, char **exp, int i)
+void	process_exp(t_mch *sh, char **e, int i, char **exp_arg)
 {
 	int		j;
-	char	*exp_arg;
-	t_clean	quotes;
+	t_clean	q;
 
+	init_quotes(&q);
 	j = 0;
-	exp_arg = NULL;
-	init_quotes(&quotes);
-	while (exp[i][j])
+	while (e[i][j])
 	{
-		quote_updater(&quotes, exp[i][j]);
-		if ((exp[i][j] == '"' && !quotes.scuote) \
-			|| (exp[i][j] == '\'' && !quotes.dcuote))
+		quote_updater(&q, e[i][j]);
+		if ((e[i][j] == '"' && !q.scuote) || (e[i][j] == '\'' && !q.dcuote))
 			j++;
-		else if (exp[i][j] == '$' && !quotes.scuote)
+		else if (e[i][j] == '$' && !q.scuote)
 		{
-			if (!exp[i][j + 1])
-				return ;
-			expand_env(sh, &exp[i][j], &exp_arg);
-			j += iterate_env_var(&exp[i][j]);
+			if (!e[i][j + 1] || (e[i][j + 1] == '$' && !is_ex(e[i][j + 2])))
+			{
+				*exp_arg = charjoin(*exp_arg, e[i][j++]);
+				continue ;
+			}
+			expand_env(sh, &e[i][j], exp_arg);
+			j += iterate_env_var(&e[i][j]);
 		}
 		else
-			exp_arg = charjoin(exp_arg, exp[i][j++]);
+			*exp_arg = charjoin(*exp_arg, e[i][j++]);
 	}
-	free(exp[i]);
-	exp[i] = exp_arg;
+	free(e[i]);
+	e[i] = *exp_arg;
+}
+
+void	expand(t_mch *sh, char **exp, int i)
+{
+	char	*exp_arg;
+
+	exp_arg = NULL;
+	process_exp(sh, exp, i, &exp_arg);
 }
 
 void	expansor(t_mch *sh)
@@ -112,7 +103,7 @@ void	expansor(t_mch *sh)
 			j = ~0;
 			while (exp->args[i][++j])
 			{
-				if (is_expandable(exp->args[i][j]))
+				if (is_ex(exp->args[i][j]))
 				{
 					expand(sh, exp->args, i);
 					break ;

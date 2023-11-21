@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcosta-f <fcosta-f@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 10:59:34 by bifrost           #+#    #+#             */
-/*   Updated: 2023/11/20 22:24:29 by fcosta-f         ###   ########.fr       */
+/*   Updated: 2023/11/21 13:43:39 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,6 +185,7 @@ int			ft_is_escape(int c);
 int			ft_is_shellsymbol(int c);
 void		add_or_update_env(t_mch *sh, char *name, char *value);
 char		*get_env_value(t_mch *sh, char *arg);
+char		*get_env_name(char *arg);
 void		print_lexers(t_lexer *lex, char *str);
 int			count_quotes(char *cmd);
 char		*find_in_env_variables(t_mch *sh, char *variable_name);
@@ -204,7 +205,7 @@ void		add_env_to_list(t_env **env, t_env *new_env);
 void		print_lex_list(t_lexer *lex);
 
 // expansor
-int			is_expandable(char e);
+int			is_ex(char e);
 void		init_quotes(t_clean *quotes);
 void		quote_updater(t_clean *quotes, char e);
 void		expansor(t_mch *sh);
