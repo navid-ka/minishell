@@ -6,13 +6,13 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 16:59:10 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/11/07 09:55:51 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/21 13:43:54 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int	is_expandable(char e)
+int	is_ex(char e)
 {
 	if (e == '\'' || e == '"' || e == '$')
 		return (1);
@@ -37,21 +37,6 @@ void	quote_updater(t_clean *quotes, char e)
 		quotes->scuote = false;
 }
 
-void	print_expansor(t_mch *sh)
-{
-	t_parser	*ptr;
-	int			i;
-
-	i = 0;
-	ptr = sh->parser;
-	while (ptr)
-	{
-		while (ptr->args[i])
-			ft_printf(1, "EXPANDER: %s\n", ptr->args[i++]);
-		ptr = ptr->next;
-	}
-}
-
 char	*find_in_env_variables(t_mch *sh, char *variable_name)
 {
 	t_env	*env;
@@ -71,4 +56,21 @@ char	*find_in_env_variables(t_mch *sh, char *variable_name)
 		env = env->next;
 	}
 	return (NULL);
+}
+
+char	*get_env_name(char *arg)
+{
+	int		i;
+	char	*env_name;
+
+	i = 1;
+	env_name = NULL;
+	while (arg[i] && arg[i] != '"' && arg[i] != '\'' && arg[i] != '$')
+	{
+		env_name = charjoin(env_name, arg[i]);
+		i++;
+	}
+	if (!env_name)
+		return (NULL);
+	return (env_name);
 }
