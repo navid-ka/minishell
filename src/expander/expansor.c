@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:04:43 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/11/21 13:50:31 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/21 22:13:46 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,15 @@ void	expand_env(t_mch *sh, char *exp, char **new_exp)
 	free(expand);
 }
 
-void	process_exp(t_mch *sh, char **e, int i, char **exp_arg)
+void	expand(t_mch *sh, char **e, int i)
 {
 	int		j;
+	char	*exp_arg;
 	t_clean	q;
 
-	init_quotes(&q);
 	j = 0;
+	exp_arg = NULL;
+	init_quotes(&q);
 	while (e[i][j])
 	{
 		quote_updater(&q, e[i][j]);
@@ -65,27 +67,16 @@ void	process_exp(t_mch *sh, char **e, int i, char **exp_arg)
 			j++;
 		else if (e[i][j] == '$' && !q.scuote)
 		{
-			if (!e[i][j + 1] || (e[i][j + 1] == '$' && !is_ex(e[i][j + 2])))
-			{
-				*exp_arg = charjoin(*exp_arg, e[i][j++]);
-				continue ;
-			}
-			expand_env(sh, &e[i][j], exp_arg);
+			if (!e[i][j + 1])
+				return ;
+			expand_env(sh, &e[i][j], &exp_arg);
 			j += iterate_env_var(&e[i][j]);
 		}
 		else
-			*exp_arg = charjoin(*exp_arg, e[i][j++]);
+			exp_arg = charjoin(exp_arg, e[i][j++]);
 	}
 	free(e[i]);
-	e[i] = *exp_arg;
-}
-
-void	expand(t_mch *sh, char **exp, int i)
-{
-	char	*exp_arg;
-
-	exp_arg = NULL;
-	process_exp(sh, exp, i, &exp_arg);
+	e[i] = exp_arg;
 }
 
 void	expansor(t_mch *sh)

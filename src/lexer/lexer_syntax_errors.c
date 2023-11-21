@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 10:20:55 by bifrost           #+#    #+#             */
-/*   Updated: 2023/11/07 10:31:45 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/21 20:42:51 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,14 +38,14 @@ char	*lexer_end_subshell(char *line)
 
 int	quote_checker(char *line)
 {
-	char	*end_subshell;
+	//char	*end_subshell;
 	bool	dcuotes;
 	bool	scuotes;
 
 	dcuotes = false;
 	scuotes = false;
-	end_subshell = lexer_end_subshell(line);
-	while (line != end_subshell)
+	//end_subshell = lexer_end_subshell(line);
+	while (*line)
 	{
 		if (*line == '"' && !scuotes)
 			dcuotes = !dcuotes;
