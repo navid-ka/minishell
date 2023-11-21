@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 11:52:43 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/11/17 21:33:08 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/11/21 15:21:15 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	is_n(char **str, int *i)
 	int	flag;
 
 	flag = 0;
-	while (str[*i][0] == '-')
+	while (str[*i] && str[*i][0] == '-')
 	{
 		j = 1;
 		while (str[*i][j])
