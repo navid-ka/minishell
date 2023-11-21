@@ -6,7 +6,7 @@
 /*   By: fcosta-f <fcosta-f@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:39:00 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/11/18 01:20:49 by fcosta-f         ###   ########.fr       */
+/*   Updated: 2023/11/20 22:53:35 by fcosta-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,10 @@ static void	command_handler(t_mch *sh, char *line)
 	expansor(sh);
 	if (ft_strcmp(cmd, ""))
 		add_history(cmd);
-	executor(sh);
+	if (bt_is_builtin(sh->parser->args))
+		bt_check_builtin(sh);
+	else
+		sh->exit = executor(sh);
 	//dprintf(2, "AJJAJAJAJJAADJDJWDJAODJDWAOJDWAOW");
 	clear_line(&cmd);
 	clear_lexer(&lex);

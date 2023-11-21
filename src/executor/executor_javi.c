@@ -6,7 +6,7 @@
 /*   By: fcosta-f <fcosta-f@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 01:20:57 by fcosta-f          #+#    #+#             */
-/*   Updated: 2023/11/18 01:21:07 by fcosta-f         ###   ########.fr       */
+/*   Updated: 2023/11/20 22:44:27 by fcosta-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	*get_path_env_value(t_mch *sh)
 		ft_printf(2, "No such file or directory\n");
 		return (NULL);
 	}
-	sh->exit = 0;
+	sh->exit = 0; //esto se conserva?
 	return (path_env_value);
 }
 
@@ -73,7 +73,7 @@ char	*find_cmd(char **routes, char *cmd)
 	if (access(cmd, F_OK | X_OK) == 0 && ft_strchr(cmd, '/'))
 		return (cmd);
 	else
-		ft_error(127, ERR_CNF, cmd);
+		ft_error(127, ERR_CNF, cmd); //este exit_code dónde queda?
 	return (NULL);
 }
  //cosas antiguas arriba
@@ -83,7 +83,7 @@ void open_infile(t_redir *top, t_pipe *pipex) {
 	if (access(top->file, F_OK) == -1)
 	{
 		close_pipes(pipex);
-		exit(ft_error(1, ERR_NFD, top->file));
+		ft_error(1, ERR_NFD, top->file);
 	}
 	pipex->fd_infile = open(top->file, O_RDONLY);
 	pipex->permission = access(top->file, R_OK);
@@ -98,8 +98,10 @@ void open_infile(t_redir *top, t_pipe *pipex) {
 }
 
 void open_outfile(t_redir *top, t_pipe *pipex) {
-	
-	pipex->fd_outfile = open(top->file, O_WRONLY | O_TRUNC | O_CREAT, 0666);
+	if (top->type == TRUNC)
+		pipex->fd_outfile = open(top->file, O_WRONLY | O_TRUNC | O_CREAT, 0666);
+	else
+		pipex->fd_outfile = open(top->file, O_WRONLY | O_APPEND | O_CREAT, 0666);
 	if (pipex->fd_outfile == -1)
 	{
 		close_pipes(pipex);
@@ -121,10 +123,10 @@ void 	open_redirs(t_pipe *pipex, t_redir *top) {
 	
 	while (top)
 	{
-		if (top->type == INPUT) {
+		if (top->type == INPUT || top->type == HERE_DOC) {
 			open_infile(top, pipex);
 		}
-		if (top->type == TRUNC) {
+		if (top->type == TRUNC|| top->type == APPEND) {
 			open_outfile(top, pipex);
 		}
 		top = top->next;
@@ -152,6 +154,37 @@ void child(t_parser *top, t_pipe *ptop, int first, char **routes) {
 	exit (1);
 }
 
+int	wait_childs(t_pipe *pipe/*, int *exit_s*/)
+{
+	int	i;
+	int	status;
+	pid_t pid;
+	int real_status;
+
+	i = 0;
+	while (i < pipe->npipes)
+	{
+		pid = waitpid(-1, &status, 0);
+		i++;
+		if (pid == pipe->proc) real_status = status;
+	}
+	// dup2(pipe->std_in, STDIN_FILENO);
+	// dup2(pipe->std_out, STDOUT_FILENO);
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	else if (WIFSIGNALED(status))
+	{
+		if (WTERMSIG(status) == SIGINT)
+			real_status = 130;
+		else if (WTERMSIG(status) == SIGQUIT)
+		{
+			ft_printf(3, "Quit: 3\n");
+			real_status = 131;
+		}
+	}
+	return (real_status);
+}
+
 int executor(t_mch *all) {
 	t_parser *pars;
 	t_pipe *pipex;
@@ -161,9 +194,12 @@ int executor(t_mch *all) {
 	
 	pipex = all->pipex;
 	pars = all->parser;
+	// pipex->std_in = dup(STDIN_FILENO);
+	// pipex->std_out = dup(STDOUT_FILENO);
 	first = 1;
 	pipex = ft_calloc(sizeof(t_pipe), 1);
-	path_env = get_path_env_value(all);
+	if ((path_env = get_path_env_value(all)) == NULL)
+		return (127);
 	routes = ft_split(path_env, ':');
 	free(path_env);
 	path_env = NULL;
@@ -176,9 +212,8 @@ int executor(t_mch *all) {
 			child(pars, pipex, first, routes);
 		}
 		// close_pipes(pipex);
-		waitpid(pipex->proc, NULL, 0);
 		first = 0;
 		pars = pars->next;
 	}
-	return(0);
+	return(wait_childs(pipex));
 }
