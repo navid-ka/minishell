@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 01:39:58 by bifrost           #+#    #+#             */
-/*   Updated: 2023/11/17 21:44:47 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/11/22 21:49:27 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ void	parser(t_mch *sh, t_lexer *lex)
 	sh->lex = lex;
 	parser = NULL;
 	tmp = sh->lex;
+	sh->pipes = count_pipes(tmp);
 	parser = create_parser();
 	parser->args = (char **)ft_calloc((count_words(tmp) + 1), sizeof(char *));
 	process_tokens(sh, tmp, parser);
