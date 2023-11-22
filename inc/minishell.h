@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 10:59:34 by bifrost           #+#    #+#             */
-/*   Updated: 2023/11/21 13:43:39 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/22 21:48:47 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,7 @@ typedef struct s_mch
 	t_redir		*red;
 	char		*old_pwd;
 	char		*pwd;
+	int			pipes;
 	int			exit;
 }	t_mch;
 
@@ -205,7 +206,7 @@ void		add_env_to_list(t_env **env, t_env *new_env);
 void		print_lex_list(t_lexer *lex);
 
 // expansor
-int			is_ex(char e);
+int			is_ex(const char *str, int i);
 void		init_quotes(t_clean *quotes);
 void		quote_updater(t_clean *quotes, char e);
 void		expansor(t_mch *sh);
