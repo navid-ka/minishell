@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:04:43 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/11/21 22:13:46 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/22 19:59:27 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	expand_env(t_mch *sh, char *exp, char **new_exp)
 	free(expand);
 }
 
-void	expand(t_mch *sh, char **e, int i)
+void	expand(t_mch *sh, char **e)
 {
 	int		j;
 	char	*exp_arg;
@@ -60,48 +60,62 @@ void	expand(t_mch *sh, char **e, int i)
 	j = 0;
 	exp_arg = NULL;
 	init_quotes(&q);
-	while (e[i][j])
+	while ((*e)[j])
 	{
-		quote_updater(&q, e[i][j]);
-		if ((e[i][j] == '"' && !q.scuote) || (e[i][j] == '\'' && !q.dcuote))
+		quote_updater(&q, (*e)[j]);
+		if (((*e)[j] == '"' && !q.scuote) || ((*e)[j] == '\'' && !q.dcuote))
 			j++;
-		else if (e[i][j] == '$' && !q.scuote)
+		else if ((*e)[j] == '$' && !q.scuote)
 		{
-			if (!e[i][j + 1])
+			if (!(*e)[j + 1])
 				return ;
-			expand_env(sh, &e[i][j], &exp_arg);
-			j += iterate_env_var(&e[i][j]);
+			expand_env(sh, &(*e)[j], &exp_arg);
+			j += iterate_env_var(&(*e)[j]);
 		}
 		else
-			exp_arg = charjoin(exp_arg, e[i][j++]);
+			exp_arg = charjoin(exp_arg, (*e)[j++]);
 	}
-	free(e[i]);
-	e[i] = exp_arg;
+	free(*e);
+	*e = ft_strdup(exp_arg);
+	free(exp_arg);
 }
 
 void	expansor(t_mch *sh)
 {
-	int			j;
-	int			i;
 	t_parser	*exp;
+	int			i;
+	int			j;
 
-	i = ~0;
 	exp = sh->parser;
 	while (exp)
 	{
+		i = -1;
 		while (exp->args[++i])
 		{
-			j = ~0;
-			while (exp->args[i][++j])
+			j = 0;
+			while (exp->args[i][j]) 
 			{
-				if (is_ex(exp->args[i][j]))
+				if (is_ex(exp->args[i], j)) 
 				{
-					expand(sh, exp->args, i);
-					break ;
+					expand(sh, &(exp->args[i]));
+					break;
 				}
+				j++;
 			}
 		}
-		i = ~0;
+		if (exp->redir_list)
+		{
+			j = 0;
+			while (exp->redir_list->file[j]) 
+			{
+				if (is_ex(exp->redir_list->file, j)) 
+				{
+					expand(sh, &(exp->redir_list->file));
+					break;
+				}
+				j++;
+			}
+		}
 		exp = exp->next;
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_javi.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcosta-f <fcosta-f@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 01:20:57 by fcosta-f          #+#    #+#             */
-/*   Updated: 2023/11/20 22:44:27 by fcosta-f         ###   ########.fr       */
+/*   Updated: 2023/11/22 21:36:47 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,10 +156,10 @@ void child(t_parser *top, t_pipe *ptop, int first, char **routes) {
 
 int	wait_childs(t_pipe *pipe/*, int *exit_s*/)
 {
-	int	i;
-	int	status;
-	pid_t pid;
-	int real_status;
+    int i;
+    int status = 0;
+    pid_t pid;
+    int real_status = 0;
 
 	i = 0;
 	while (i < pipe->npipes)
@@ -194,8 +194,6 @@ int executor(t_mch *all) {
 	
 	pipex = all->pipex;
 	pars = all->parser;
-	// pipex->std_in = dup(STDIN_FILENO);
-	// pipex->std_out = dup(STDOUT_FILENO);
 	first = 1;
 	pipex = ft_calloc(sizeof(t_pipe), 1);
 	if ((path_env = get_path_env_value(all)) == NULL)
@@ -210,8 +208,15 @@ int executor(t_mch *all) {
 		if (pipex->proc == 0) {
 			open_redirs(pipex, pars->redir_list);
 			child(pars, pipex, first, routes);
+			close_pipes(pipex); // Close the pipes in the child process
+			exit(0); // Ensure child process exits after execution
 		}
-		// close_pipes(pipex);
+		if (!first) {
+			close(pipex->tube[0]); // Close the read end of the pipe in the parent process
+		}
+		if (pars->next) {
+			close(pipex->tube[1]); // Close the write end of the pipe in the parent process
+		}
 		first = 0;
 		pars = pars->next;
 	}
