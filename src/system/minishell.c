@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:39:00 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/11/21 13:54:07 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/22 17:14:45 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,15 +68,13 @@ void	minishell(t_mch *sh, char **env)
 
 	line = NULL;
 	envi = NULL;
-	prompt = shell_prompt(0);
 	sh_init(sh, env);
 	while (42)
 	{
+		prompt = shell_prompt(0);
 		line = readline(prompt);
 		if (!line)
-		{
 			bt_exit(sh, line);
-		}
 		if (*line)
 		{
 			if (ft_strncmp(line, "clear", 6) == 0)
@@ -84,10 +82,9 @@ void	minishell(t_mch *sh, char **env)
 			if (!quote_checker(line))
 				syntax_error();
 			else
-			{
 				command_handler(sh, line);
-			}
 			free_env(&envi);
+			clear_line(&prompt);
 			clear_line(&line);
 		}
 	}
