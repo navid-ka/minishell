@@ -6,17 +6,17 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 16:59:10 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/11/21 13:43:54 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/22 19:36:13 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int	is_ex(char e)
+int is_ex(const char *str, int i) 
 {
-	if (e == '\'' || e == '"' || e == '$')
-		return (1);
-	return (0);
+    if (str[i] == '\'' || str[i] == '"' || str[i] == '$') 
+        return 1;
+    return 0;
 }
 
 void	init_quotes(t_clean *quotes)
