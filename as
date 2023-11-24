@@ -1,0 +1,10 @@
+Makefile
+a
+as
+git_branch.sh
+inc
+libs
+minishell
+mpanic
+objs
+src

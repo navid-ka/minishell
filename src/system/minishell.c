@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcosta-f <fcosta-f@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:39:00 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/11/22 17:14:45 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/11/24 18:31:23 by fcosta-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,7 @@ static void	command_handler(t_mch *sh, char *line)
 	parser(sh, lex);
 	expansor(sh);
 	add_history(cmd);
-	if (bt_is_builtin(sh->parser->args))
-		bt_check_builtin(sh);
-	else
-		sh->exit = executor(sh);
+	sh->exit = executor(sh);
 	clear_line(&cmd);
 	clear_lexer(&lex);
 	clear_parser(&sh->parser);

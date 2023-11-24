@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_javi.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fcosta-f <fcosta-f@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 01:20:57 by fcosta-f          #+#    #+#             */
-/*   Updated: 2023/11/22 21:36:47 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/24 18:37:15 by fcosta-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ void open_infile(t_redir *top, t_pipe *pipex) {
 		close_pipes(pipex);
 		ft_error(1, ERR_NFD, top->file);
 	}
+	int a = dup(0);
+	close(0);
 	pipex->fd_infile = open(top->file, O_RDONLY);
 	pipex->permission = access(top->file, R_OK);
 	if (pipex->permission == -1)
@@ -92,9 +94,10 @@ void open_infile(t_redir *top, t_pipe *pipex) {
 		close_pipes(pipex);
 		exit(ft_error(1, ERR_PERM, top->file));
 	}
-	dup2(pipex->fd_infile, STDIN_FILENO);
-	close(pipex->fd_infile);
-	close_pipes(pipex); //por qué si cierro pipe no funciona?
+	//dup2(pipex->fd_infile, STDIN_FILENO);
+	close(0);
+	dup2(a, 0);
+	//close_pipes(pipex); //por qué si cierro pipe no funciona?
 }
 
 void open_outfile(t_redir *top, t_pipe *pipex) {
@@ -133,7 +136,7 @@ void 	open_redirs(t_pipe *pipex, t_redir *top) {
 	}
 }
 
-void child(t_parser *top, t_pipe *ptop, int first, char **routes) {
+void child(t_parser *top, t_pipe *ptop, int first, char **routes, t_mch *all) {
 	t_parser *pars;
 	t_pipe *pipex;
 
@@ -146,23 +149,26 @@ void child(t_parser *top, t_pipe *ptop, int first, char **routes) {
 	if (pars->next) {
 		dup2(pipex->tube[1], STDOUT_FILENO);
 	}
-	if (ptop->npipes > 1) close_pipes(pipex);
+	if (all->pipes > 1) close_pipes(pipex);
 	char *args = find_cmd(routes, pars->args[0]);
 	if (!pars->args[0])
 		exit(127);
-	execve(args, pars->args, routes); //creo que primero es ruta y segundo solo comando con args
+	if (bt_is_builtin(pars->args))
+		bt_check_builtin(all);
+	else
+		execve(args, pars->args, routes); //creo que primero es ruta y segundo solo comando con args
 	exit (1);
 }
 
-int	wait_childs(t_pipe *pipe/*, int *exit_s*/)
+int	wait_childs(t_pipe *pipe, t_mch *all/*, int *exit_s*/)
 {
-    int i;
-    int status = 0;
-    pid_t pid;
-    int real_status = 0;
+	int	i;
+	int	status;
+	pid_t pid;
+	int real_status;
 
 	i = 0;
-	while (i < pipe->npipes)
+	while (i < all->pipes)
 	{
 		pid = waitpid(-1, &status, 0);
 		i++;
@@ -194,6 +200,8 @@ int executor(t_mch *all) {
 	
 	pipex = all->pipex;
 	pars = all->parser;
+	// pipex->std_in = dup(STDIN_FILENO);
+	// pipex->std_out = dup(STDOUT_FILENO);
 	first = 1;
 	pipex = ft_calloc(sizeof(t_pipe), 1);
 	if ((path_env = get_path_env_value(all)) == NULL)
@@ -207,18 +215,11 @@ int executor(t_mch *all) {
 		pipex->proc = fork();
 		if (pipex->proc == 0) {
 			open_redirs(pipex, pars->redir_list);
-			child(pars, pipex, first, routes);
-			close_pipes(pipex); // Close the pipes in the child process
-			exit(0); // Ensure child process exits after execution
+			child(pars, pipex, first, routes, all);
 		}
-		if (!first) {
-			close(pipex->tube[0]); // Close the read end of the pipe in the parent process
-		}
-		if (pars->next) {
-			close(pipex->tube[1]); // Close the write end of the pipe in the parent process
-		}
+		// close_pipes(pipex);
 		first = 0;
 		pars = pars->next;
 	}
-	return(wait_childs(pipex));
+	return(wait_childs(pipex, all));
 }
