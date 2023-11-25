@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 23:35:34 by bifrost           #+#    #+#             */
-/*   Updated: 2023/11/25 20:49:11 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/25 20:59:10 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,12 @@ static void	update_old_pwd(t_mch *sh, char *old_pwd, char *new_pwd)
 	}
 }
 
+void	home(t_mch *sh, char *pwd)
+{
+	update_old_pwd(sh, find_in_env_variables(sh, "OLDPWD"), pwd);
+	chdir(find_in_env_variables(sh, "HOME"));
+}
+
 void	bt_cd(t_mch *sh, char **arg)
 {
 	char	*pwd;
@@ -42,10 +48,7 @@ void	bt_cd(t_mch *sh, char **arg)
 	if (arg[2])
 		ft_printf(2, "bash: cd: Too many arguments");
 	if (arg[1] == NULL)
-	{
-		update_old_pwd(sh, find_in_env_variables(sh, "OLDPWD"), pwd);
-		chdir(find_in_env_variables(sh, "HOME"));
-	}
+		home(sh, pwd);
 	else if (ft_strncmp("-", arg[1], 2) == 0)
 	{
 		if (chdir(find_in_env_variables(sh, "OLDPWD")) == -1)
