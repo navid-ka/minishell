@@ -49,6 +49,7 @@ SRCS 					:= src/main.c  \
 						src/utils/garbage_collector.c  \
 						src/utils/garbage_collector2.c  \
 						src/lexer/syntax_errors.c 	\
+						src/builtins/exit_utils.c  \
 						src/executor/here_doc.c
 
 

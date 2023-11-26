@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcosta-f <fcosta-f@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:39:00 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/11/26 12:45:59 by fcosta-f         ###   ########.fr       */
+/*   Updated: 2023/11/26 17:50:01 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,11 @@ static void	clear_console(void)
 {
 	ft_printf(STDOUT_FILENO, "\033[2J");
 	ft_printf(STDOUT_FILENO, "\033[1;1H");
+}
+void line_exit(t_mch *sh)
+{
+	write(2, "\nexit\n", 5);
+	exit(sh->exit);
 }
 
 static void	sh_init(t_mch *sh, char **env)
@@ -71,7 +76,7 @@ void	minishell(t_mch *sh, char **env)
 		prompt = shell_prompt(0);
 		line = readline(prompt);
 		if (!line)
-			bt_exit(sh, line);
+			line_exit(sh);
 		if (*line)
 		{
 			if (ft_strncmp(line, "clear", 6) == 0)

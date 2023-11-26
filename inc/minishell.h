@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 10:59:34 by bifrost           #+#    #+#             */
-/*   Updated: 2023/11/26 16:38:53 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/26 17:41:37 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,8 @@ bool		bt_is_builtin(char **argv);
 void		bt_check_builtin(t_mch *sh);
 void		bt_env(t_mch *sh);
 void		bt_export(t_mch *sh, char **args);
-void		bt_exit(t_mch *sh, char *argv);
+void		bt_exit(t_mch *sh, char **argv);
+int			compare_exit(char *argument);
 void		bt_echo(t_mch *sh, char **str);
 int			bt_pwd(void);
 void		bt_cd(t_mch *sh, char **arg);
