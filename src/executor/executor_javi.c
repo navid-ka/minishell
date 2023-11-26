@@ -153,13 +153,13 @@ void child(t_parser *top, t_pipe *ptop, int first, char **routes, t_mch *all) {
 		dup2(pipex->tube[1], STDOUT_FILENO);
 	}
 	if (all->pipes > 1) close_pipes(pipex);
-	char *args = find_cmd(routes, pars->args[0]);
-	if (!pars->args[0])
-		exit(127);
 	if (bt_is_builtin(pars->args)) {
 		bt_check_builtin(all);
 		exit(1);
 	}
+	char *args = find_cmd(routes, pars->args[0]);
+	if (!pars->args[0])
+		exit(127);
 	execve(args, pars->args, routes); //creo que primero es ruta y segundo solo comando con args
 	exit (1);
 }
