@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 11:13:51 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/11/26 17:30:41 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/26 17:52:26 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,5 +49,5 @@ void	bt_check_builtin(t_mch *sh)
 	if (ft_strcmp(cmd->args[0], "unset") == 0)
 		bt_unset(sh, cmd->args);
 	if (ft_strcmp(cmd->args[0], "exit") == 0)
-		bt_exit(sh);
+		bt_exit(sh, cmd->args);
 }
