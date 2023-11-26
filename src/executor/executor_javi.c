@@ -6,7 +6,7 @@
 /*   By: fcosta-f <fcosta-f@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 01:20:57 by fcosta-f          #+#    #+#             */
-/*   Updated: 2023/11/24 18:37:15 by fcosta-f         ###   ########.fr       */
+/*   Updated: 2023/11/26 12:57:53 by fcosta-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,15 +78,13 @@ char	*find_cmd(char **routes, char *cmd)
 }
  //cosas antiguas arriba
 
-void open_infile(t_redir *top, t_pipe *pipex) {
-
+void open_infile(t_redir *top, t_pipe *pipex)
+{
 	if (access(top->file, F_OK) == -1)
 	{
 		close_pipes(pipex);
 		ft_error(1, ERR_NFD, top->file);
 	}
-	int a = dup(0);
-	close(0);
 	pipex->fd_infile = open(top->file, O_RDONLY);
 	pipex->permission = access(top->file, R_OK);
 	if (pipex->permission == -1)
@@ -94,15 +92,16 @@ void open_infile(t_redir *top, t_pipe *pipex) {
 		close_pipes(pipex);
 		exit(ft_error(1, ERR_PERM, top->file));
 	}
-	//dup2(pipex->fd_infile, STDIN_FILENO);
-	close(0);
-	dup2(a, 0);
+	dup2(pipex->fd_infile, STDIN_FILENO);
+	close(pipex->fd_infile);
 	//close_pipes(pipex); //por qué si cierro pipe no funciona?
 }
 
-void open_outfile(t_redir *top, t_pipe *pipex) {
-	if (top->type == TRUNC)
+void open_outfile(t_redir *top, t_pipe *pipex)
+{
+	if (top->type == TRUNC) {
 		pipex->fd_outfile = open(top->file, O_WRONLY | O_TRUNC | O_CREAT, 0666);
+	}
 	else
 		pipex->fd_outfile = open(top->file, O_WRONLY | O_APPEND | O_CREAT, 0666);
 	if (pipex->fd_outfile == -1)
@@ -122,14 +121,18 @@ void open_outfile(t_redir *top, t_pipe *pipex) {
 	// 	close_pipes(pipex); oh mama
 }
 
-void 	open_redirs(t_pipe *pipex, t_redir *top) {
-	
+void 	open_redirs(t_pipe *pipex, t_redir *top)
+{
 	while (top)
 	{
-		if (top->type == INPUT || top->type == HERE_DOC) {
+		if (top->type == INPUT) {
 			open_infile(top, pipex);
 		}
-		if (top->type == TRUNC|| top->type == APPEND) {
+		else if (top->type == HERE_DOC)
+		{
+			manage_here_doc(top, pipex->proc);
+		}
+		else if (top->type == TRUNC|| top->type == APPEND) {
 			open_outfile(top, pipex);
 		}
 		top = top->next;
@@ -153,10 +156,11 @@ void child(t_parser *top, t_pipe *ptop, int first, char **routes, t_mch *all) {
 	char *args = find_cmd(routes, pars->args[0]);
 	if (!pars->args[0])
 		exit(127);
-	if (bt_is_builtin(pars->args))
+	if (bt_is_builtin(pars->args)) {
 		bt_check_builtin(all);
-	else
-		execve(args, pars->args, routes); //creo que primero es ruta y segundo solo comando con args
+		exit(1);
+	}
+	execve(args, pars->args, routes); //creo que primero es ruta y segundo solo comando con args
 	exit (1);
 }
 
@@ -168,6 +172,7 @@ int	wait_childs(t_pipe *pipe, t_mch *all/*, int *exit_s*/)
 	int real_status;
 
 	i = 0;
+	// dprintf(2, "%d", all->pipes);
 	while (i < all->pipes)
 	{
 		pid = waitpid(-1, &status, 0);
