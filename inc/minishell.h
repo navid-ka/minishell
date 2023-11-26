@@ -6,7 +6,7 @@
 /*   By: fcosta-f <fcosta-f@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 10:59:34 by bifrost           #+#    #+#             */
-/*   Updated: 2023/11/23 11:50:40 by fcosta-f         ###   ########.fr       */
+/*   Updated: 2023/11/26 12:24:58 by fcosta-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ typedef struct s_pipe
 	char	**routes;
 	pid_t	proc;
 	int		tube[2];
+	int		aux_tube[2];
 	int		npipes;
 	int		here_doc;
 	char	*limiter;
@@ -220,5 +221,6 @@ char		*find_cmd(char **routes, char *cmd);
 void		last_pipe(t_pipe *pipex, int argc);
 int			ft_error(int ext, int err, char *cmd);
 void		close_pipes(t_pipe *pipex);
+int	manage_here_doc(t_redir *word, int pid);
 
 #endif

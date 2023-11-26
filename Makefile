@@ -48,7 +48,8 @@ SRCS 					:= src/main.c  \
 						src/executor/executor_javi.c \
 						src/utils/garbage_collector.c  \
 						src/utils/garbage_collector2.c  \
-						src/lexer/syntax_errors.c
+						src/lexer/syntax_errors.c 	\
+						src/executor/here_doc.c
 
 
 OBJS = $(patsubst $(SRC_DIR)%.c,$(OBJ_DIR)%.o,$(SRCS))
