@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 23:35:34 by bifrost           #+#    #+#             */
-/*   Updated: 2023/10/16 11:38:21 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/26 16:37:38 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,21 @@ static void	update_old_pwd(t_mch *sh, char *old_pwd, char *new_pwd)
 	}
 }
 
+void	home(t_mch *sh, char *pwd)
+{
+	update_old_pwd(sh, find_in_env_variables(sh, "OLDPWD"), pwd);
+	chdir(find_in_env_variables(sh, "HOME"));
+}
+
 void	bt_cd(t_mch *sh, char **arg)
 {
 	char	*pwd;
 
 	pwd = getcwd(NULL, 0);
+	if (arg[2])
+		ft_printf(2, "bash: cd: Too many arguments");
 	if (arg[1] == NULL)
-	{
-		update_old_pwd(sh, find_in_env_variables(sh, "OLDPWD"), pwd);
-		chdir(find_in_env_variables(sh, "HOME"));
-	}
+		home(sh, pwd);
 	else if (ft_strncmp("-", arg[1], 2) == 0)
 	{
 		if (chdir(find_in_env_variables(sh, "OLDPWD")) == -1)
@@ -55,8 +60,7 @@ void	bt_cd(t_mch *sh, char **arg)
 		update_old_pwd(sh, find_in_env_variables(sh, "OLDPWD"), pwd);
 		if (chdir(arg[1]) == -1)
 		{
-			ft_printf(STDERR_FILENO,
-				"cd: %s: No such file or directory\n", arg[1]);
+			ft_printf(STDERR_FILENO, CD, arg[1]);
 			sh->exit = 1;
 		}
 	}

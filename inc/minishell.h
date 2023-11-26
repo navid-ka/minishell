@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcosta-f <fcosta-f@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 10:59:34 by bifrost           #+#    #+#             */
-/*   Updated: 2023/11/26 12:24:58 by fcosta-f         ###   ########.fr       */
+/*   Updated: 2023/11/26 16:38:53 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@
 # define SCUOTE 39
 # define DCUOTE 34
 # define EXPORT "export %s=%s: not a valid identifier\n"
+# define CD "cd: %s: No such file or directory\n"
 
 typedef struct s_env
 {
