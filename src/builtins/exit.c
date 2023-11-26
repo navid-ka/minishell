@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 11:49:50 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/11/26 18:31:10 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/26 18:35:30 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ static void	exit_message(t_mch *sh, int type, char *argument)
 void	bt_exit(t_mch *sh, char **argv)
 {
 	argv = sh->parser->args;
-
 	if (argv[1])
 	{
 		if (ft_strcmp(argv[1], "--") == 0)
