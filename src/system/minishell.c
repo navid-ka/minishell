@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:39:00 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/11/26 17:50:01 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/26 18:22:58 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,10 @@ static void	command_handler(t_mch *sh, char *line)
 	parser(sh, lex);
 	expansor(sh);
 	add_history(cmd);
-	sh->exit = executor(sh);
+	if (bt_is_builtin(sh->parser->args) && sh->pipes == 1)
+		bt_check_builtin(sh);
+	else
+		sh->exit = executor(sh);
 	clear_line(&cmd);
 	clear_lexer(&lex);
 	clear_parser(&sh->parser);
