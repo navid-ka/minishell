@@ -3,14 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   executor_javi.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcosta-f <fcosta-f@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 01:20:57 by fcosta-f          #+#    #+#             */
-/*   Updated: 2023/11/28 11:58:47 by fcosta-f         ###   ########.fr       */
+/*   Updated: 2023/11/28 23:18:58 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <fcntl.h>
+#include <errno.h>
+
+int is_fd_open(int fd) {
+    return fcntl(fd, F_GETFD) != -1 || errno != EBADF;
+}
 
 int	ft_error(int ext, int err, char *cmd)
 {
@@ -145,27 +151,29 @@ void 	open_redirs(t_pipe *pipex, t_redir *top)
 }
 
 void child(t_parser *top, t_pipe *ptop, int first, char **routes, t_mch *all) {
-	t_parser *pars;
-	t_pipe *pipex;
+    t_parser *pars;
+    t_pipe *pipex;
 
-	pars = top;
-	pipex = ptop;
-	
-	if (!first) {
-		dup2(pipex->tube[0], STDIN_FILENO);
-	}
-	if (pars->next)
-		dup2(pipex->tube[1], STDOUT_FILENO);
-	if (all->pipes > 1) close_pipes(pipex);
-	if (bt_is_builtin(pars->args)) {
-		bt_check_builtin(all);
-		exit(1);
-	}
-	char *args = find_cmd(routes, pars->args[0]);
-	if (!pars->args[0])
-		exit(127);
-	execve(args, pars->args, routes);
-	exit (1);
+    pars = top;
+    pipex = ptop;
+    
+    if (!first) {
+        dup2(pipex->tube[0], STDIN_FILENO);
+        close(pipex->tube[0]);
+    }
+    if (pars->next) {
+        dup2(pipex->tube[1], STDOUT_FILENO);
+        close(pipex->tube[1]);
+    }
+    if (bt_is_builtin(pars->args)) {
+        bt_check_builtin(all);
+        exit(1);
+    }
+    char *args = find_cmd(routes, pars->args[0]);
+    if (!pars->args[0])
+        exit(127);
+    execve(args, pars->args, routes);
+    exit (1);
 }
 
 int	wait_childs(t_pipe *pipe, t_mch *all/*, int *exit_s*/)
@@ -177,7 +185,7 @@ int	wait_childs(t_pipe *pipe, t_mch *all/*, int *exit_s*/)
 
 	i = 0;
 	// dprintf(2, "%d", all->pipes);
-	while (i < all->pipes)
+	while (i < all->pipes + 1)
 	{
 		pid = waitpid(-1, &status, 0);
 		i++;
@@ -209,8 +217,6 @@ int executor(t_mch *all) {
 	
 	pipex = all->pipex;
 	pars = all->parser;
-	//pipex->std_in = dup(0);
-	//pipex->std_out = dup(1);
 	first = 1;
 	pipex = ft_calloc(sizeof(t_pipe), 1);
 	if ((path_env = get_path_env_value(all)) == NULL)
@@ -219,20 +225,24 @@ int executor(t_mch *all) {
 	free(path_env);
 	path_env = NULL;
 	while (pars) {
-		if (pars->next && pipe(pipex->tube))
-			return (1);
-		pipex->proc = fork();
-		if (pipex->proc == 0) {
-			open_redirs(pipex, pars->redir_list);
-			child(pars, pipex, first, routes, all);
-		}
-		first = 0;
-		pars = pars->next;
-	}
-	close_pipes(pipex);
-	//dup2(0, pipex->std_in);
-	//dup2(1, pipex->std_out);
-	return(wait_childs(pipex, all));
+        if (pars->next && pipe(pipex->tube))
+            return (1);
+        pipex->proc = fork();
+        if (pipex->proc == 0) {
+            open_redirs(pipex, pars->redir_list);
+            child(pars, pipex, first, routes, all);
+        }
+        else {
+            all->exit = wait_childs(pipex, all);
+            if (!first && is_fd_open(pipex->tube[0]))
+                close(pipex->tube[0]);
+            if (pars->next && is_fd_open(pipex->tube[1]))
+                close(pipex->tube[1]);
+        }
+        first = 0;
+        pars = pars->next;
+    }
+	return(all->exit);
 }
 
 /*if (pars->next && (dup2(fds[1], 1) == -1 || close(fds[0]) == -1 || close(fds[1]) == -1))
