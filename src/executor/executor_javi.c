@@ -165,6 +165,8 @@ void child(t_parser *top, t_pipe *ptop, int first, char **routes, t_mch *all) {
         dup2(pipex->tube[1], STDOUT_FILENO);
         close(pipex->tube[1]);
     }
+	close(pipex->tube[0]);
+    close(pipex->tube[1]);
     if (bt_is_builtin(pars->args)) {
         bt_check_builtin(all);
         exit(1);
@@ -209,40 +211,44 @@ int	wait_childs(t_pipe *pipe, t_mch *all/*, int *exit_s*/)
 }
 
 int executor(t_mch *all) {
-	t_parser *pars;
-	t_pipe *pipex;
-	int first;
-	char *path_env;
-	char **routes;
-	
-	pipex = all->pipex;
-	pars = all->parser;
-	first = 1;
-	pipex = ft_calloc(sizeof(t_pipe), 1);
-	if ((path_env = get_path_env_value(all)) == NULL)
-		return (127);
-	routes = ft_split(path_env, ':');
-	free(path_env);
-	path_env = NULL;
-	while (pars) {
-        if (pars->next && pipe(pipex->tube))
-            return (1);
+    t_parser *pars;
+    t_pipe *pipex;
+    int first;
+    char *path_env;
+    char **routes;
+    int fd_in = 0;  // Entrada inicial para el primer comando
+
+    pipex = all->pipex;
+    pars = all->parser;
+    first = 1;
+    pipex = ft_calloc(sizeof(t_pipe), 1);
+    if ((path_env = get_path_env_value(all)) == NULL)
+        return (127);
+    routes = ft_split(path_env, ':');
+    free(path_env);
+    path_env = NULL;
+    while (pars) {
+        pipe(pipex->tube);  // Crear un pipe
         pipex->proc = fork();
         if (pipex->proc == 0) {
+            if (!first) {  // Si no es el primer comando
+                dup2(fd_in, STDIN_FILENO);  // Usar la entrada del pipe anterior
+            }
+            if (pars->next) {  // Si no es el último comando
+                dup2(pipex->tube[1], STDOUT_FILENO);  // Usar la salida del pipe actual
+            }
+            close(pipex->tube[0]);  // Cerrar la lectura del pipe actual en el proceso hijo
             open_redirs(pipex, pars->redir_list);
             child(pars, pipex, first, routes, all);
+        } else {
+            wait(NULL);
+            close(pipex->tube[1]);
+            fd_in = pipex->tube[0];
+            first = 0;
+            pars = pars->next;
         }
-        else {
-            all->exit = wait_childs(pipex, all);
-            if (!first && is_fd_open(pipex->tube[0]))
-                close(pipex->tube[0]);
-            if (pars->next && is_fd_open(pipex->tube[1]))
-                close(pipex->tube[1]);
-        }
-        first = 0;
-        pars = pars->next;
     }
-	return(all->exit);
+    return(all->exit);
 }
 
 /*if (pars->next && (dup2(fds[1], 1) == -1 || close(fds[0]) == -1 || close(fds[1]) == -1))
