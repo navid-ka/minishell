@@ -6,7 +6,7 @@
 /*   By: fcosta-f <fcosta-f@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 01:20:57 by fcosta-f          #+#    #+#             */
-/*   Updated: 2023/11/26 12:57:53 by fcosta-f         ###   ########.fr       */
+/*   Updated: 2023/11/28 11:58:47 by fcosta-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,6 +135,11 @@ void 	open_redirs(t_pipe *pipex, t_redir *top)
 		else if (top->type == TRUNC|| top->type == APPEND) {
 			open_outfile(top, pipex);
 		}
+		/*else if (top->type == PIPE) {
+			dup2(pipex->tube[1], 1);
+			dup2(pipex->tube[0], 0);
+			break;
+		}*/
 		top = top->next;
 	}
 }
@@ -149,9 +154,8 @@ void child(t_parser *top, t_pipe *ptop, int first, char **routes, t_mch *all) {
 	if (!first) {
 		dup2(pipex->tube[0], STDIN_FILENO);
 	}
-	if (pars->next) {
+	if (pars->next)
 		dup2(pipex->tube[1], STDOUT_FILENO);
-	}
 	if (all->pipes > 1) close_pipes(pipex);
 	if (bt_is_builtin(pars->args)) {
 		bt_check_builtin(all);
@@ -160,7 +164,7 @@ void child(t_parser *top, t_pipe *ptop, int first, char **routes, t_mch *all) {
 	char *args = find_cmd(routes, pars->args[0]);
 	if (!pars->args[0])
 		exit(127);
-	execve(args, pars->args, routes); //creo que primero es ruta y segundo solo comando con args
+	execve(args, pars->args, routes);
 	exit (1);
 }
 
@@ -205,8 +209,8 @@ int executor(t_mch *all) {
 	
 	pipex = all->pipex;
 	pars = all->parser;
-	// pipex->std_in = dup(STDIN_FILENO);
-	// pipex->std_out = dup(STDOUT_FILENO);
+	//pipex->std_in = dup(0);
+	//pipex->std_out = dup(1);
 	first = 1;
 	pipex = ft_calloc(sizeof(t_pipe), 1);
 	if ((path_env = get_path_env_value(all)) == NULL)
@@ -222,9 +226,17 @@ int executor(t_mch *all) {
 			open_redirs(pipex, pars->redir_list);
 			child(pars, pipex, first, routes, all);
 		}
-		// close_pipes(pipex);
 		first = 0;
 		pars = pars->next;
 	}
+	close_pipes(pipex);
+	//dup2(0, pipex->std_in);
+	//dup2(1, pipex->std_out);
 	return(wait_childs(pipex, all));
 }
+
+/*if (pars->next && (dup2(fds[1], 1) == -1 || close(fds[0]) == -1 || close(fds[1]) == -1))
+
+if (pars->next && (dup2(fds[0], 0) == -1 || close(fds[0]) == -1 || close(fds[1]) == -1))
+		return (perr("error: fatal\n"), 1);
+*/
