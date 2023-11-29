@@ -103,6 +103,7 @@ char	*find_cmd(char **routes, char *cmd)
 		return (cmd);
 	else
 		ft_error(127, ERR_CNF, cmd); //este exit_code dónde queda?
+	free(cmdroute);
 	return (NULL);
 }
  //cosas antiguas arriba
@@ -176,7 +177,6 @@ void 	open_redirs(t_pipe *pipex, t_redir *top)
 
 void child(t_parser *top, t_pipe *pipex, t_mch *all) {
     t_parser *pars;
-	char *args;
 
     pars = top;
     
@@ -184,15 +184,14 @@ void child(t_parser *top, t_pipe *pipex, t_mch *all) {
         bt_check_builtin(all);
         exit(1);
     }
-  	args = get_args(pars, pipex->routes);
-    execve(args, pars->args, pipex->routes);
+  	pipex->file_path = get_args(pars, pipex->routes);
+    execve(pipex->file_path, pars->args, pipex->routes);
     perror("error execve");
 }
 
 void child_pipes(t_parser *top, t_pipe *ptop,  t_mch *all) {
     t_pipe *pipex;
 	t_parser *pars;
-	char *args;
 	
     pipex = ptop;
     pars = top;
@@ -209,9 +208,9 @@ void child_pipes(t_parser *top, t_pipe *ptop,  t_mch *all) {
         bt_check_builtin(all);
         exit(1);
     }
-    args = get_args(pars, pipex->routes);
+    pipex->file_path = get_args(pars, pipex->routes);
 	//else dprintf(2, "ejecuto\n");
-    execve(args, pars->args, pipex->routes);
+    execve(pipex->file_path, pars->args, pipex->routes);
     exit (1);
 
 }
@@ -249,6 +248,18 @@ int	wait_childs(t_pipe *pipe, t_mch *all/*, int *exit_s*/)
 	return (real_status);
 }
 
+void	init_redirs(t_pipe *pipex)
+{
+	pipex->std_in = dup(STDIN_FILENO);
+	pipex->std_out = dup(STDOUT_FILENO);
+}
+
+void	reset_redirs(t_pipe *pipex)
+{
+	dup2(pipex->std_in, STDIN_FILENO) ;
+	dup2(pipex->std_out, STDOUT_FILENO);
+}
+
 int executor(t_mch *all) {
     t_parser *pars;
     t_pipe *pipex;
@@ -257,6 +268,7 @@ int executor(t_mch *all) {
     pipex = all->pipex;
     pars = all->parser;
     pipex = ft_calloc(sizeof(t_pipe), 1);
+	init_redirs(pipex);
 	if (!pipex)
 		return (ft_error(1, ERR_MC, NULL));
 	load_routes(pipex, all);
@@ -279,7 +291,12 @@ int executor(t_mch *all) {
     	close_pipes(pipex);
     }
 	dup2(fd, 0);
-    return(wait_childs(pipex, all));
+	reset_redirs(pipex);
+	free(pipex->file_path);
+	free_tab(pipex->routes);
+	all-> exit = wait_childs(pipex, all);
+	free(pipex);
+    return(all->exit);
 }
 
 /*if (pars->next && (dup2(fds[1], 1) == -1 || close(fds[0]) == -1 || close(fds[1]) == -1))
