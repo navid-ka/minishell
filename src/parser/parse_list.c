@@ -3,20 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   parse_list.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fcosta-f <fcosta-f@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 12:21:12 by bifrost           #+#    #+#             */
-/*   Updated: 2023/11/17 21:39:54 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/11/29 09:44:01 by fcosta-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-t_parser	*create_parser(void)
+t_parser	*create_parser(int first)
 {
 	t_parser	*parser;
 
 	parser = ft_calloc(sizeof(t_parser), 1);
+	
+	parser->first = first;
 	parser->redir_list = NULL;
 	parser->args = NULL;
 	parser->next = NULL;
