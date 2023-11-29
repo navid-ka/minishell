@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_javi.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fcosta-f <fcosta-f@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 01:20:57 by fcosta-f          #+#    #+#             */
-/*   Updated: 2023/11/28 23:18:58 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/29 10:16:50 by fcosta-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,6 +131,7 @@ void 	open_redirs(t_pipe *pipex, t_redir *top)
 {
 	while (top)
 	{
+		//dprintf(2, "hay redirs\n");
 		if (top->type == INPUT) {
 			open_infile(top, pipex);
 		}
@@ -150,23 +151,11 @@ void 	open_redirs(t_pipe *pipex, t_redir *top)
 	}
 }
 
-void child(t_parser *top, t_pipe *ptop, int first, char **routes, t_mch *all) {
+void child(t_parser *top, char **routes, t_mch *all) {
     t_parser *pars;
-    t_pipe *pipex;
 
     pars = top;
-    pipex = ptop;
     
-    if (!first) {
-        dup2(pipex->tube[0], STDIN_FILENO);
-        close(pipex->tube[0]);
-    }
-    if (pars->next) {
-        dup2(pipex->tube[1], STDOUT_FILENO);
-        close(pipex->tube[1]);
-    }
-	close(pipex->tube[0]);
-    close(pipex->tube[1]);
     if (bt_is_builtin(pars->args)) {
         bt_check_builtin(all);
         exit(1);
@@ -175,7 +164,40 @@ void child(t_parser *top, t_pipe *ptop, int first, char **routes, t_mch *all) {
     if (!pars->args[0])
         exit(127);
     execve(args, pars->args, routes);
+    perror("error execve");
+}
+
+void child_pipes(t_parser *top, t_pipe *ptop, char **routes, t_mch *all) {
+    t_pipe *pipex;
+	t_parser *pars;
+	
+    pipex = ptop;
+    pars = top;
+	//dprintf(2, "valor de first %d", pars->first);
+	if (!(pars->first)) {
+		//dprintf(2, "redirijo entrada\n");
+        dup2(pipex->tube[0], STDIN_FILENO);
+        close(pipex->tube[0]);
+    }
+	else close(pipex->tube[0]);
+    if (pars->next) {
+		//dprintf(2, "redirijo salida\n");
+        dup2(pipex->tube[1], STDOUT_FILENO);
+        close(pipex->tube[1]);
+    }
+	else close(pipex->tube[1]);
+    
+    if (bt_is_builtin(pars->args)) {
+        bt_check_builtin(all);
+        exit(1);
+    }
+    char *args = find_cmd(routes, pars->args[0]);
+    if (!pars->args[0])
+        exit(127);
+	//else dprintf(2, "ejecuto\n");
+    execve(args, pars->args, routes);
     exit (1);
+
 }
 
 int	wait_childs(t_pipe *pipe, t_mch *all/*, int *exit_s*/)
@@ -187,8 +209,9 @@ int	wait_childs(t_pipe *pipe, t_mch *all/*, int *exit_s*/)
 
 	i = 0;
 	// dprintf(2, "%d", all->pipes);
-	while (i < all->pipes + 1)
+	while (i < all->pipes)
 	{
+		//dprintf(2, "waiting for her\n");
 		pid = waitpid(-1, &status, 0);
 		i++;
 		if (pid == pipe->proc) real_status = status;
@@ -213,42 +236,32 @@ int	wait_childs(t_pipe *pipe, t_mch *all/*, int *exit_s*/)
 int executor(t_mch *all) {
     t_parser *pars;
     t_pipe *pipex;
-    int first;
     char *path_env;
     char **routes;
-    int fd_in = 0;  // Entrada inicial para el primer comando
 
     pipex = all->pipex;
     pars = all->parser;
-    first = 1;
     pipex = ft_calloc(sizeof(t_pipe), 1);
     if ((path_env = get_path_env_value(all)) == NULL)
         return (127);
     routes = ft_split(path_env, ':');
     free(path_env);
     path_env = NULL;
+    pipe(pipex->tube);  // Crear un pipe
     while (pars) {
-        pipe(pipex->tube);  // Crear un pipe
         pipex->proc = fork();
         if (pipex->proc == 0) {
-            if (!first) {  // Si no es el primer comando
-                dup2(fd_in, STDIN_FILENO);  // Usar la entrada del pipe anterior
-            }
-            if (pars->next) {  // Si no es el último comando
-                dup2(pipex->tube[1], STDOUT_FILENO);  // Usar la salida del pipe actual
-            }
-            close(pipex->tube[0]);  // Cerrar la lectura del pipe actual en el proceso hijo
             open_redirs(pipex, pars->redir_list);
-            child(pars, pipex, first, routes, all);
+			if (all->pipes > 1)
+				child_pipes(pars, pipex, routes, all);
+            else
+				child(pars, routes, all);
         } else {
-            wait(NULL);
-            close(pipex->tube[1]);
-            fd_in = pipex->tube[0];
-            first = 0;
             pars = pars->next;
         }
     }
-    return(all->exit);
+    close_pipes(pipex);
+    return(wait_childs(pipex, all));
 }
 
 /*if (pars->next && (dup2(fds[1], 1) == -1 || close(fds[0]) == -1 || close(fds[1]) == -1))

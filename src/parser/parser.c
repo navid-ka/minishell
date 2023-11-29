@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fcosta-f <fcosta-f@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/17 01:39:58 by bifrost           #+#    #+#             */
-/*   Updated: 2023/11/22 21:49:27 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/29 09:51:29 by fcosta-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	process_tokens(t_mch *sh, t_lexer *tmp, t_parser *parser)
 		if (tmp && tmp->type == PIPE)
 		{
 			parser_lstadd_back(&(sh->parser), parser);
-			parser = create_parser();
+			parser = create_parser(0);
 			tmp = tmp->next;
 			start = tmp;
 			continue ;
@@ -88,7 +88,7 @@ void	parser(t_mch *sh, t_lexer *lex)
 	parser = NULL;
 	tmp = sh->lex;
 	sh->pipes = count_pipes(tmp);
-	parser = create_parser();
+	parser = create_parser(1);
 	parser->args = (char **)ft_calloc((count_words(tmp) + 1), sizeof(char *));
 	process_tokens(sh, tmp, parser);
 }

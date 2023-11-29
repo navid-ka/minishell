@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
+/*   By: fcosta-f <fcosta-f@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 10:59:34 by bifrost           #+#    #+#             */
-/*   Updated: 2023/11/26 17:41:37 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/29 09:44:57 by fcosta-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ typedef struct s_parser
 	char			**args;
 	t_redir         *redir_list;
 	struct s_parser	*next;
+	int first;
 }	t_parser;
 
 typedef struct s_pipe
@@ -166,7 +167,7 @@ void		bt_unset(t_mch *sh, char **args);
 
 // parser
 void		get_env(t_mch *sh, char **env);
-t_parser	*create_parser(void);
+t_parser	*create_parser(int first);
 void		parser_lstadd_back(t_parser **lst, t_parser *new);
 t_parser	*new_parser_node(char **args);
 void		printparser_list(t_mch *sh);
