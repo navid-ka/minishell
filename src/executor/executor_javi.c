@@ -6,7 +6,7 @@
 /*   By: fcosta-f <fcosta-f@student.42barcelona.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 01:20:57 by fcosta-f          #+#    #+#             */
-/*   Updated: 2023/11/29 10:16:50 by fcosta-f         ###   ########.fr       */
+/*   Updated: 2023/11/29 20:13:45 by fcosta-f         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,12 +197,7 @@ void child_pipes(t_parser *top, t_pipe *ptop,  t_mch *all) {
     pipex = ptop;
     pars = top;
 	//dprintf(2, "valor de first %d", pars->first);
-	if (!(pars->first)) {
 		//dprintf(2, "redirijo entrada\n");
-        dup2(pipex->tube[0], STDIN_FILENO);
-        close(pipex->tube[0]);
-    }
-	else close(pipex->tube[0]);
     if (pars->next) {
 		//dprintf(2, "redirijo salida\n");
         dup2(pipex->tube[1], STDOUT_FILENO);
@@ -258,27 +253,32 @@ int executor(t_mch *all) {
     t_parser *pars;
     t_pipe *pipex;
 
+	int fd = dup(0);
     pipex = all->pipex;
     pars = all->parser;
     pipex = ft_calloc(sizeof(t_pipe), 1);
 	if (!pipex)
 		return (ft_error(1, ERR_MC, NULL));
 	load_routes(pipex, all);
-    pipe(pipex->tube);
     while (pars) {
+    	pipe(pipex->tube);
         pipex->proc = fork();
         if (pipex->proc == 0) 
 		{
             open_redirs(pipex, pars->redir_list);
-			if (all->pipes > 1)
+			if (all->pipes > 1) {
 				child_pipes(pars, pipex, all);
-            else
+				dup2(pipex->tube[0], STDIN_FILENO);
+			}
+			else
 				child(pars, pipex, all);
         } else {
             pars = pars->next;
         }
+		dup2(pipex->tube[0], 0);
+    	close_pipes(pipex);
     }
-    close_pipes(pipex);
+	dup2(fd, 0);
     return(wait_childs(pipex, all));
 }
 
