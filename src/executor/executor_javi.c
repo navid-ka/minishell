@@ -63,6 +63,16 @@ void load_routes(t_pipe *pipex, t_mch *all)
 	path_env = NULL;
 }
 
+char *get_args(t_parser *pars, char **routes)
+ {
+    char *args;
+
+	args = find_cmd(routes, pars->args[0]);
+    if (!pars->args[0])
+        exit(127);
+    return args;
+}
+
 void	close_pipes(t_pipe *pipex)
 {
 	close(pipex->tube[0]);
@@ -164,8 +174,9 @@ void 	open_redirs(t_pipe *pipex, t_redir *top)
 	}
 }
 
-void child(t_parser *top, char **routes, t_mch *all) {
+void child(t_parser *top, t_pipe *pipex, t_mch *all) {
     t_parser *pars;
+	char *args;
 
     pars = top;
     
@@ -173,16 +184,15 @@ void child(t_parser *top, char **routes, t_mch *all) {
         bt_check_builtin(all);
         exit(1);
     }
-    char *args = find_cmd(routes, pars->args[0]);
-    if (!pars->args[0])
-        exit(127);
-    execve(args, pars->args, routes);
+  	args = get_args(pars, pipex->routes);
+    execve(args, pars->args, pipex->routes);
     perror("error execve");
 }
 
 void child_pipes(t_parser *top, t_pipe *ptop,  t_mch *all) {
     t_pipe *pipex;
 	t_parser *pars;
+	char *args;
 	
     pipex = ptop;
     pars = top;
@@ -204,9 +214,7 @@ void child_pipes(t_parser *top, t_pipe *ptop,  t_mch *all) {
         bt_check_builtin(all);
         exit(1);
     }
-    char *args = find_cmd(pipex->routes, pars->args[0]);
-    if (!pars->args[0])
-        exit(127);
+    args = get_args(pars, pipex->routes);
 	//else dprintf(2, "ejecuto\n");
     execve(args, pars->args, pipex->routes);
     exit (1);
@@ -259,12 +267,13 @@ int executor(t_mch *all) {
     pipe(pipex->tube);
     while (pars) {
         pipex->proc = fork();
-        if (pipex->proc == 0) {
+        if (pipex->proc == 0) 
+		{
             open_redirs(pipex, pars->redir_list);
 			if (all->pipes > 1)
 				child_pipes(pars, pipex, all);
             else
-				child(pars, pipex->routes, all);
+				child(pars, pipex, all);
         } else {
             pars = pars->next;
         }

@@ -19,7 +19,7 @@ static void	clear_console(void)
 }
 void line_exit(t_mch *sh)
 {
-	write(2, "\nexit\n", 5);
+	write(2, "exit\n", 5);
 	exit(sh->exit);
 }
 
