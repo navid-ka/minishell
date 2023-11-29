@@ -120,6 +120,7 @@ typedef struct s_pipe
 	char	*limiter;
 	int		*dup_stdin;
 	int		*dup_stdout;
+	char	*file_path;
 }	t_pipe;
 
 typedef struct s_mch

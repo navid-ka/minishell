@@ -14,8 +14,8 @@
 
 static void	clear_console(void)
 {
-	ft_printf(STDOUT_FILENO, "\033[2J");
-	ft_printf(STDOUT_FILENO, "\033[1;1H");
+	printf("\033[2J");
+	printf("\033[1;1H");
 }
 void line_exit(t_mch *sh)
 {
@@ -63,6 +63,7 @@ static void	command_handler(t_mch *sh, char *line)
 	clear_line(&cmd);
 	clear_lexer(&lex);
 	clear_parser(&sh->parser);
+	free(sh->pipex);
 }
 
 void	minishell(t_mch *sh, char **env)
@@ -91,6 +92,7 @@ void	minishell(t_mch *sh, char **env)
 			free_env(&envi);
 			clear_line(&prompt);
 			clear_line(&line);
+
 		}
 	}
 }
