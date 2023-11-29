@@ -50,6 +50,19 @@ char	*get_path_env_value(t_mch *sh)
 	return (path_env_value);
 }
 
+void load_routes(t_pipe *pipex, t_mch *all)
+{
+    char *path_env;
+
+    path_env = get_path_env_value(all);
+    if (path_env == NULL) {
+        return;
+    }
+	pipex->routes = ft_split(path_env, ':');
+	free(path_env);
+	path_env = NULL;
+}
+
 void	close_pipes(t_pipe *pipex)
 {
 	close(pipex->tube[0]);
@@ -167,7 +180,7 @@ void child(t_parser *top, char **routes, t_mch *all) {
     perror("error execve");
 }
 
-void child_pipes(t_parser *top, t_pipe *ptop, char **routes, t_mch *all) {
+void child_pipes(t_parser *top, t_pipe *ptop,  t_mch *all) {
     t_pipe *pipex;
 	t_parser *pars;
 	
@@ -191,11 +204,11 @@ void child_pipes(t_parser *top, t_pipe *ptop, char **routes, t_mch *all) {
         bt_check_builtin(all);
         exit(1);
     }
-    char *args = find_cmd(routes, pars->args[0]);
+    char *args = find_cmd(pipex->routes, pars->args[0]);
     if (!pars->args[0])
         exit(127);
 	//else dprintf(2, "ejecuto\n");
-    execve(args, pars->args, routes);
+    execve(args, pars->args, pipex->routes);
     exit (1);
 
 }
@@ -236,26 +249,22 @@ int	wait_childs(t_pipe *pipe, t_mch *all/*, int *exit_s*/)
 int executor(t_mch *all) {
     t_parser *pars;
     t_pipe *pipex;
-    char *path_env;
-    char **routes;
 
     pipex = all->pipex;
     pars = all->parser;
     pipex = ft_calloc(sizeof(t_pipe), 1);
-    if ((path_env = get_path_env_value(all)) == NULL)
-        return (127);
-    routes = ft_split(path_env, ':');
-    free(path_env);
-    path_env = NULL;
-    pipe(pipex->tube);  // Crear un pipe
+	if (!pipex)
+		return (ft_error(1, ERR_MC, NULL));
+	load_routes(pipex, all);
+    pipe(pipex->tube);
     while (pars) {
         pipex->proc = fork();
         if (pipex->proc == 0) {
             open_redirs(pipex, pars->redir_list);
 			if (all->pipes > 1)
-				child_pipes(pars, pipex, routes, all);
+				child_pipes(pars, pipex, all);
             else
-				child(pars, routes, all);
+				child(pars, pipex->routes, all);
         } else {
             pars = pars->next;
         }
