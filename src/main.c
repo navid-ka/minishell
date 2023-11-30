@@ -16,8 +16,12 @@ int	main(int argc, char **argv, char **env)
 {
 	t_mch	sh;
 
-	(void)argc;
 	(void)argv;
+	if (argc != 1)
+	{
+		printf("Too many arguments\n");
+		exit (1);
+	}
 	sh.exit = 0;
 	minishell(&sh, env);
 	exit (sh.exit);
