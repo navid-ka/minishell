@@ -35,6 +35,7 @@ void	add_or_update_env(t_mch *sh, char *name, char *value)
 	new_env->next = NULL;
 	add_env_to_list(&sh->env, new_env);
 }
+
 void	print_sort_print(t_env *env)
 {
 	t_env	*tmp;
@@ -60,6 +61,7 @@ void	print_sort_print(t_env *env)
 		tmp = tmp->next;
 	}
 }
+
 void	print_env(t_mch *sh)
 {
 	t_env	*env;

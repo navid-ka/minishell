@@ -12,32 +12,24 @@
 
 #include "../../inc/minishell.h"
 
-static void	update_old_pwd(t_mch *sh, char *old_pwd, char *new_pwd)
+void	update_pwd(t_mch *sh)
 {
-	t_env	*env;
+	char	*pwd;
 
-	env = sh->env;
-	if (old_pwd == NULL)
-	{
-		add_or_update_env(sh, "OLDPWD", new_pwd);
-		return ;
-	}
-	while (env != NULL)
-	{
-		if (ft_strncmp(env->name, "OLDPWD", 6) == 0)
-		{
-			free(env->value);
-			env->value = ft_strdup(new_pwd);
-			return ;
-		}
-		env = env->next;
-	}
+	pwd = getcwd(NULL, 0);
+	add_or_update_env(sh, "PWD", pwd);
+	free(pwd);
 }
 
-void	home(t_mch *sh, char *pwd)
+void	home(t_mch *sh)
 {
-	update_old_pwd(sh, find_in_env_variables(sh, "OLDPWD"), pwd);
+	char	*pwd;
+
+	pwd = getcwd(NULL, 0);
+	add_or_update_env(sh, "OLDPWD", pwd);
 	chdir(find_in_env_variables(sh, "HOME"));
+	update_pwd(sh);
+	free(pwd);
 }
 
 void	bt_cd(t_mch *sh, char **arg)
@@ -45,24 +37,26 @@ void	bt_cd(t_mch *sh, char **arg)
 	char	*pwd;
 
 	pwd = getcwd(NULL, 0);
-	if (arg[2])
-		ft_printf(2, "bash: cd: Too many arguments");
 	if (arg[1] == NULL)
-		home(sh, pwd);
+		home(sh);
+	else if (arg[2] != NULL)
+		ft_printf(2, "bash: cd: Too many arguments\n");
 	else if (ft_strncmp("-", arg[1], 2) == 0)
 	{
 		if (chdir(find_in_env_variables(sh, "OLDPWD")) == -1)
 			ft_printf(STDERR_FILENO, "%s", "cd: OLDPWD not set\n");
-		update_old_pwd(sh, find_in_env_variables(sh, "OLDPWD"), pwd);
+		add_or_update_env(sh, "OLDPWD", pwd);
+		update_pwd(sh);
 	}
 	else
 	{
-		update_old_pwd(sh, find_in_env_variables(sh, "OLDPWD"), pwd);
+		add_or_update_env(sh, "OLDPWD", pwd);
 		if (chdir(arg[1]) == -1)
 		{
 			ft_printf(STDERR_FILENO, CD, arg[1]);
 			sh->exit = 1;
 		}
+		update_pwd(sh);
 	}
 	free(pwd);
 }
