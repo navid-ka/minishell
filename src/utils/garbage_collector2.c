@@ -36,5 +36,3 @@ void	free_tab(char **args)
 		args = NULL;
 	}
 }
-
-
