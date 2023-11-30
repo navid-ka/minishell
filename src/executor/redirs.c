@@ -12,7 +12,7 @@
 
 #include "../../inc/minishell.h"
 
-void open_infile(t_redir *top, t_pipe *pipex)
+void	open_infile(t_redir *top, t_pipe *pipex)
 {
 	if (access(top->file, F_OK) == -1)
 	{
@@ -28,16 +28,15 @@ void open_infile(t_redir *top, t_pipe *pipex)
 	}
 	dup2(pipex->fd_infile, STDIN_FILENO);
 	close(pipex->fd_infile);
-	//close_pipes(pipex); //por qué si cierro pipe no funciona?
 }
 
-void open_outfile(t_redir *top, t_pipe *pipex)
+void	open_outfile(t_redir *top, t_pipe *pipex)
 {
-	if (top->type == TRUNC) {
+	if (top->type == TRUNC)
 		pipex->fd_outfile = open(top->file, O_WRONLY | O_TRUNC | O_CREAT, 0666);
-	}
 	else
-		pipex->fd_outfile = open(top->file, O_WRONLY | O_APPEND | O_CREAT, 0666);
+		pipex->fd_outfile = open(top->file, O_WRONLY \
+			| O_APPEND | O_CREAT, 0666);
 	if (pipex->fd_outfile == -1)
 	{
 		close_pipes(pipex);
@@ -51,30 +50,18 @@ void open_outfile(t_redir *top, t_pipe *pipex)
 	}
 	dup2(pipex->fd_outfile, STDOUT_FILENO);
 	close(pipex->fd_outfile);
-	// if (pars->next)
-	// 	close_pipes(pipex); oh mama
 }
 
-void 	open_redirs(t_pipe *pipex, t_redir *top)
+void	open_redirs(t_pipe *pipex, t_redir *top)
 {
 	while (top)
 	{
-		//dprintf(2, "hay redirs\n");
-		if (top->type == INPUT) {
+		if (top->type == INPUT)
 			open_infile(top, pipex);
-		}
 		else if (top->type == HERE_DOC)
-		{
 			manage_here_doc(top, pipex->proc);
-		}
-		else if (top->type == TRUNC|| top->type == APPEND) {
+		else if (top->type == TRUNC || top->type == APPEND)
 			open_outfile(top, pipex);
-		}
-		/*else if (top->type == PIPE) {
-			dup2(pipex->tube[1], 1);
-			dup2(pipex->tube[0], 0);
-			break;
-		}*/
 		top = top->next;
 	}
 }
@@ -87,6 +74,6 @@ void	init_redirs(t_pipe *pipex)
 
 void	reset_redirs(t_pipe *pipex)
 {
-	dup2(pipex->std_in, STDIN_FILENO) ;
+	dup2(pipex->std_in, STDIN_FILENO);
 	dup2(pipex->std_out, STDOUT_FILENO);
 }
