@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_javi.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcosta-f <fcosta-f@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 01:20:57 by fcosta-f          #+#    #+#             */
-/*   Updated: 2023/11/29 20:13:45 by fcosta-f         ###   ########.fr       */
+/*   Updated: 2023/11/30 12:28:21 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@ char	*find_cmd(char **routes, char *cmd)
 		return (cmd);
 	else
 		ft_error(127, ERR_CNF, cmd); //este exit_code dónde queda?
-	free(cmdroute);
 	return (NULL);
 }
  //cosas antiguas arriba
@@ -187,6 +186,7 @@ void child(t_parser *top, t_pipe *pipex, t_mch *all) {
   	pipex->file_path = get_args(pars, pipex->routes);
     execve(pipex->file_path, pars->args, pipex->routes);
     perror("error execve");
+	exit(1);
 }
 
 void child_pipes(t_parser *top, t_pipe *ptop,  t_mch *all) {
@@ -197,6 +197,7 @@ void child_pipes(t_parser *top, t_pipe *ptop,  t_mch *all) {
     pars = top;
 	//dprintf(2, "valor de first %d", pars->first);
 		//dprintf(2, "redirijo entrada\n");
+	close(pipex->tube[0]);
     if (pars->next) {
 		//dprintf(2, "redirijo salida\n");
         dup2(pipex->tube[1], STDOUT_FILENO);
@@ -264,7 +265,6 @@ int executor(t_mch *all) {
     t_parser *pars;
     t_pipe *pipex;
 
-	int fd = dup(0);
     pipex = all->pipex;
     pars = all->parser;
     pipex = ft_calloc(sizeof(t_pipe), 1);
@@ -278,7 +278,8 @@ int executor(t_mch *all) {
         if (pipex->proc == 0) 
 		{
             open_redirs(pipex, pars->redir_list);
-			if (all->pipes > 1) {
+			if (all->pipes > 1)
+			{
 				child_pipes(pars, pipex, all);
 				dup2(pipex->tube[0], STDIN_FILENO);
 			}
@@ -290,7 +291,6 @@ int executor(t_mch *all) {
 		dup2(pipex->tube[0], 0);
     	close_pipes(pipex);
     }
-	dup2(fd, 0);
 	reset_redirs(pipex);
 	free(pipex->file_path);
 	free_tab(pipex->routes);

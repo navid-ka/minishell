@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcosta-f <fcosta-f@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:39:00 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/11/29 09:41:20 by fcosta-f         ###   ########.fr       */
+/*   Updated: 2023/11/30 12:26:03 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ static void	command_handler(t_mch *sh, char *line)
 	clear_line(&cmd);
 	clear_lexer(&lex);
 	clear_parser(&sh->parser);
-	free(sh->pipex);
 }
 
 void	minishell(t_mch *sh, char **env)
