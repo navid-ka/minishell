@@ -6,7 +6,7 @@
 /*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 10:59:34 by bifrost           #+#    #+#             */
-/*   Updated: 2023/11/30 13:28:51 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/11/30 14:50:52 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,9 +222,20 @@ void		print_expansor(t_mch *sh);
 // executor
 int			executor(t_mch *sh);
 char		*find_cmd(char **routes, char *cmd);
-void		last_pipe(t_pipe *pipex, int argc);
 int			ft_error(int ext, int err, char *cmd);
 void		close_pipes(t_pipe *pipex);
-int	manage_here_doc(t_redir *word, int pid);
+int			manage_here_doc(t_redir *word, int pid);
+void		init_redirs(t_pipe *pipex);
+void		reset_redirs(t_pipe *pipex);
+void		open_outfile(t_redir *top, t_pipe *pipex);
+void		open_infile(t_redir *top, t_pipe *pipex);
+void 		open_redirs(t_pipe *pipex, t_redir *top);
+int			wait_childs(t_pipe *pipe, t_mch *all);
+void		child_pipes(t_parser *top, t_pipe *ptop,  t_mch *all);
+void		child(t_parser *top, t_pipe *pipex, t_mch *all);
+char		*get_args(t_parser *pars, char **routes);
+void		load_routes(t_pipe *pipex, t_mch *all);
+char		*get_path_env_value(t_mch *sh);
+void		exec_free(t_pipe *pipex);
 
 #endif
