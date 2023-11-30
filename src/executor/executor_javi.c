@@ -6,7 +6,7 @@
 /*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 01:20:57 by fcosta-f          #+#    #+#             */
-/*   Updated: 2023/11/30 12:28:21 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/11/30 13:55:58 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,14 +179,18 @@ void child(t_parser *top, t_pipe *pipex, t_mch *all) {
 
     pars = top;
     
-    if (bt_is_builtin(pars->args)) {
-        bt_check_builtin(all);
+    if (bt_is_builtin(pars->args)) 
+	{
+		exec_bt(all, pars);
         exit(1);
-    }
-  	pipex->file_path = get_args(pars, pipex->routes);
-    execve(pipex->file_path, pars->args, pipex->routes);
-    perror("error execve");
-	exit(1);
+	}
+	else
+	{
+  		pipex->file_path = get_args(pars, pipex->routes);
+    	execve(pipex->file_path, pars->args, pipex->routes);
+    	perror("error execve");
+		exit(1);
+	}
 }
 
 void child_pipes(t_parser *top, t_pipe *ptop,  t_mch *all) {
@@ -205,15 +209,18 @@ void child_pipes(t_parser *top, t_pipe *ptop,  t_mch *all) {
     }
 	else close(pipex->tube[1]);
     
-    if (bt_is_builtin(pars->args)) {
-        bt_check_builtin(all);
-        exit(1);
+    if (bt_is_builtin(pars->args)) 
+	{
+		exec_bt(all, pars);
+        exit(all->exit);
     }
-    pipex->file_path = get_args(pars, pipex->routes);
-	//else dprintf(2, "ejecuto\n");
-    execve(pipex->file_path, pars->args, pipex->routes);
-    exit (1);
-
+    else
+	{
+  		pipex->file_path = get_args(pars, pipex->routes);
+    	execve(pipex->file_path, pars->args, pipex->routes);
+    	//perror("error execve");
+		exit(all->exit);
+	}
 }
 
 int	wait_childs(t_pipe *pipe, t_mch *all/*, int *exit_s*/)
@@ -230,7 +237,8 @@ int	wait_childs(t_pipe *pipe, t_mch *all/*, int *exit_s*/)
 		//dprintf(2, "waiting for her\n");
 		pid = waitpid(-1, &status, 0);
 		i++;
-		if (pid == pipe->proc) real_status = status;
+		if (pid == pipe->proc)
+			real_status = status;
 	}
 	// dup2(pipe->std_in, STDIN_FILENO);
 	// dup2(pipe->std_out, STDOUT_FILENO);
@@ -261,7 +269,8 @@ void	reset_redirs(t_pipe *pipex)
 	dup2(pipex->std_out, STDOUT_FILENO);
 }
 
-int executor(t_mch *all) {
+int executor(t_mch *all) 
+{
     t_parser *pars;
     t_pipe *pipex;
 
@@ -272,7 +281,8 @@ int executor(t_mch *all) {
 	if (!pipex)
 		return (ft_error(1, ERR_MC, NULL));
 	load_routes(pipex, all);
-    while (pars) {
+    while (pars)
+	{
     	pipe(pipex->tube);
         pipex->proc = fork();
         if (pipex->proc == 0) 
@@ -285,9 +295,9 @@ int executor(t_mch *all) {
 			}
 			else
 				child(pars, pipex, all);
-        } else {
+        } 
+		else
             pars = pars->next;
-        }
 		dup2(pipex->tube[0], 0);
     	close_pipes(pipex);
     }
