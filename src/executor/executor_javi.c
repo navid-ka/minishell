@@ -6,7 +6,7 @@
 /*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/18 01:20:57 by fcosta-f          #+#    #+#             */
-/*   Updated: 2023/11/30 12:19:28 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/11/30 12:28:21 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@ char	*find_cmd(char **routes, char *cmd)
 		return (cmd);
 	else
 		ft_error(127, ERR_CNF, cmd); //este exit_code dónde queda?
-	free(cmdroute);
 	return (NULL);
 }
  //cosas antiguas arriba
@@ -187,6 +186,7 @@ void child(t_parser *top, t_pipe *pipex, t_mch *all) {
   	pipex->file_path = get_args(pars, pipex->routes);
     execve(pipex->file_path, pars->args, pipex->routes);
     perror("error execve");
+	exit(1);
 }
 
 void child_pipes(t_parser *top, t_pipe *ptop,  t_mch *all) {
