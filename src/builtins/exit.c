@@ -12,6 +12,12 @@
 
 #include "../../inc/minishell.h"
 
+void	line_exit(t_mch *sh)
+{
+	write(2, "exit\n", 5);
+	exit(sh->exit);
+}
+
 static int	is_it_numeric(char *line)
 {
 	int	i;

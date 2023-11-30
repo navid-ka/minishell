@@ -17,11 +17,6 @@ static void	clear_console(void)
 	printf("\033[2J");
 	printf("\033[1;1H");
 }
-void line_exit(t_mch *sh)
-{
-	write(2, "exit\n", 5);
-	exit(sh->exit);
-}
 
 static void	sh_init(t_mch *sh, char **env)
 {
@@ -63,11 +58,26 @@ static void	command_handler(t_mch *sh, char *line)
 	clear_parser(&sh->parser);
 }
 
+void	process_line(t_mch *sh, char *line, t_env **envi)
+{
+	if (*line)
+	{
+		add_history(line);
+		if (ft_strncmp(line, "clear", 6) == 0)
+			clear_console();
+		if (!quote_checker(line))
+			syntax_error();
+		else
+			command_handler(sh, line);
+		free_env(envi);
+	}
+}
+
 void	minishell(t_mch *sh, char **env)
 {
-	char		*line;
-	t_env		*envi;
-	char		*prompt;
+	char	*line;
+	t_env	*envi;
+	char	*prompt;
 
 	line = NULL;
 	envi = NULL;
@@ -78,19 +88,8 @@ void	minishell(t_mch *sh, char **env)
 		line = readline(prompt);
 		if (!line)
 			line_exit(sh);
-		if (*line)
-		{
-			add_history(line);
-			if (ft_strncmp(line, "clear", 6) == 0)
-				clear_console();
-			if (!quote_checker(line))
-				syntax_error();
-			else
-				command_handler(sh, line);
-			free_env(&envi);
-			clear_line(&prompt);
-			clear_line(&line);
-
-		}
+		process_line(sh, line, &envi);
+		clear_line(&prompt);
+		clear_line(&line);
 	}
 }

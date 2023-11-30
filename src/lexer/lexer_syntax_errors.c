@@ -38,13 +38,11 @@ char	*lexer_end_subshell(char *line)
 
 int	quote_checker(char *line)
 {
-	//char	*end_subshell;
 	bool	dcuotes;
 	bool	scuotes;
 
 	dcuotes = false;
 	scuotes = false;
-	//end_subshell = lexer_end_subshell(line);
 	while (*line)
 	{
 		if (*line == '"' && !scuotes)

@@ -12,11 +12,11 @@
 
 #include "../../inc/minishell.h"
 
-int is_ex(const char *str, int i) 
+int	is_ex(const char *str, int i)
 {
-    if (str[i] == '\'' || str[i] == '"' || str[i] == '$') 
-        return 1;
-    return 0;
+	if (str[i] == '\'' || str[i] == '"' || str[i] == '$')
+		return (1);
+	return (0);
 }
 
 void	init_quotes(t_clean *quotes)
