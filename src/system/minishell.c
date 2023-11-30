@@ -6,7 +6,7 @@
 /*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:39:00 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/11/30 12:26:03 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/11/30 13:34:30 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static void	command_handler(t_mch *sh, char *line)
 	expansor(sh);
 	add_history(cmd);
 	if (bt_is_builtin(sh->parser->args) && sh->pipes == 1)
-		bt_check_builtin(sh);
+		exec_bt(sh, sh->parser);
 	else
 		sh->exit = executor(sh);
 	clear_line(&cmd);

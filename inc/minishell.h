@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcosta-f <fcosta-f@student.42barcelona.    +#+  +:+       +#+        */
+/*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 10:59:34 by bifrost           #+#    #+#             */
-/*   Updated: 2023/11/29 09:44:57 by fcosta-f         ###   ########.fr       */
+/*   Updated: 2023/11/30 13:28:51 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ void		clear_redir(t_redir **redir_list);
 
 // builtins env
 bool		bt_is_builtin(char **argv);
-void		bt_check_builtin(t_mch *sh);
+void		exec_bt(t_mch *sh, t_parser *cmd);
 void		bt_env(t_mch *sh);
 void		bt_export(t_mch *sh, char **args);
 void		bt_exit(t_mch *sh, char **argv);
