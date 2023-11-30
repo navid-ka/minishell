@@ -12,11 +12,35 @@
 
 #include <minishell.h>
 
+static void	handle_signals_heredoc(int sig)
+{
+	if (sig == SIGQUIT)
+	{
+		return ;
+	}
+	else if (sig == SIGINT)
+	{
+		close(STDIN_FILENO);
+		write(STDOUT_FILENO, "> \n", 3);
+	}
+}
+
+void	set_up_signals_here_doc(void)
+{
+	struct sigaction	sa;
+
+	sa.sa_flags = SA_SIGINFO;
+	sa.sa_handler = &handle_signals_heredoc;
+	sigaction(SIGINT, &sa, NULL);
+	sigaction(SIGQUIT, &sa, NULL);
+}
+
 int	fill_here_doc_file(int *pipefd, char *limiter)
 {
 	char	*line;
 
-	// signal(SIGINT, set_up_signals_here_doc);
+	set_up_signals_here_doc();
+	ft_putstr_fd("> ", 1);
 	line = get_next_line(STDIN_FILENO);
 	if (ft_strncmp(limiter, line, ft_strlen(limiter)) == 0
 		&& line[ft_strlen(limiter)] == '\n')
@@ -34,9 +58,9 @@ int	fill_here_doc_file(int *pipefd, char *limiter)
 			ft_putstr_fd(line, pipefd[1]);
 		if (line != NULL)
 			free(line);
+		ft_putstr_fd("> ", 1);
 		line = get_next_line(STDIN_FILENO);
 	}
-	// set_up_signals_parent();
 	return (0);
 }
 
