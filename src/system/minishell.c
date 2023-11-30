@@ -6,7 +6,7 @@
 /*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:39:00 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/11/30 13:34:30 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/11/30 14:33:05 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,12 @@ static void	command_handler(t_mch *sh, char *line)
 	if (check_syntax(lex) != 0)
 	{
 		sh->exit = 2;
-		add_history(cmd);
 		clear_line(&cmd);
 		clear_lexer(&lex);
 		return ;
 	}
 	parser(sh, lex);
 	expansor(sh);
-	add_history(cmd);
 	if (bt_is_builtin(sh->parser->args) && sh->pipes == 1)
 		exec_bt(sh, sh->parser);
 	else
@@ -82,6 +80,7 @@ void	minishell(t_mch *sh, char **env)
 			line_exit(sh);
 		if (*line)
 		{
+			add_history(line);
 			if (ft_strncmp(line, "clear", 6) == 0)
 				clear_console();
 			if (!quote_checker(line))
