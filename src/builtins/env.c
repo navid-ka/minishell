@@ -6,7 +6,7 @@
 /*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 11:50:02 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/10/25 16:24:44 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/11/30 15:44:47 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,13 @@ void	bt_env(t_mch *sh)
 	env = sh->env;
 	while (env != NULL)
 	{
-		if (ft_printf(STDOUT_FILENO, "%s=%s\n", env->name, env->value) == 0)
+		if (env->value != NULL)
 		{
-			sh->exit = EXIT_FAILURE;
-			return ;
+			if (ft_printf(STDOUT_FILENO, "%s=%s\n", env->name, env->value) == 0)
+			{
+				sh->exit = EXIT_FAILURE;
+				return ;
+			}
 		}
 		env = env->next;
 	}
