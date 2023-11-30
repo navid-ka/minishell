@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
+/*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 11:53:36 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/11/26 18:35:18 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/11/30 15:36:39 by nkeyani-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,16 +35,44 @@ void	add_or_update_env(t_mch *sh, char *name, char *value)
 	new_env->next = NULL;
 	add_env_to_list(&sh->env, new_env);
 }
+void	print_sort_print(t_env *env)
+{
+	t_env	*tmp;
+	char	*tmp_name;
+	char	*tmp_value;
 
+	tmp = env;
+	while (tmp != NULL)
+	{
+		if (tmp->next != NULL)
+		{
+			if (ft_strcmp(tmp->name, tmp->next->name) > 0)
+			{
+				tmp_name = tmp->name;
+				tmp_value = tmp->value;
+				tmp->name = tmp->next->name;
+				tmp->value = tmp->next->value;
+				tmp->next->name = tmp_name;
+				tmp->next->value = tmp_value;
+				tmp = env;
+			}
+		}
+		tmp = tmp->next;
+	}
+}
 void	print_env(t_mch *sh)
 {
 	t_env	*env;
 
 	env = sh->env;
+	print_sort_print(env);
 	while (env != NULL)
 	{
-		ft_printf(STDOUT_FILENO, "declare -x %s=\"%s\"\n", \
-			env->name, env->value);
+		if (env->value != NULL)
+			ft_printf(STDOUT_FILENO, "declare -x %s=\"%s\"\n", \
+				env->name, env->value);
+		else
+			ft_printf(STDOUT_FILENO, "declare -x %s\n", env->name);
 		env = env->next;
 	}
 	ft_printf(STDOUT_FILENO, "\n");
