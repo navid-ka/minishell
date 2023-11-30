@@ -17,7 +17,8 @@ t_parser	*create_parser(int first)
 	t_parser	*parser;
 
 	parser = ft_calloc(sizeof(t_parser), 1);
-	
+	if (!parser)
+		return (NULL);
 	parser->first = first;
 	parser->redir_list = NULL;
 	parser->args = NULL;

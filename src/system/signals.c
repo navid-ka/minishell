@@ -26,5 +26,4 @@ void	signals(void)
 	rl_catch_signals = 0;
 	signal(SIGINT, sigint_handler);
 	signal(SIGQUIT, SIG_IGN);
-	//signal(SIGSEGV, sigint_handler);	
 }

@@ -160,6 +160,7 @@ void		exec_bt(t_mch *sh, t_parser *cmd);
 void		bt_env(t_mch *sh);
 void		bt_export(t_mch *sh, char **args);
 void		bt_exit(t_mch *sh, char **argv);
+void		line_exit(t_mch *sh);
 int			compare_exit(char *argument);
 void		bt_echo(t_mch *sh, char **str);
 int			bt_pwd(void);
@@ -216,8 +217,10 @@ void		print_lex_list(t_lexer *lex);
 int			is_ex(const char *str, int i);
 void		init_quotes(t_clean *quotes);
 void		quote_updater(t_clean *quotes, char e);
+void		expand(t_mch *sh, char **e);
 void		expansor(t_mch *sh);
-void		print_expansor(t_mch *sh);
+void		expand_args(t_mch *sh, t_parser *exp);
+void		expand_redir(t_mch *sh, t_parser *exp);
 
 // executor
 int			executor(t_mch *sh);

@@ -44,6 +44,7 @@ SRCS 					:= src/main.c  \
 						src/builtins/bt_init.c \
 						src/parser/parse_env.c \
 						src/expander/expansor_utils.c \
+						src/expander/expand_types.c \
 						src/expander/expansor.c \
 						src/executor/executor.c \
 						src/executor/childs.c \

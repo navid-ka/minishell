@@ -83,39 +83,12 @@ void	expand(t_mch *sh, char **e)
 void	expansor(t_mch *sh)
 {
 	t_parser	*exp;
-	int			i;
-	int			j;
 
 	exp = sh->parser;
 	while (exp)
 	{
-		i = -1;
-		while (exp->args[++i])
-		{
-			j = 0;
-			while (exp->args[i][j]) 
-			{
-				if (is_ex(exp->args[i], j)) 
-				{
-					expand(sh, &(exp->args[i]));
-					break;
-				}
-				j++;
-			}
-		}
-		if (exp->redir_list)
-		{
-			j = 0;
-			while (exp->redir_list->file[j]) 
-			{
-				if (is_ex(exp->redir_list->file, j)) 
-				{
-					expand(sh, &(exp->redir_list->file));
-					break;
-				}
-				j++;
-			}
-		}
+		expand_args(sh, exp);
+		expand_redir(sh, exp);
 		exp = exp->next;
 	}
 }
