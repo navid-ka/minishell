@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/07 10:59:34 by bifrost           #+#    #+#             */
-/*   Updated: 2023/11/30 14:50:52 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/12/01 12:33:55 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,8 @@ bool		bt_is_builtin(char **argv);
 void		exec_bt(t_mch *sh, t_parser *cmd);
 void		bt_env(t_mch *sh);
 void		bt_export(t_mch *sh, char **args);
+void		print_env(t_mch *sh);
+bool		is_valid_identifier(const char *name);
 void		bt_exit(t_mch *sh, char **argv);
 void		line_exit(t_mch *sh);
 int			compare_exit(char *argument);

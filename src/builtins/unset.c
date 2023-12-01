@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/15 01:03:04 by bifrost           #+#    #+#             */
-/*   Updated: 2023/11/07 09:57:18 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/12/01 13:01:09 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,18 +55,12 @@ void	unset_var(t_mch *sh, char *var)
 
 void	bt_unset(t_mch *sh, char **args)
 {
-	char	*value;
-	int		i;
+	int	i;
 
 	i = 1;
 	while (args[i])
 	{
-		value = get_env_value(sh, args[i]);
-		if (value != NULL)
-		{
-			unset_var(sh, args[i]);
-			free(value);
-		}
+		unset_var(sh, args[i]);
 		i++;
 	}
 }
