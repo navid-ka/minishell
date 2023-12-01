@@ -6,7 +6,7 @@
 /*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:19:59 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/12/01 14:48:45 by bifrost          ###   ########.fr       */
+/*   Updated: 2023/12/01 14:54:39 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,14 +58,14 @@ int	execute(t_mch *all)
 
 int	executor(t_mch *all)
 {
-    if (bt_is_builtin(all->parser->args) && all->pipes == 1)
-    {
-        if (all->parser->redir_list)
-            execute(all);
-        else
-            exec_bt(all, all->parser);
-    }
-    else
-        all->exit = execute(all);
-    return (all->exit);
+	if (bt_is_builtin(all->parser->args) && all->pipes == 1)
+	{
+		if (all->parser->redir_list)
+			execute(all);
+		else
+			exec_bt(all, all->parser);
+	}
+	else
+		all->exit = execute(all);
+	return (all->exit);
 }
