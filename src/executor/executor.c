@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:19:59 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/11/30 14:55:03 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/12/01 14:48:45 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	execute_pipe(t_mch *all, t_parser *pars, t_pipe *pipex)
 	close_pipes(pipex);
 }
 
-int	executor(t_mch *all)
+int	execute(t_mch *all)
 {
 	t_parser	*pars;
 	t_pipe		*pipex;
@@ -54,4 +54,18 @@ int	executor(t_mch *all)
 	all->exit = wait_childs(pipex, all);
 	exec_free(pipex);
 	return (all->exit);
+}
+
+int	executor(t_mch *all)
+{
+    if (bt_is_builtin(all->parser->args) && all->pipes == 1)
+    {
+        if (all->parser->redir_list)
+            execute(all);
+        else
+            exec_bt(all, all->parser);
+    }
+    else
+        all->exit = execute(all);
+    return (all->exit);
 }

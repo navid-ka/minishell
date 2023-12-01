@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/27 10:39:00 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/11/30 14:33:05 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/12/01 14:43:18 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,7 @@ static void	command_handler(t_mch *sh, char *line)
 	}
 	parser(sh, lex);
 	expansor(sh);
-	if (bt_is_builtin(sh->parser->args) && sh->pipes == 1)
-		exec_bt(sh, sh->parser);
-	else
-		sh->exit = executor(sh);
+	executor(sh);
 	clear_line(&cmd);
 	clear_lexer(&lex);
 	clear_parser(&sh->parser);
