@@ -3,87 +3,69 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/26 11:53:36 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/11/30 15:36:39 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/12/01 12:56:00 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	add_or_update_env(t_mch *sh, char *name, char *value)
+void	export_plus_equal(t_mch *sh, char *name, char *value)
 {
 	t_env	*env;
-	t_env	*new_env;
+	char	*old_value;
+	char	*env_value;
 
+	env_value = find_in_env_variables(sh, name);
+	if (!env_value)
+	{
+		add_or_update_env(sh, name, value);
+		return ;
+	}
 	env = sh->env;
+	if (!value)
+		value = ft_strdup("");
 	while (env != NULL)
 	{
-		if (ft_strncmp(env->name, name, ft_strlen(name)) == 0
+		if (ft_strncmp(env->name, name, ft_strlen(name)) == 0 \
 			&& ft_strlen(env->name) == ft_strlen(name))
 		{
-			free(env->value);
-			env->value = ft_strdup(value);
+			old_value = env->value;
+			env->value = ft_strjoin(old_value, value);
+			free(old_value);
 			return ;
 		}
 		env = env->next;
 	}
-	new_env = malloc(sizeof(t_env));
-	new_env->name = ft_strdup(name);
-	new_env->value = ft_strdup(value);
-	new_env->next = NULL;
-	add_env_to_list(&sh->env, new_env);
 }
 
-void	print_sort_print(t_env *env)
+void	handle_arg(t_mch *sh, char *arg)
 {
-	t_env	*tmp;
-	char	*tmp_name;
-	char	*tmp_value;
+	char	**v;
+	char	*name;
 
-	tmp = env;
-	while (tmp != NULL)
+	v = ft_split(arg, '=');
+	if (!is_valid_identifier(v[0]))
+		ft_printf(2, EXPORT, v[0], v[1]);
+	else
 	{
-		if (tmp->next != NULL)
+		if (ft_strchr(v[0], '+'))
 		{
-			if (ft_strcmp(tmp->name, tmp->next->name) > 0)
-			{
-				tmp_name = tmp->name;
-				tmp_value = tmp->value;
-				tmp->name = tmp->next->name;
-				tmp->value = tmp->next->value;
-				tmp->next->name = tmp_name;
-				tmp->next->value = tmp_value;
-				tmp = env;
-			}
+			name = ft_substr(v[0], 0, ft_strchr(v[0], '+') - v[0]);
+			export_plus_equal(sh, name, v[1]);
+			free(name);
 		}
-		tmp = tmp->next;
-	}
-}
-
-void	print_env(t_mch *sh)
-{
-	t_env	*env;
-
-	env = sh->env;
-	print_sort_print(env);
-	while (env != NULL)
-	{
-		if (env->value != NULL)
-			ft_printf(STDOUT_FILENO, "declare -x %s=\"%s\"\n", \
-				env->name, env->value);
 		else
-			ft_printf(STDOUT_FILENO, "declare -x %s\n", env->name);
-		env = env->next;
+			add_or_update_env(sh, v[0], v[1]);
 	}
-	ft_printf(STDOUT_FILENO, "\n");
+	free_tab(v);
 }
 
 void	bt_export(t_mch *sh, char **args)
 {
-	int		i;
-	char	**v;
+	int	i;
 
 	i = 1;
 	if (args[i] == NULL)
@@ -92,15 +74,7 @@ void	bt_export(t_mch *sh, char **args)
 	{
 		while (args[i] != NULL)
 		{
-			v = ft_split(args[i], '=');
-			if (ft_strchr(v[0], '+') != NULL)
-				return ((void)ft_printf(2, EXPORT, v[0], v[1]),
-					free_tab(v));
-			if (ft_isdigit(v[0][0]) || v[0][0] == '_')
-				ft_printf(2, EXPORT, v[0], v[1]);
-			else
-				add_or_update_env(sh, v[0], v[1]);
-			free_tab(v);
+			handle_arg(sh, args[i]);
 			i++;
 		}
 	}
