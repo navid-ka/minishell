@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   childs.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkeyani- <nkeyani-@student.42.fr>          +#+  +:+       +#+        */
+/*   By: bifrost <bifrost@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/28 12:19:59 by nkeyani-          #+#    #+#             */
-/*   Updated: 2023/11/30 15:03:36 by nkeyani-         ###   ########.fr       */
+/*   Updated: 2023/12/01 13:04:53 by bifrost          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	child(t_parser *top, t_pipe *pipex, t_mch *all)
 	{
 		pipex->file_path = get_args(pars, pipex->routes);
 		execve(pipex->file_path, pars->args, pipex->routes);
-		perror("error execve");
 		exit(1);
 	}
 }
